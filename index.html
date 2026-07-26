@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zaleavelle — Naturally Confident</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #faf8f6;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  .serif { font-family: "Playfair Display", Georgia, serif; }
+
+  /* Navigation */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+  }
+  .nav-links { display: flex; gap: 3rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6b6b6b;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: #1a1a1a; }
+  .nav-cta {
+    padding: 0.85rem 2rem;
+    background: #1a1a1a;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.3s;
+  }
+  .nav-cta:hover { background: #c9a9a6; }
+
+  /* Hero */
+  .hero {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 6rem 4rem 8rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .hero-text h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+  }
+  .hero-text h1 em {
+    font-style: italic;
+    color: #c9a9a6;
+  }
+  .hero-text p {
+    font-size: 1.1rem;
+    color: #6b6b6b;
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .hero-cta {
+    display: inline-block;
+    padding: 1.1rem 3rem;
+    background: transparent;
+    color: #1a1a1a;
+    text-decoration: none;
+    border: 1.5px solid #1a1a1a;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.4s;
+  }
+  .hero-cta:hover {
+    background: #1a1a1a;
+    color: #faf8f6;
+  }
+  .hero-image {
+    height: 550px;
+    background: linear-gradient(135deg, #f0d4d1 0%, #f5dfd8 40%, #e8c4bf 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-image .logo-mock {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 4rem;
+    font-style: italic;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.03em;
+    opacity: 0.15;
+  }
+  .hero-image::before {
+    content: '';
+    position: absolute;
+    inset: 40px;
+    border: 1px solid rgba(26,26,26,0.08);
+  }
+
+  /* Values strip */
+  .values {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 5rem 4rem;
+    border-top: 1px solid rgba(26,26,26,0.08);
+    border-bottom: 1px solid rgba(26,26,26,0.08);
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3rem;
+    text-align: center;
+  }
+  .value-item {
+    padding: 1.5rem;
+  }
+  .value-item .value-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+  }
+  .value-item .value-desc {
+    font-size: 0.75rem;
+    color: #6b6b6b;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Products */
+  .products {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 8rem 4rem;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  .section-header h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .section-header p {
+    font-size: 1rem;
+    color: #6b6b6b;
+    font-style: italic;
+    font-family: "Playfair Display", Georgia, serif;
+  }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+  }
+  .product-card {
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .product-card:hover { transform: translateY(-4px); }
+  .product-img {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #f0d4d1, #e8c4bf);
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(26,26,26,0);
+    transition: background 0.3s;
+  }
+  .product-card:hover .product-img::after {
+    background: rgba(26,26,26,0.05);
+  }
+  .product-category {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c9a9a6;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .product-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+  .product-price {
+    font-size: 0.9rem;
+    color: #6b6b6b;
+    font-weight: 300;
+  }
+
+  /* About */
+  .about {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 8rem 4rem;
+    text-align: center;
+  }
+  .about blockquote {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 2rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: #2a2a2a;
+    margin-bottom: 2rem;
+  }
+  .about p {
+    font-size: 1rem;
+    color: #6b6b6b;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+  }
+
+  /* Social */
+  .social {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 6rem 4rem;
+    text-align: center;
+    background: #1a1a1a;
+    color: #faf8f6;
+  }
+  .social h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .social p {
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    color: #c9a9a6;
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+  }
+  .social-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .social-link {
+    padding: 1rem 2.5rem;
+    border: 1px solid rgba(250,248,246,0.3);
+    color: #faf8f6;
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .social-link:hover {
+    background: #faf8f6;
+    color: #1a1a1a;
+    border-color: #faf8f6;
+  }
+
+  /* Footer */
+  footer {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.5rem 4rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #999;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Responsive */
+  @media (max-width: 968px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 2rem; }
+    .hero-image { height: 400px; }
+    .values-grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .products { padding: 5rem 2rem; }
+    .about { padding: 5rem 2rem; }
+    .about blockquote { font-size: 1.5rem; }
+    .social { padding: 4rem 2rem; }
+    footer { padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">zaleavelle</div>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#products" class="nav-cta">Shop Now</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>Kulit sehat,<br><em>percaya diri</em><br>yang alami.</h1>
+    <p>Zaleavelle hadir untuk merawat kulitmu setiap hari dengan rutinitas yang sederhana, autentik, dan penuh perhatian.</p>
+    <a href="#products" class="hero-cta">Jelajahi Produk</a>
+  </div>
+  <div class="hero-image">
+    <div class="logo-mock">zaleavelle</div>
+  </div>
+</section>
+
+<section class="values">
+  <div class="values-grid">
+    <div class="value-item">
+      <div class="value-name">Authenticity</div>
+      <div class="value-desc">Keaslian</div>
+    </div>
+    <div class="value-item">
+      <div class="value-name">Confidence</div>
+      <div class="value-desc">Kepercayaan Diri</div>
+    </div>
+    <div class="value-item">
+      <div class="value-name">Wellness</div>
+      <div class="value-desc">Kesehatan</div>
+    </div>
+    <div class="value-item">
+      <div class="value-name">Simplicity</div>
+      <div class="value-desc">Kesederhanaan</div>
+    </div>
+    <div class="value-item">
+      <div class="value-name">Care</div>
+      <div class="value-desc">Perawatan</div>
+    </div>
+  </div>
+</section>
+
+<section class="products" id="products">
+  <div class="section-header">
+    <h2>Rutinitas Kulitmu</h2>
+    <p>Produk yang dirancang untuk kesederhanaan dan hasil yang nyata.</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-img"></div>
+      <div class="product-category">Brightening</div>
+      <div class="product-name">Glow Elixir</div>
+      <div class="product-price">Rp 185.000</div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"></div>
+      <div class="product-category">Daily Hydration</div>
+      <div class="product-name">Soft Skin Lotion</div>
+      <div class="product-price">Rp 145.000</div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"></div>
+      <div class="product-category">Exfoliation</div>
+      <div class="product-name">Calm Ritual Scrub</div>
+      <div class="product-price">Rp 165.000</div>
+    </div>
+    <div class="product-card">
+      <div class="product-img"></div>
+      <div class="product-category">Complete Set</div>
+      <div class="product-name">Confidence Set</div>
+      <div class="product-price">Rp 389.000</div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <blockquote>"Kepercayaan diri berawal dari dalam diri Anda."</blockquote>
+  <p>Kecantikan sejati bukan soal mengubah jati diri, melainkan soal merawat diri secara konsisten. Zaleavelle hadir untuk membantu orang merasa nyaman dan percaya diri.</p>
+</section>
+
+<section class="social" id="contact">
+  <h3>Bergabung dengan Komunitas Kami</h3>
+  <p>Temukan tips skincare, reviews, dan diskusi bersama sesama.</p>
+  <div class="social-links">
+    <a href="https://instagram.com/zaleavelle" class="social-link" target="_blank">Instagram</a>
+    <a href="https://tiktok.com/@zaleavelle.official" class="social-link" target="_blank">TikTok</a>
+    <a href="https://s.shopee.co.id/7VDaP3qhE5" class="social-link" target="_blank">Shopee</a>
+    <a href="https://wa.me/6282121262593" class="social-link" target="_blank">WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 zaleavelle. All rights reserved.
+</footer>
+
+</body>
+</html>
