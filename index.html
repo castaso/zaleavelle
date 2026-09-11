@@ -6,18 +6,21 @@
 <title>zaleavelle — Naturally Confident</title>
 <meta name="description" content="Zaleavelle — rutinitas kulit sederhana, autentik, dan penuh perhatian.">
 <!--
-  DESIGN READ: premium-consumer DTC skincare landing for Indonesian Gen-Z buyers,
-  soft-elegant editorial language driven by attached wordmark.
-  DIALS: DESIGN_VARIANCE 7 / MOTION_INTENSITY 5 / VISUAL_DENSITY 3
-  - Aesthetic, not an official DS → native CSS + CSS variables (no framework).
-  - Serif justified: brand wordmark is a thin Didone serif (skill §4.1 override).
-    Display = logo-matching serif stack; body = system sans; emphasis = same-family italic.
-    BANNED defaults avoided: Playfair/Inter-via-link, Fraunces, Instrument Serif.
-  - Palette locked to ONE rose accent sampled from logo JPG backdrop.
-    JPG-only asset: no transparent file on disk → wordmark re-typeset below.
-    TODO: drop transparent PNG/SVG at assets/zaleavelle-mark.svg and swap .wordmark text.
-  - Shape rule (locked): buttons = full-pill, cards/media = 16px, inputs = 8px.
-  - z-scale: nav 40 / reveal 1 / grain 60 / toggle 50.
+  DESIGN READ: DTC skincare landing pushed playful Awwwards-experimental for Gen-Z —
+  oversized kinetic type, stickers, ONE scroll-hijack (sticky-stack products), living mesh.
+  Anchors kept: zaleavelle Didone wordmark + single rose accent.
+  DIALS: DESIGN_VARIANCE 9 / MOTION_INTENSITY 8 / VISUAL_DENSITY 3
+  - Stack: single file, native CSS + GSAP CDN (ScrollTrigger). No build step.
+  - Serif justified (§4.1): brand wordmark is thin Didone; display = matching serif stack,
+    emphasis = same-family italic only. No Fraunces / Instrument / Playfair defaults.
+  - Palette locked: ONE rose accent (#9E3E4D light / #E3A7AC dark). No second accent,
+    no neon glows, no AI-purple. Shadows tinted to bg hue.
+  - Shape rule (documented playful exception): tilt + hard offset shadow IS the system,
+    applied consistently; buttons stay pill, cards 16px.
+  - z-scale: nav 40 / stack cards 1-4 / sticky CTA 45 / grain 60.
+  - Motion: transform/opacity only. Everything collapses under prefers-reduced-motion
+    and below 769px (stack → plain stacked reveals). No window scroll listeners (IO only).
+  - JPG-only logo: wordmark re-typeset. TODO: drop assets/zaleavelle-mark.svg when available.
 -->
 <style>
   :root {
@@ -26,8 +29,8 @@
     --ink: #1C1A19;
     --ink-2: #57504C;
     --muted: #8A817C;
-    --line: rgba(28,26,25,0.12);
-    --accent: #9E3E4D; /* deep rosewood — single accent, AA-safe on light */
+    --line: rgba(28,26,25,0.16);
+    --accent: #9E3E4D;
     --accent-soft: #F3D7D2;
     --rose-1: #F6CBD0;
     --peach-1: #F5DFD2;
@@ -35,6 +38,7 @@
     --font-display: "Bodoni MT", Didot, "Cormorant Garamond", "EB Garamond", Georgia, serif;
     --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Inter Tight", sans-serif;
     --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+    --spring: cubic-bezier(0.16, 1, 0.3, 1);
   }
   [data-theme="dark"] {
     --surface: #171413;
@@ -42,14 +46,11 @@
     --ink: #F5EFEA;
     --ink-2: #CFC4BD;
     --muted: #9A8F89;
-    --line: rgba(245,239,234,0.14);
-    --accent: #E3A7AC; /* same rose, lightened for AA on dark */
+    --line: rgba(245,239,234,0.18);
+    --accent: #E3A7AC;
     --accent-soft: #3A2629;
     --rose-1: #4A2E33;
     --peach-1: #3A2A24;
-  }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) { color-scheme: dark; }
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -59,135 +60,192 @@
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
     line-height: 1.6;
+    overflow-x: hidden;
     transition: background 0.3s, color 0.3s;
   }
   ::selection { background: var(--accent); color: #fff; }
   .wrap { max-width: 1400px; margin: 0 auto; padding-left: 4rem; padding-right: 4rem; }
 
-  /* Grain: fixed pseudo-element only, never scrolling container (§6.E) */
+  /* Grain: fixed pseudo-element only (§6.E) */
   body::after {
     content: ""; position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
   }
 
-  /* Nav: 68px, single line desktop */
-  header.nav { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  header.nav.scrolled { border-bottom-color: var(--line); }
   .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 4rem; height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
-  .wordmark { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; line-height: 1; }
+  .wordmark { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; line-height: 1; display: inline-block; }
+  .wordmark:hover { animation: wiggle 0.45s var(--spring); }
+  @keyframes wiggle { 0% { transform: rotate(0); } 30% { transform: rotate(-4deg); } 65% { transform: rotate(3deg); } 100% { transform: rotate(0); } }
   .nav-links { display: flex; gap: 2.25rem; list-style: none; }
-  .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; }
+  .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; position: relative; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0; background: var(--accent); transition: width 0.3s var(--spring); }
   .nav-links a:hover { color: var(--ink); }
-  .btn { display: inline-block; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 2.4rem; border-radius: 999px; border: 1px solid transparent; transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), background 0.25s, color 0.25s, border-color 0.25s; white-space: nowrap; }
+  .nav-links a:hover::after { width: 100%; }
+
+  .btn { display: inline-block; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 2.2rem; border-radius: 999px; border: 2px solid transparent; transition: transform 0.25s var(--spring), background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s; white-space: nowrap; }
   .btn:active { transform: translateY(1px) scale(0.98); }
   .btn-primary { background: var(--ink); color: var(--surface); }
-  .btn-primary:hover { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent); color: #fff; box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 35%, transparent); }
   .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
   .btn-ghost:hover { background: var(--ink); color: var(--surface); }
-  .theme-toggle { background: transparent; border: 1px solid var(--line); color: var(--ink-2); border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.75rem; cursor: pointer; z-index: 50; }
+  .btn .arr { display: inline-block; transition: transform 0.25s var(--spring); }
+  .btn:hover .arr { transform: translateX(5px); }
+  .theme-toggle { background: transparent; border: 2px solid var(--line); color: var(--ink-2); border-radius: 999px; padding: 0.45rem 0.95rem; font-size: 0.75rem; cursor: pointer; transition: transform 0.25s var(--spring), border-color 0.25s; }
+  .theme-toggle:hover { transform: rotate(-8deg) scale(1.05); border-color: var(--accent); }
 
-  /* Hero: split 50/50, pt capped at 6rem, fits viewport, max 4 text elements */
-  .hero { max-width: 1400px; margin: 0 auto; padding: 5rem 4rem 6rem; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 5rem; align-items: center; min-height: calc(100dvh - 68px); }
-  .eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
-  .hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.75rem, 4.6vw, 4.5rem); line-height: 1.04; letter-spacing: -0.02em; margin-bottom: 1.5rem; text-wrap: balance; }
+  /* ---------- Hero: kinetic oversized ---------- */
+  .hero { max-width: 1400px; margin: 0 auto; padding: 4rem 4rem 5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; min-height: calc(100dvh - 68px); position: relative; }
+  .eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: inline-block; }
+  .eyebrow.pill { border: 2px solid var(--accent); border-radius: 999px; padding: 0.4rem 1rem; transform: rotate(-2deg); }
+  .hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(3.2rem, 8.5vw, 7.5rem); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: 1.5rem; text-wrap: balance; }
+  .hero h1 .line { display: block; overflow: hidden; padding-bottom: 0.09em; margin-bottom: -0.09em; } /* descender clearance */
+  .hero h1 .line-inner { display: block; animation: rise 0.9s var(--spring) both; }
+  .hero h1 .line:nth-child(2) .line-inner { animation-delay: 0.1s; }
+  .hero h1 .line:nth-child(3) .line-inner { animation-delay: 0.2s; }
+  @keyframes rise { from { transform: translateY(110%); } to { transform: translateY(0); } }
   .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero h1 em.desc { display: inline-block; padding-bottom: 0.08em; } /* descender clearance */
-  .hero .sub { font-size: 1.05rem; color: var(--ink-2); max-width: 44ch; margin-bottom: 2.25rem; font-weight: 400; }
-  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .hero-media { border-radius: var(--radius-card); overflow: hidden; position: relative; aspect-ratio: 4/5; max-height: 640px; width: 100%; background: radial-gradient(120% 90% at 20% 10%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 85% 90%, var(--peach-1), transparent 55%), var(--surface-2); border: 1px solid var(--line); }
-  .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .hero-media figcaption { position: absolute; left: 1.25rem; bottom: 1.25rem; background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.35); border-radius: 999px; padding: 0.55rem 1.1rem; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+  .hero .sub { font-size: 1.05rem; color: var(--ink-2); max-width: 44ch; margin-bottom: 2.25rem; animation: fadeup 0.8s var(--spring) 0.35s both; }
+  @keyframes fadeup { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeup 0.8s var(--spring) 0.45s both; }
+  .hero-media { border-radius: var(--radius-card); overflow: hidden; position: relative; aspect-ratio: 4/5; max-height: 620px; width: 100%; border: 2px solid var(--ink); box-shadow: 10px 10px 0 var(--accent-soft); background: radial-gradient(120% 90% at 20% 10%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 85% 90%, var(--peach-1), transparent 55%), var(--surface-2); transform: rotate(1.5deg); animation: fadeup 0.9s var(--spring) 0.3s both; will-change: transform; }
+  .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.06); animation: meshdrift 22s ease-in-out infinite alternate; }
+  @keyframes meshdrift { from { transform: scale(1.06) translate(0, 0); } to { transform: scale(1.12) translate(-2%, 2%); } }
+  .hero-media figcaption { position: absolute; left: 1.25rem; bottom: 1.25rem; background: var(--ink); color: var(--surface); border-radius: 999px; padding: 0.55rem 1.1rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transform: rotate(-2deg); }
+  .sticker { position: absolute; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; border: 2px solid var(--ink); border-radius: 999px; padding: 0.55rem 1.1rem; background: var(--surface); color: var(--ink); box-shadow: 4px 4px 0 var(--accent-soft); animation: bob 5s ease-in-out infinite; z-index: 2; white-space: nowrap; }
+  .sticker.s1 { top: 6%; right: 38%; transform: rotate(-8deg); background: var(--accent); color: #fff; border-color: var(--ink); }
+  .sticker.s2 { bottom: 12%; left: 2%; transform: rotate(5deg); animation-delay: 1.4s; }
+  @keyframes bob { 0%, 100% { margin-top: 0; } 50% { margin-top: -12px; } }
+  .scroll-hint { position: absolute; bottom: 1.25rem; left: 4rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); animation: hintdrop 2s var(--spring) infinite; }
+  @keyframes hintdrop { 0%, 100% { transform: translateY(0); opacity: 0.7; } 50% { transform: translateY(8px); opacity: 1; } }
 
-  /* Logo wall: directly UNDER hero, logos only */
-  .wall { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .wall-inner { max-width: 1400px; margin: 0 auto; padding: 2rem 4rem; display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
+  /* ---------- Marquee x1 ---------- */
+  .marquee { overflow: hidden; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--accent); color: #fff; padding: 1rem 0; transform: rotate(-1deg) scale(1.02); }
+  .marquee-track { display: flex; width: max-content; animation: scrollx 24s linear infinite; }
+  .marquee-track span { font-family: var(--font-display); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.2rem); letter-spacing: 0.02em; padding: 0 1.5rem; white-space: nowrap; }
+  .marquee-track span.o { color: transparent; -webkit-text-stroke: 1.5px #fff; font-style: normal; }
+  @keyframes scrollx { to { transform: translateX(-50%); } }
+
+  /* ---------- Channel wall (compact, under marquee) ---------- */
+  .wall-inner { max-width: 1400px; margin: 0 auto; padding: 1.75rem 4rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
   .wall-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-  .wall-logos { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
-  .wall-logos img { height: 20px; opacity: 0.75; }
+  .wall-logos { display: flex; gap: 1.75rem; align-items: center; flex-wrap: wrap; }
+  .wall-logos img { height: 20px; opacity: 0.75; transition: transform 0.25s var(--spring), opacity 0.25s; }
+  .wall-logos img:hover { transform: translateY(-3px) rotate(-4deg); opacity: 1; }
   [data-theme="dark"] .wall-logos img { filter: invert(1); }
 
-  /* Sections: airy density 3 */
-  section.block { padding-top: 7rem; padding-bottom: 7rem; }
-  .sec-head { margin-bottom: 3.5rem; max-width: 720px; }
-  .sec-head h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 3.4vw, 3rem); letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 1rem; text-wrap: balance; }
+  /* ---------- Sections ---------- */
+  section.block { padding-top: 6rem; padding-bottom: 6rem; }
+  .sec-head { margin-bottom: 3rem; max-width: 760px; }
+  .sec-head h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -0.02em; line-height: 1.02; margin-bottom: 1rem; text-wrap: balance; }
+  .sec-head h2 em { font-style: italic; color: var(--accent); }
   .sec-head p { color: var(--ink-2); font-size: 1rem; max-width: 58ch; }
-  /* NOTE: only hero + ritual use .eyebrow (max 1 per 3 sections). Products/manifesto/community deliberately have none. */
+  /* Eyebrows: hero + ritual only (≤1 per 3 sections). Products/manifesto/community: none. */
 
-  /* Products: asymmetric bento, exactly 4 cells, varied sizes + visual diversity */
-  .bento { display: grid; grid-template-columns: 1.25fr 1fr 1fr; grid-template-rows: auto auto; gap: 1.5rem; }
-  .card { border: 1px solid var(--line); border-radius: var(--radius-card); overflow: hidden; background: var(--surface); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
-  .card:hover { transform: translateY(-4px); }
-  .card.featured { grid-row: span 2; background: var(--surface-2); display: flex; flex-direction: column; }
-  .card-media { aspect-ratio: 4/3; overflow: hidden; background: var(--surface-2); }
-  .featured .card-media { aspect-ratio: auto; flex: 1; min-height: 380px; }
-  .card-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tint { background: radial-gradient(110% 100% at 30% 20%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 80% 90%, var(--peach-1), transparent 55%), var(--surface-2); }
-  .card-body { padding: 1.5rem 1.5rem 1.75rem; }
+  /* ---------- Sticky-stack products (GSAP §5.A; static fallback <769px / reduced-motion) ---------- */
+  .stack-hint { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .stack-card { position: sticky; top: 0; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+  .p-card { width: min(920px, 92vw); border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); box-shadow: 12px 12px 0 var(--accent-soft); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+  .stack-card:nth-child(odd) .p-card { transform: rotate(-1.5deg); }
+  .stack-card:nth-child(even) .p-card { transform: rotate(1.5deg); }
+  .p-media { min-height: 380px; background: var(--surface-2); overflow: hidden; }
+  .p-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--spring); }
+  .p-card:hover .p-media img { transform: scale(1.05) rotate(0.5deg); }
+  .p-media.tint { background: radial-gradient(110% 100% at 30% 20%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 80% 90%, var(--peach-1), transparent 55%), var(--surface-2); }
+  .p-body { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+  .p-num { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; }
   .cat { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
-  .name { font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.35rem; }
-  .price { font-family: var(--font-mono); font-size: 0.9rem; color: var(--ink-2); }
-  .why { font-size: 0.9rem; color: var(--ink-2); margin-top: 0.6rem; }
+  .name { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.05; margin-bottom: 0.5rem; }
+  .price { font-family: var(--font-mono); font-size: 1rem; color: var(--ink-2); display: inline-block; background: var(--surface-2); border: 2px solid var(--ink); border-radius: 999px; padding: 0.3rem 1rem; margin-top: 0.75rem; width: fit-content; transform: rotate(-2deg); }
+  .why { color: var(--ink-2); margin-top: 1rem; max-width: 38ch; }
+  .p-body .btn { margin-top: 1.75rem; width: fit-content; }
 
-  /* Ritual: full-bleed, vertical stack (no split-header) */
-  .ritual { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface-2); }
-  .ritual figure { border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--line); margin-top: 2.5rem; }
+  /* ---------- Ritual ---------- */
+  .ritual { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--surface-2); }
+  .ritual figure { border-radius: var(--radius-card); overflow: hidden; border: 2px solid var(--ink); box-shadow: 8px 8px 0 var(--accent-soft); margin-top: 2.5rem; transform: rotate(-1deg); }
   .ritual figure img { width: 100%; height: clamp(280px, 42vw, 520px); object-fit: cover; display: block; }
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
-  .step { border-top: 1px solid var(--line); padding-top: 1.25rem; }
+  .progress { height: 4px; background: var(--line); border-radius: 999px; margin-top: 2.5rem; overflow: hidden; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 1.2s var(--spring); }
+  .steps.in .progress i, .progress.in i { width: 100%; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+  .step { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); padding: 1.5rem; box-shadow: 6px 6px 0 var(--accent-soft); transition: transform 0.3s var(--spring); }
+  .step:nth-child(2) { transform: rotate(1deg); }
+  .step:nth-child(3) { transform: rotate(-1deg); }
+  .step:hover { transform: translateY(-6px) rotate(0); }
   .step b { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); display: block; margin-bottom: 0.5rem; letter-spacing: 0.12em; }
 
-  /* Manifesto: quote ≤3 lines, typographic quotes */
-  .manifesto { text-align: left; max-width: 900px; }
-  .manifesto blockquote { font-family: var(--font-display); font-style: italic; font-size: clamp(1.6rem, 2.8vw, 2.3rem); line-height: 1.35; margin-bottom: 1.5rem; text-wrap: balance; }
-  .manifesto cite { font-style: normal; font-family: var(--font-body); font-size: 0.85rem; color: var(--ink-2); }
+  /* ---------- Manifesto ---------- */
+  .manifesto { max-width: 1000px; }
+  .manifesto blockquote { font-family: var(--font-display); font-style: italic; font-size: clamp(2rem, 5vw, 3.8rem); line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 1.5rem; text-wrap: balance; }
+  .manifesto blockquote em { color: var(--accent); }
+  .manifesto cite { font-style: normal; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
   .manifesto .body { color: var(--ink-2); max-width: 60ch; margin-top: 1.25rem; }
 
-  /* Community: single CTA intent everywhere ("Jelajahi Produk") */
-  .community { border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--ink); color: var(--surface); padding: 4.5rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; }
+  /* ---------- Community ---------- */
+  .community { border: 2px solid var(--ink); border-radius: 24px; background: var(--ink); color: var(--surface); padding: 4rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; transform: rotate(0.5deg); box-shadow: 12px 12px 0 var(--accent-soft); }
   [data-theme="dark"] .community { background: var(--surface-2); color: var(--ink); }
-  .community h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1.1; margin-bottom: 1rem; }
-  .community p { color: inherit; opacity: 0.75; margin-bottom: 2rem; max-width: 46ch; }
+  .community h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.02; margin-bottom: 1rem; }
+  .community h3 em { font-style: italic; color: var(--accent); }
+  [data-theme="light"] .community h3 em { color: var(--rose-1); }
+  .community p { opacity: 0.75; margin-bottom: 2rem; max-width: 46ch; }
   .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
-  .social-grid a { border: 1px solid color-mix(in srgb, currentColor 30%, transparent); color: inherit; text-decoration: none; border-radius: 999px; padding: 0.9rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; transition: all 0.25s; }
-  .social-grid a:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .social-grid a { border: 2px solid currentColor; color: inherit; text-decoration: none; border-radius: 999px; padding: 0.9rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; transition: transform 0.25s var(--spring), background 0.25s, color 0.25s; }
+  .social-grid a:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-3px) rotate(-1deg); }
   .community .btn-primary { background: var(--surface); color: var(--ink); }
   .community .btn-primary:hover { background: var(--accent); color: #fff; }
 
-  footer { border-top: 1px solid var(--line); }
-  .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 2rem; padding-bottom: 2rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  footer { border-top: 2px solid var(--ink); margin-top: 2rem; }
+  .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 2rem; padding-bottom: 6rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
-  /* Reveal (MOTION 5: entry + scroll reveal, motivated, IO-based — no scroll listeners) */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+  /* ---------- Sticky mobile CTA (same intent only) ---------- */
+  #stickyCta { position: fixed; left: 50%; bottom: 1.25rem; transform: translate(-50%, 150%); z-index: 45; transition: transform 0.4s var(--spring); }
+  #stickyCta.show { transform: translate(-50%, 0) rotate(-1deg); }
+
+  /* ---------- Reveal (IO-based) ---------- */
+  .reveal { opacity: 0; transform: translateY(28px) rotate(0.5deg); transition: opacity 0.7s var(--spring), transform 0.7s var(--spring); }
   .reveal.in { opacity: 1; transform: none; }
-  .reveal[data-d="1"] { transition-delay: 0.06s; } .reveal[data-d="2"] { transition-delay: 0.12s; }
-  .reveal[data-d="3"] { transition-delay: 0.18s; } .reveal[data-d="4"] { transition-delay: 0.24s; }
+  .reveal[data-d="1"] { transition-delay: 0.08s; } .reveal[data-d="2"] { transition-delay: 0.16s; }
+  .reveal[data-d="3"] { transition-delay: 0.24s; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; }
+    .hero h1 .line-inner { animation: none; }
+    .stack-card { position: static; min-height: auto; }
   }
 
   @media (max-width: 968px) {
     .wrap, .nav-inner, .wall-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
     .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem 4rem; min-height: auto; }
+    .hero { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 1.5rem 4rem; min-height: auto; }
     .hero-media { aspect-ratio: 4/3; max-height: none; }
-    .bento { grid-template-columns: 1fr 1fr; }
-    .card.featured { grid-column: span 2; grid-row: auto; }
+    .sticker.s1 { right: 6%; } .sticker.s2 { left: 4%; }
+    .scroll-hint { display: none; }
+    .p-card { grid-template-columns: 1fr; }
+    .p-media { min-height: 240px; }
+    .stack-card { position: static; min-height: auto; }
     .steps { grid-template-columns: 1fr; }
     .community { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
     section.block { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   }
   @media (max-width: 600px) {
-    .bento { grid-template-columns: 1fr; }
-    .card.featured { grid-column: auto; }
     .social-grid { grid-template-columns: 1fr; }
+    .sticker { display: none; }
   }
 </style>
 </head>
 <body>
 
-<header class="nav">
+<header class="nav" id="siteNav">
   <div class="nav-inner">
     <a class="wordmark" href="#top" aria-label="zaleavelle beranda">zaleavelle</a>
     <ul class="nav-links">
@@ -201,24 +259,38 @@
     </div>
   </div>
 </header>
+<div id="navSentinel" aria-hidden="true"></div>
 
 <main id="top">
-  <section class="hero">
-    <div class="reveal in">
-      <div class="eyebrow">Perawatan kulit harian · ID</div>
-      <h1>Kulit sehat, <em class="desc">percaya diri</em> yang alami.</h1>
+  <section class="hero" id="hero">
+    <span class="sticker s1">100% lembut ✓</span>
+    <div>
+      <span class="eyebrow pill">Perawatan kulit harian · ID</span>
+      <h1>
+        <span class="line"><span class="line-inner">Kulit sehat,</span></span>
+        <span class="line"><span class="line-inner"><em>percaya diri</em></span></span>
+        <span class="line"><span class="line-inner">yang alami.</span></span>
+      </h1>
       <p class="sub">Rutinitas tiga langkah yang lembut untuk kulit lembap dan tenang setiap hari.</p>
       <div class="hero-ctas">
-        <a href="#produk" class="btn btn-primary">Jelajahi Produk</a>
+        <a href="#produk" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
         <a href="#ritual" class="btn btn-ghost">Lihat Ritual</a>
       </div>
     </div>
-    <figure class="hero-media reveal in" data-d="1">
-      <!-- Real photography (picsum placeholder). Replace with brand shoot 1200x1400. -->
+    <figure class="hero-media" id="heroMedia">
+      <!-- Real photography placeholder. Replace with brand shoot 1200x1400. -->
       <img src="https://picsum.photos/seed/zaleavelle-hero/1200/1400" alt="Ritual perawatan kulit zaleavelle yang tenang" fetchpriority="high">
       <figcaption>Lembut · Autentik · Konsisten</figcaption>
     </figure>
+    <span class="sticker s2">baru: confidence set ✳</span>
+    <span class="scroll-hint">gulir ↓</span>
   </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>glow — lembap — tenang —&nbsp;</span><span class="o">glow — lembap — tenang —&nbsp;</span><span>glow — lembap — tenang —&nbsp;</span><span class="o">glow — lembap — tenang —&nbsp;</span>
+    </div>
+  </div>
 
   <div class="wall" aria-label="Kanal resmi">
     <div class="wall-inner">
@@ -234,57 +306,78 @@
 
   <section class="block wrap" id="produk">
     <div class="sec-head reveal">
-      <h2>Rutinitas kulitmu, tanpa ribet.</h2>
+      <p class="stack-hint">gulir — tiap produk punya momennya ↓</p>
+      <h2>Rutinitas kulitmu, <em>tanpa ribet.</em></h2>
       <p>Empat produk inti. Masing-masing punya tugas jelas — hidrasi, cerah, eksfoliasi lembut, dan paket lengkap.</p>
     </div>
-    <div class="bento">
-      <article class="card featured reveal">
-        <div class="card-media"><img src="https://picsum.photos/seed/zaleavelle-set/900/1100" alt="Confidence Set zaleavelle" loading="lazy"></div>
-        <div class="card-body">
-          <div class="cat">Paket Lengkap</div>
-          <div class="name">Confidence Set</div>
-          <div class="price">Rp 389.000</div>
-          <p class="why">Tiga langkah pagi dan malam dalam satu paket hemat.</p>
-        </div>
-      </article>
-      <article class="card reveal" data-d="1">
-        <div class="card-media tint"><img src="https://picsum.photos/seed/zaleavelle-glow/800/600" alt="Glow Elixir" loading="lazy"></div>
-        <div class="card-body">
-          <div class="cat">Brightening</div>
-          <div class="name">Glow Elixir</div>
-          <div class="price">Rp 185.000</div>
-        </div>
-      </article>
-      <article class="card reveal" data-d="2">
-        <div class="card-media"><img src="https://picsum.photos/seed/zaleavelle-lotion/800/600" alt="Soft Skin Lotion" loading="lazy"></div>
-        <div class="card-body">
-          <div class="cat">Hidrasi Harian</div>
-          <div class="name">Soft Skin Lotion</div>
-          <div class="price">Rp 145.000</div>
-        </div>
-      </article>
-      <article class="card reveal" data-d="3">
-        <div class="card-media tint"><img src="https://picsum.photos/seed/zaleavelle-scrub/800/600" alt="Calm Ritual Scrub" loading="lazy"></div>
-        <div class="card-body">
-          <div class="cat">Eksfoliasi</div>
-          <div class="name">Calm Ritual Scrub</div>
-          <div class="price">Rp 165.000</div>
-        </div>
-      </article>
+    <div id="stack">
+      <div class="stack-card">
+        <article class="p-card">
+          <div class="p-media"><img src="https://picsum.photos/seed/zaleavelle-set/900/1100" alt="Confidence Set zaleavelle" loading="lazy"></div>
+          <div class="p-body">
+            <div class="p-num">01 / 04</div>
+            <div class="cat">Paket Lengkap</div>
+            <div class="name">Confidence Set</div>
+            <div class="price">Rp 389.000</div>
+            <p class="why">Tiga langkah pagi dan malam dalam satu paket hemat.</p>
+            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+      <div class="stack-card">
+        <article class="p-card">
+          <div class="p-media tint"><img src="https://picsum.photos/seed/zaleavelle-glow/800/900" alt="Glow Elixir" loading="lazy"></div>
+          <div class="p-body">
+            <div class="p-num">02 / 04</div>
+            <div class="cat">Brightening</div>
+            <div class="name">Glow Elixir</div>
+            <div class="price">Rp 185.000</div>
+            <p class="why">Cerah merata dengan formula ringan yang cepat meresap.</p>
+            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+      <div class="stack-card">
+        <article class="p-card">
+          <div class="p-media"><img src="https://picsum.photos/seed/zaleavelle-lotion/800/900" alt="Soft Skin Lotion" loading="lazy"></div>
+          <div class="p-body">
+            <div class="p-num">03 / 04</div>
+            <div class="cat">Hidrasi Harian</div>
+            <div class="name">Soft Skin Lotion</div>
+            <div class="price">Rp 145.000</div>
+            <p class="why">Kunci hidrasi hingga pagi tanpa rasa lengket.</p>
+            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+      <div class="stack-card">
+        <article class="p-card">
+          <div class="p-media tint"><img src="https://picsum.photos/seed/zaleavelle-scrub/800/900" alt="Calm Ritual Scrub" loading="lazy"></div>
+          <div class="p-body">
+            <div class="p-num">04 / 04</div>
+            <div class="cat">Eksfoliasi</div>
+            <div class="name">Calm Ritual Scrub</div>
+            <div class="price">Rp 165.000</div>
+            <p class="why">Eksfoliasi lembut dua kali seminggu untuk tekstur halus.</p>
+            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
   <section class="block ritual" id="ritual">
     <div class="wrap">
       <div class="reveal">
-        <div class="eyebrow">Ritual tiga langkah</div>
-        <h2 style="font-family:var(--font-display);font-weight:400;font-size:clamp(2rem,3.4vw,3rem);letter-spacing:-0.02em;line-height:1.08;margin-bottom:1rem">Sedikit produk, dipakai konsisten.</h2>
+        <span class="eyebrow pill">Ritual tiga langkah</span>
+        <h2 style="font-family:var(--font-display);font-weight:400;font-size:clamp(2.2rem,5vw,4rem);letter-spacing:-0.02em;line-height:1.02;margin:1rem 0">Sedikit produk, <em style="color:var(--accent)">dipakai konsisten.</em></h2>
         <p style="color:var(--ink-2);max-width:58ch">Urutan yang selalu sama setiap pagi dan malam. Tidak perlu sepuluh lapis untuk hasil yang terlihat.</p>
       </div>
       <figure class="reveal" data-d="1">
         <img src="https://picsum.photos/seed/zaleavelle-ritual/1600/800" alt="Meja ritual skincare minimal" loading="lazy">
       </figure>
-      <div class="steps">
+      <div class="steps" id="steps">
+        <div class="progress" aria-hidden="true"><i></i></div>
         <div class="step reveal"><b>01 · Bersihkan</b><p>Scrub lembut dua kali seminggu, pembersih harian yang tidak menarik.</p></div>
         <div class="step reveal" data-d="1"><b>02 · Rawat</b><p>Glow Elixir tipis-tipis saat kulit masih lembap.</p></div>
         <div class="step reveal" data-d="2"><b>03 · Kunci</b><p>Soft Skin Lotion untuk mengunci hidrasi hingga pagi.</p></div>
@@ -294,7 +387,7 @@
 
   <section class="block wrap manifesto" id="tentang">
     <div class="reveal">
-      <blockquote>&ldquo;Kepercayaan diri berawal dari merawat diri sendiri.&rdquo;</blockquote>
+      <blockquote>&ldquo;Kepercayaan diri berawal dari <em>merawat diri</em> sendiri.&rdquo;</blockquote>
       <cite>— Tim zaleavelle</cite>
       <p class="body">Kami percaya kecantikan bukan soal mengubah jati diri. Cukup rutinitas sederhana yang bisa dijalani setiap hari: autentik, menenangkan, dan jujur pada kulitmu.</p>
     </div>
@@ -303,9 +396,9 @@
   <section class="block wrap" id="kontak">
     <div class="community reveal">
       <div>
-        <h3>Bergabung dengan komunitas kami.</h3>
+        <h3>Bergabung dengan <em>komunitas</em> kami.</h3>
         <p>Tips skincare, ulasan jujur, dan diskusi santai. Mulai dari katalog, lanjut mengobrol.</p>
-        <a href="#produk" class="btn btn-primary">Jelajahi Produk</a>
+        <a href="#produk" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
       </div>
       <div class="social-grid">
         <a href="https://instagram.com/zaleavelle" target="_blank" rel="noopener">Instagram</a>
@@ -324,7 +417,14 @@
   </div>
 </footer>
 
+<a href="#produk" class="btn btn-primary" id="stickyCta">Jelajahi Produk <span class="arr">→</span></a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var desktopLayout = window.matchMedia("(min-width: 769px)").matches;
+
   // Theme: respect prefers-color-scheme, manual toggle persists.
   (function () {
     var root = document.documentElement;
@@ -339,14 +439,80 @@
       try { localStorage.setItem("zv-theme", next); } catch (e) {}
     });
   })();
-  // Reveal on scroll via IntersectionObserver (allowed; no scroll listeners per skill §5.D).
+
+  // Reveal on scroll via IntersectionObserver (no scroll listeners, §5.D).
   (function () {
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); }); return; }
+    var els = document.querySelectorAll(".reveal");
+    if (reduceMotion) { els.forEach(function (el) { el.classList.add("in"); }); return; }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
     }, { threshold: 0.15 });
-    document.querySelectorAll(".reveal:not(.in)").forEach(function (el) { io.observe(el); });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+
+  // Nav border + sticky CTA visibility via sentinels (IO, not scroll events).
+  (function () {
+    var nav = document.getElementById("siteNav");
+    new IntersectionObserver(function (en) {
+      nav.classList.toggle("scrolled", !en[0].isIntersecting);
+    }).observe(document.getElementById("navSentinel"));
+    var cta = document.getElementById("stickyCta"), past = false, atContact = false;
+    function sync() { cta.classList.toggle("show", past && !atContact); }
+    new IntersectionObserver(function (en) { past = !en[0].isIntersecting; sync(); }).observe(document.getElementById("hero"));
+    new IntersectionObserver(function (en) { atContact = en[0].isIntersecting; sync(); }).observe(document.getElementById("kontak"));
+  })();
+
+  // Ritual progress hairline draws when steps enter.
+  (function () {
+    var steps = document.getElementById("steps");
+    var bar = steps.querySelector(".progress");
+    new IntersectionObserver(function (en, io) {
+      if (en[0].isIntersecting) { bar.classList.add("in"); io.disconnect(); }
+    }, { threshold: 0.3 }).observe(steps);
+  })();
+
+  // Hero pointer parallax: transform-only, rAF-throttled, pointer:fine + no-reduce only.
+  (function () {
+    if (reduceMotion || !window.matchMedia("(pointer: fine)").matches) return;
+    var hero = document.getElementById("hero"), media = document.getElementById("heroMedia"), raf = null;
+    hero.addEventListener("pointermove", function (e) {
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        var r = hero.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        media.style.translate = (x * 14) + "px " + (y * 14) + "px";
+        raf = null;
+      });
+    });
+    hero.addEventListener("pointerleave", function () { media.style.translate = "0px 0px"; });
+  })();
+
+  // Sticky-stack products (§5.A canonical skeleton). Static fallback otherwise.
+  (function () {
+    if (reduceMotion || !desktopLayout || !window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var ctx = gsap.context(function () {
+      var cards = gsap.utils.toArray(".stack-card");
+      cards.forEach(function (card, i) {
+        if (i === cards.length - 1) return;
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top top",
+          endTrigger: cards[cards.length - 1],
+          end: "top top",
+          pin: true,
+          pinSpacing: false
+        });
+        gsap.to(card, {
+          scale: 0.92,
+          opacity: 0.55,
+          ease: "none",
+          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: true }
+        });
+      });
+    });
+    reduce.addEventListener("change", function () { if (reduce.matches) ctx.revert(); });
   })();
 </script>
 </body>
