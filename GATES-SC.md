@@ -32,6 +32,16 @@ Scope: Lite-only teardown, marquee deletion, Scarlett-style tabs+grid replacing 
   EXPECT: present
   EVIDENCE: zvCompare returns empty badge/was unless compare_at_price > price
 
+- [x] SC7: Square tiles + serum zoom hook
+  CHECK: grep -c "aspect-ratio: 1/1|zoom-out" index.html
+  EXPECT: >=3
+  EVIDENCE: 6 refs (square rule, zoom rules, static class, renderer flag)
+
+- [x] SC8: WA-only purchase CTAs (no Keranjang/Shopee purchase links)
+  CHECK: grep -c "Keranjang" index.html + shopee data-cta scope
+  EXPECT: 0 and social-only
+  EVIDENCE: 0 Keranjang; single shopee data-cta is the social-grid channel link
+
 <!--
 - A checked box with EVIDENCE still "pending" counts as UNMET.
 -->

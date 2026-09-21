@@ -235,9 +235,11 @@
   .stack-card:nth-child(even) .p-card { transform: rotate(1deg); }
   .p-card { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); box-shadow: 8px 8px 0 var(--accent-soft); overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: transform 0.3s var(--spring); }
   .p-card:hover { transform: translateY(-6px) rotate(0) !important; }
-  .p-media { aspect-ratio: 4/5; background: var(--surface-2); overflow: hidden; position: relative; min-height: 0; }
+  .p-media { aspect-ratio: 1/1; background: var(--surface-2); overflow: hidden; position: relative; min-height: 0; }
   .p-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--spring); }
   .p-card:hover .p-media img { transform: scale(1.05) rotate(0.5deg); }
+  .p-media img.zoom-out { transform: scale(0.82); }
+  .p-card:hover .p-media img.zoom-out { transform: scale(0.88) rotate(0.5deg); }
   .p-media.tint { background: radial-gradient(110% 100% at 30% 20%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 80% 90%, var(--peach-1), transparent 55%), var(--surface-2); }
   .disc-badge { position: absolute; top: 0.9rem; left: 0.9rem; background: var(--accent); color: #fff; border: 2px solid var(--ink); border-radius: 999px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.9rem; transform: rotate(-4deg); }
   .p-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
@@ -391,8 +393,7 @@
       <li><a href="#tentang">Tentang</a></li>
     </ul>
     <div style="display:flex;gap:.75rem;align-items:center">
-      <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=landing_page&amp;utm_content=nav_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Shopee Store" data-utm-content="nav_cta">+ Keranjang</a>
-      <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle!" class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="nav_cta">Chat</a>
+      <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle!" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="nav_cta">Beli</a>
     </div>
   </div>
 </header>
@@ -477,8 +478,7 @@
             <div class="price-row"><span class="price">Rp 389.000</span></div>
             <p class="why">Body wash dengan glitter lembut, Niacinamide, dan aroma manis yang tahan lama.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=emerald_sweet_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">+ Keranjang</a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Emerald%20Sweet%20%28Rp%20389.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">Tanya</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Emerald%20Sweet%20%28Rp%20389.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">Beli</a>
             </div>
           </div>
         </article>
@@ -492,8 +492,7 @@
             <div class="price-row"><span class="price">Rp 185.000</span></div>
             <p class="why">Body lotion pencerah dengan Niacinamide 10% dan Vitamin E.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=blaine_floral_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">+ Keranjang</a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Blaine%20Floral%20%28Rp%20185.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">Tanya</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Blaine%20Floral%20%28Rp%20185.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">Beli</a>
             </div>
           </div>
         </article>
@@ -507,8 +506,7 @@
             <div class="price-row"><span class="price">Rp 145.000</span></div>
             <p class="why">Body lotion pelembap dengan aroma floral manis untuk kulit halus.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=feminine_blush_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">+ Keranjang</a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Feminine%20Blush%20%28Rp%20145.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">Tanya</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Feminine%20Blush%20%28Rp%20145.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">Beli</a>
             </div>
           </div>
         </article>
@@ -518,15 +516,14 @@
       </div>
       <div class="stack-card">
         <article class="p-card" data-cat="Body Serum">
-          <div class="p-media tint"><picture><source srcset="assets/web/bright-petal-serum.webp" type="image/webp"><img src="assets/web/bright-petal-serum.jpg" alt="Bright Petal Calendula Body Serum zaleavelle" loading="lazy"></picture></div>
+          <div class="p-media tint"><picture><source srcset="assets/web/bright-petal-serum.webp" type="image/webp"><img src="assets/web/bright-petal-serum.jpg" alt="Bright Petal Calendula Body Serum zaleavelle" loading="lazy" class="zoom-out"></picture></div>
           <div class="p-body">
             <div class="cat">Body Serum</div>
             <div class="name">Bright Petal</div>
             <div class="price-row"><span class="price">Rp 165.000</span></div>
             <p class="why">Body serum calendula untuk kulit tampak cerah dan ternutrisi.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=bright_petal_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">+ Keranjang</a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Bright%20Petal%20%28Rp%20165.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">Tanya</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Bright%20Petal%20%28Rp%20165.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">Beli</a>
             </div>
           </div>
         </article>
@@ -655,7 +652,7 @@
   </form>
 </div>
 
-<a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=emerald_sweet_cta" class="btn btn-primary" id="stickyCta" target="_blank" rel="noopener" data-cta="shopee" data-product="Emerald Sweet" data-price="389000" data-utm-content="sticky_cta">Beli Emerald Sweet <span class="arr">→</span></a>
+<a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Emerald%20Sweet%20%28Rp%20389.000%29." class="btn btn-primary" id="stickyCta" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Emerald Sweet" data-price="389000" data-utm-content="sticky_cta">Beli Emerald Sweet</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -691,9 +688,9 @@
     new IntersectionObserver(function (en) { atContact = en[0].isIntersecting; sync(); }).observe(document.getElementById("kontak"));
   })();
 
-  // Product-aware sticky CTA (PRD E5). Deferred: zvTrackProductCards() runs
-  // from the boot controller so it observes freshly rendered cards.
-  // Reads data-* only, so Supabase-driven renames/prices flow through untouched.
+  // Product-aware sticky CTA (PRD E5, WA-primary): it tracks the card nearest
+  // the viewport center and points at that product's WhatsApp link.
+  // Reads data-* only, so DB-driven renames/prices flow through untouched.
   function zvTrackProductCards() {
     var cta = document.getElementById("stickyCta");
     var cards = document.querySelectorAll(".p-card");
@@ -702,7 +699,7 @@
     var prodIO = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
-        var link = en.target.querySelector('[data-cta="shopee"]');
+        var link = en.target.querySelector('[data-cta="whatsapp"]');
         if (!link) return;
         var name = link.getAttribute("data-product");
         if (!name || name === active) return;
@@ -711,7 +708,7 @@
         cta.setAttribute("data-product", name);
         cta.setAttribute("data-price", link.getAttribute("data-price") || "");
         cta.setAttribute("data-utm-content", "sticky_cta");
-        cta.innerHTML = "Beli " + name + ' <span class="arr">→</span>';
+        cta.textContent = "Beli " + name;
       });
     }, { rootMargin: "-40% 0px -40% 0px" });
     cards.forEach(function (c) { prodIO.observe(c); });
@@ -804,21 +801,20 @@
   function zvCardHTML(p, i, total) {
     var focus = p.img_focus || "50% 50%";
     var focusAttr = (focus === "50% 50%") ? "" : ' style="object-position:' + zvEsc(focus) + '"';
+    var zoomCls = (p.img_zoom === "out") ? ' class="zoom-out"' : "";
     var oos = (p.stock != null && Number(p.stock) <= 0);
     var cmp = zvCompare(p);
     var ctas = oos
       ? '<div class="p-ctas"><span class="oos-badge">Stok Habis</span>' +
         '<span class="btn btn-ghost btn-sm" aria-disabled="true">Segera Hadir</span></div>'
       : '<div class="p-ctas">' +
-      '<a href="' + zvEsc(zvShopeeHref(p.shopee_url, p.slug)) + '" class="btn btn-primary btn-sm" target="_blank" rel="noopener"' +
-      ' data-cta="shopee" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">+ Keranjang</a>' +
-      '<a href="' + zvEsc(zvWaHref(p.wa_number, p.name, p.price_idr)) + '" class="btn btn-ghost btn-sm" target="_blank" rel="noopener"' +
-      ' data-cta="whatsapp" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Tanya</a>' +
+      '<a href="' + zvEsc(zvWaHref(p.wa_number, p.name, p.price_idr)) + '" class="btn btn-primary btn-sm" target="_blank" rel="noopener"' +
+      ' data-cta="whatsapp" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Beli</a>' +
       '</div>';
     return '<div class="stack-card"><article class="p-card" data-cat="' + zvEsc(p.category) + '">' +
       '<div class="p-media"><picture>' +
       (p.image_webp ? '<source srcset="' + zvEsc(p.image_webp) + '" type="image/webp">' : '') +
-      '<img src="' + zvEsc(p.image_jpg) + '" alt="' + zvEsc(p.image_alt || p.name) + '" loading="lazy"' + focusAttr + '>' +
+      '<img src="' + zvEsc(p.image_jpg) + '" alt="' + zvEsc(p.image_alt || p.name) + '" loading="lazy"' + focusAttr + zoomCls + '>' +
       '</picture>' + cmp.badge + '</div>' +
       '<div class="p-body">' +
       '<div class="cat">' + zvEsc(p.category) + '</div>' +

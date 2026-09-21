@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 10 code complete. Next: owner compare-prices + SQL v3 (compare_at_price) + function deploy + URLs → verify → commit.
+Phase 11 code complete. Next: owner SQL v3 (v2 + compare_at_price + last_synced_at + img_zoom) + deploy + URLs → verify → commit.
 
 ## Current Phase
 
-Phase 10: Lite Scarlett rebuild
+Phase 11: Square tiles + WA-only BELI
 
 ## Phases
 
@@ -95,14 +95,16 @@ Phase 10: Lite Scarlett rebuild
 
 ### Phase 10: Lite Scarlett rebuild (taste skill)
 
-- Design read: DTC storefront, Gen-Z ID, clean light-commerce, Scarlett tabs+grid; dials 6/4/4
-- [x] A: lite teardown — dark tokens, toggle+storage, auto-dark, 3 invert rules; palette locked light
-- [x] Marquee deleted (HTML+CSS+keyframes); zero marquees on page
-- [x] B: nav (Belanja/Ritual/Tentang + Beli/Chat→unified +Keranjang), 3-slide promo carousel, BEST SELLER tabs + tile grid replacing stack+pin logic; GSAP CDN + stack FX removed (~2 requests saved)
-- [x] C: tile renderer with compare badge (real-only), tab filter (DB + DOM fallback), panel compare input + payload; sticky tracker + analytics untouched (class/data contract kept)
-- [x] CTA intent unify: nav Beli → + Keranjang (sticky keeps product-specific per E5)
-- [x] Verify: 0 dark/marquee/toggle remnants; 2 eyebrows (≤3); JS clean; figures balanced (verify at commit)
-- [ ] Owner: compare prices (or explicit no-badges), SQL v3 (v2 + compare_at_price + last_synced_at), deploy function, 4 listing URLs → probe/seed/sync/OOS test → commit
+- **Status:** complete (code; live verify pending with Phase 11)
+
+### Phase 11: Square tiles + WA-only BELI
+
+- [x] Tiles square (`.p-media` 1/1, cover crops; no re-export needed)
+- [x] Bright Petal zoom-out hook (CSS + static class + renderer `img_zoom` flag; needs `img_zoom` column in SQL v3)
+- [x] All `+ Keranjang`/Shopee purchase CTAs removed (tiles ×4, nav, sticky); single BELI → WA everywhere
+- [x] Sticky tracker retargeted to `[data-cta="whatsapp"]`; social-grid Shopee channel link kept intentionally
+- [x] Verify: 0 Keranjang, 1 shopee data-cta (social only), square ×2, zoom-out ×4, JS clean
+- [ ] Owner SQL v3 (v2 + compare_at_price + last_synced_at + img_zoom) + deploy + URLs + compare prices → verify → commit
 - **Status:** in_progress
 
 ## Key Questions

@@ -1,8 +1,8 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 2.1 · 2026-09-21
+> Version 2.2 · 2026-09-21
 > Author: opencode (AI-assisted)
-> Status: Phase 10 code complete (lite Scarlett rebuild); go-live inputs still pending
+> Status: Phase 11 code complete (square tiles, WA-only BELI); go-live inputs still pending
 
 ---
 
@@ -16,7 +16,7 @@ zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (
 
 | # | Goal | Metric | Target |
 |---|------|--------|--------|
-| G1 | Increase product-to-purchase clicks | Click-through rate from product cards to Shopee/WA | ≥ 8% of product card views |
+| G1 | Increase product-to-purchase clicks | Click-through rate from BELI buttons to WhatsApp | ≥ 8% of tile views |
 | G2 | Strengthen brand recall | Time on page + return visits (GA4) | ≥ 90s avg session, ≥ 15% return rate within 30 days |
 | G3 | Improve SEO + mobile performance | Lighthouse Performance score (mobile), LCP, CLS | ≥ 90 score, LCP < 2.5s, CLS < 0.1 |
 
@@ -67,6 +67,8 @@ Ad / Social Post → zaleavelle landing page
 | SVG favicon over ICO/PNG | No binary tooling in repo; full wordmark illegible at 32px, serif-“z” kept |
 | Stock-zero badge semantics | Card stays with Stok Habis badge + disabled pill; layout and numbering stable |
 | Shopee pull-on-demand sync | Edge function fills form only; manual fields win; no silent overwrites |
+| WA-only purchase flow | Owner direction; Shopee stays as sync source + social channel, unlinked from shopper UI |
+| Square tiles + serum zoom hook | Uniform 1/1 marketplace; Bright Petal scaled via class/`img_zoom` flag, no re-export |
 | Single-file kept post-M3 | Split still deferred; Supabase CDN scripts attach without a build step |
 
 ## 6. Track 1: E-Commerce Conversion
@@ -75,11 +77,11 @@ Ad / Social Post → zaleavelle landing page
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| E1 | Each product card CTA links to its Shopee listing with UTM params | `href` contains `shopee.co.id` + `utm_source`, `utm_medium`, `utm_campaign`, `utm_content` per product |
-| E2 | Each product card has a secondary WhatsApp CTA | "Tanya via WhatsApp" link with pre-filled product name in `wa.me` URL |
+| E1 | Each tile carries one BELI button deep-linking WhatsApp with pre-filled product + price | `href` starts `https://wa.me/` with `?text=` product payload; single label everywhere |
+| E2 | Shopee removed from shopper UI; `shopee_url` retained in DB + panel as sync source | Zero `data-cta="shopee"` in cards/nav/sticky; social-grid channel link kept; sync unaffected |
 | E3 | UTM taxonomy defined and documented | Table in PRD with source/medium/campaign/content per CTA |
 | E4 | Event tracking on CTA clicks | `gtag('event', ...)` fires on every Shopee/WA link click with product name + price |
-| E5 | Sticky mobile CTA shows product-specific action | After scrolling past hero, sticky CTA says "Beli [product] di Shopee" |
+| E5 | Sticky CTA shows product-specific action | Follows nearest tile, reads its WhatsApp link, labels "Beli [name]" |
 | E6 | Price formatting standardized | Use `Rp XXX.XXX` format (Indonesian thousand separator with dot) — already correct in current code |
 
 ### 6.2 UTM Taxonomy
@@ -316,7 +318,7 @@ Design read: DTC storefront for Gen-Z ID shoppers, clean light-commerce, Scarlet
 | Performance | Local images; Supabase fetch unmeasured | M3 Lighthouse pass |
 | Social proof | None | Testimonials or IG embed |
 | FAQ | Draft copy only (§7.3), no page block | Page section |
-| CTA logic | Product-specific Shopee/WA links + product-aware sticky | None |
+| CTA logic | Single BELI → WhatsApp per tile/nav/sticky; Shopee kept in DB + social only | Real price list to confirm slot-carryover |
 | Maintenance | Code live, static fallback active; DB + deploy pending | M9 go-live checklist |
 
 ---

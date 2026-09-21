@@ -90,6 +90,19 @@ Chronological record of work performed, files changed, validation results, and e
 
 **Result: 10 of 10 gates PASS**
 
+## Session: 2026-09-21 (Square tiles + WA-only BELI)
+
+### Phase 11: Square tiles + WA-only BELI
+
+- **Status:** in_progress (code complete, uncommitted; owner SQL v3 + deploy + URLs pending)
+- Actions taken:
+  - Tiles square via CSS (no re-export); Bright Petal zoom-out hook (CSS + static + renderer `img_zoom` flag)
+  - Removed all Shopee purchase CTAs (tiles/nav/sticky); single BELI → WA; tracker retargeted; social Shopee link kept
+  - Docs: PRD v2.2 (G1/E1/E2/E5, +2 decisions, appendix CTA row), Phase 11, GATES-SC +SC7/SC8
+  - Verified: 0 Keranjang, shopee data-cta social-only, square ×2, zoom ×4, JS clean
+- Files created/modified:
+  - `index.html`, `PRD.md`, `task_plan.md`, `progress.md`, `GATES-SC.md`
+
 ## Session: 2026-09-21 (Lite Scarlett rebuild)
 
 ### Phase 10: Lite Scarlett rebuild (taste skill)
