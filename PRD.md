@@ -1,16 +1,16 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 1.3 · 2026-09-21
+> Version 2.0 · 2026-09-21
 > Author: opencode (AI-assisted)
-> Status: Phase 8 code complete — awaiting SETUP-SQL run for live verify
+> Status: Code complete through Phase 9 (pushed `b298697`); live verify pending SETUP-SQL v2 + function deploy + listing URLs
 
 ---
 
 ## 1. Problem Statement
 
-zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (`index.html`, 519 lines) that showcases 4 products. The current page is a polished Awwwards-style showcase but lacks the conversion infrastructure, analytics, SEO foundations, and content depth needed to drive measurable business outcomes. Every CTA links to an on-page anchor — none drive directly to Shopee or WhatsApp purchase flows.
+zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (`index.html`, ~900 lines) showcasing 4 scent-named products (Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal). Since v1.0 the page gained conversion infrastructure (Shopee/WA CTAs with UTM, analytics events, product-aware sticky CTA), real product photography, a vector wordmark, and a Supabase-backed maintenance module (code complete, backend pending).
 
-**Core problem:** The landing page is a beautiful brand statement that does not convert.
+**Core problem:** The backend that powers dynamic products is not yet live (table + deploy outstanding), prices ride on an unconfirmed slot-carryover assumption, and the page still lacks social proof — so conversion can't be measured or trusted end-to-end yet.
 
 ## 2. Goals
 
@@ -37,7 +37,7 @@ zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (
 - **Age:** 18-26, Indonesian, mobile-first
 - **Discovery:** TikTok / Instagram Reels → landing page → Shopee or WhatsApp
 - **Motivation:** Simple routine, affordable, aesthetic packaging, peer validation
-- **Friction points:** Unclear which product to buy first, no social proof on page, no direct purchase links
+- **Friction points:** Unclear which scent to buy first, no social proof on page, displayed prices unconfirmed (slot-carryover assumption), stock counts are provisional seed values
 
 ### 4.2 User Journey (Target State)
 
@@ -60,6 +60,14 @@ Ad / Social Post → zaleavelle landing page
 | Shopee as primary CTA | Existing Shopee store link present; highest conversion path for ID market |
 | GA4 gtag for analytics | Lightweight, free, industry standard; avoids third-party analytics bloat |
 | WebP with JPG fallback | Modern format for perf; JPG fallback for older browsers |
+| Supabase as product backend | Cross-device CRUD without a custom server; free tier suffices for 4 SKUs |
+| Open-write RLS, no access gate | Owner decision; JSON backup is the safety net; revisit one-admin login later |
+| Scent names canonical | Photos sell scent-named SKUs; old set/serum/lotion/scrub names retired in M2 |
+| Slot-carryover prices | Unconfirmed assumption until the real price list arrives; single table to swap |
+| SVG favicon over ICO/PNG | No binary tooling in repo; full wordmark illegible at 32px, serif-“z” kept |
+| Stock-zero badge semantics | Card stays with Stok Habis badge + disabled pill; layout and numbering stable |
+| Shopee pull-on-demand sync | Edge function fills form only; manual fields win; no silent overwrites |
+| Single-file kept post-M3 | Split still deferred; Supabase CDN scripts attach without a build step |
 
 ## 6. Track 1: E-Commerce Conversion
 
@@ -102,26 +110,27 @@ gtag('event', 'select_item', {
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| L1 | Replace all picsum sample images with real brand photography | Zero `picsum.photos` URLs in production HTML |
-| L2 | Add social proof / UGC section | ≥ 3 customer testimonials with names, or IG embed grid |
-| L3 | Add FAQ section | ≥ 5 questions covering shipping, returns, ingredients, routine, suitability |
-| L4 | Polish Indonesian copy | Tone: warm, casual, Gen-Z ID. No formal/baku register. Review all `class="sub"`, `class="why"`, step descriptions |
-| L5 | Improve sticky CTA logic | Show only after hero scroll AND not in contact section. Show product-specific text. Handle mobile safe area insets |
-| L6 | Add favicon | 32x32 + 180x180 Apple Touch Icon using brand wordmark or rose mark |
-| L7 | Add Open Graph + Twitter Card meta tags | `og:title`, `og:description`, `og:image`, `twitter:card` with real brand image |
+| L1 | Replace all picsum sample images with real brand photography | ✅ Done M2 — zero `picsum.photos` URLs; 7 local exports in `assets/web/` |
+| L2 | Add social proof / UGC section | ⬜ Open — ≥ 3 customer testimonials with names, or IG embed grid |
+| L3 | Add FAQ section | ⬜ Open — page has no FAQ block yet (draft copy in §7.3) |
+| L4 | Polish Indonesian copy | 🔶 Partial — M2 rewrote cards/ritual to scent names; full tone pass still open |
+| L5 | Improve sticky CTA logic | ✅ Done M1 — IO-driven, product-aware, hides in contact section |
+| L6 | Add favicon | ✅ Done M1 — crisp SVG serif-“z” + `site.webmanifest` (ICO/PNG skipped, no binary tooling) |
+| L7 | Add Open Graph + Twitter Card meta tags | ✅ Done — absolute `https://zaleavelle.com/og-image.jpg` (CNAME drift noted in risks) |
 
 ### 7.2 Image Pipeline
 
-| Image | Dimensions | Source | Format | Fallback |
-|-------|-----------|--------|--------|----------|
-| Hero | 1200×1400 | Brand shoot | WebP + JPG | Gradient radial (existing) |
-| Confidence Set | 900×1100 | Product photo | WebP + JPG | Gradient radial |
-| Glow Elixir | 800×900 | Product photo | WebP + JPG | Gradient radial |
-| Soft Skin Lotion | 800×900 | Product photo | WebP + JPG | Gradient radial |
-| Calm Ritual Scrub | 800×900 | Product photo | WebP + JPG | Gradient radial |
-| Ritual lifestyle | 1600×800 | Lifestyle photo | WebP + JPG | Gradient radial |
-| Favicon | 32×32 / 180×180 | Vector wordmark | PNG | — |
-| OG image | 1200×630 | Brand composite | JPG | — |
+| Image | Dimensions | Source file | Weight |
+|-------|-----------|-------------|--------|
+| Hero | 1080×1350 | `assets/web/fresh-tickled-hero` (.webp + .jpg) | 110 / 192 KB |
+| Emerald Sweet card | 900×1125 | `assets/web/emerald-sweet-wash` (.webp + .jpg) | 48 / 93 KB |
+| Blaine Floral card | 900×900 | `assets/web/blaine-floral-lotion` (.webp + .jpg), `object-position: 70%` | 74 / 119 KB |
+| Feminine Blush card | 900×900 | `assets/web/feminine-blush-lotion` (.webp + .jpg) | 59 / 101 KB |
+| Bright Petal card | 800×1000 | `assets/web/bright-petal-serum` (.webp + .jpg) | 62 / 102 KB |
+| Ritual lifestyle | 1600×800 | `assets/web/emerald-ritual` (.webp + .jpg, center crop) | 49 / 109 KB |
+| OG image | 1200×630 | `assets/web/og-image.jpg` (crawlers need raster) | 76 KB |
+| Favicon | vector | `favicon.svg` serif-“z” + `site.webmanifest` | <1 KB |
+| Reserve (unused) | — | Classic Pink, Flavia Floral + alternate shots in `assets/` | — |
 
 ### 7.3 FAQ Content (Draft)
 
@@ -166,42 +175,41 @@ gtag('event', 'select_item', {
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| T1 | Add JSON-LD Product schema for all 4 products | `ld+json` script tag with `@type: Product`, `name`, `price`, `priceCurrency`, `image`, `brand` |
-| T2 | Add JSON-LD Organization schema | `@type: Organization`, `name`, `url`, `sameAs` (social links) |
-| T3 | Add favicon + manifest.json | Browser tab shows brand mark; `manifest.json` with name, icons, theme_color |
-| T4 | Lighthouse Performance ≥ 90 (mobile) | Run Lighthouse, paste score in progress.md |
-| T5 | Lighthouse Accessibility ≥ 90 | Run Lighthouse, paste score in progress.md |
-| T6 | Add skip-link for keyboard navigation | Visible on Tab, jumps to `<main>` |
-| T7 | Add `focus-visible` styles | Visible focus ring on all interactive elements |
-| T8 | Consider CSS/JS split (decision deferred) | Document decision in Decisions table — MVP keeps single-file |
-| T9 | Image optimization pipeline | WebP variants with `<picture>` fallback to JPG |
-| T10 | Meta description + title optimized | `<title>` ≤ 60 chars, `<meta name="description">` ≤ 155 chars, primary keyword: "skincare Indonesia" |
+| T1 | Add JSON-LD Product schema for all 4 products | ✅ Done — scent-named nodes with local image URLs |
+| T2 | Add JSON-LD Organization schema | ✅ Done — with `sameAs` social links |
+| T3 | Add favicon + manifest | ✅ Done — `favicon.svg` + `site.webmanifest` + theme-color |
+| T4 | Lighthouse Performance ≥ 90 (mobile) | ⬜ Open — run and paste score in progress.md |
+| T5 | Lighthouse Accessibility ≥ 90 | ⬜ Open — run and paste score in progress.md |
+| T6 | Add skip-link for keyboard navigation | ⬜ Open — jumps to `<main>` |
+| T7 | Add `focus-visible` styles | 🔶 Partial — maintenance cog has focus ring; page-wide ring styles still open |
+| T8 | Consider CSS/JS split | ✅ Resolved — single-file kept (Supabase scripts attach CDN-side) |
+| T9 | Image optimization pipeline | ✅ Done — 7 exports, WebP + JPG via `<picture>` |
+| T10 | Meta description + title optimized | ✅ Done — 56 / 110 chars; scent names; absolute OG URL |
 
 ### 9.2 Performance Budget
 
 | Metric | Target | Current (estimated) |
 |--------|--------|---------------------|
-| Lighthouse Performance | ≥ 90 | ~75-85 (picsum + GSAP CDN) |
-| Lighthouse Accessibility | ≥ 90 | ~70-80 (no skip-link, no focus-visible) |
-| Lighthouse SEO | ≥ 95 | ~60-70 (no OG, no JSON-LD, no favicon) |
-| Lighthouse Best Practices | ≥ 90 | ~80 (no HTTPS image optimization) |
-| LCP | < 2.5s | Unknown (picsum CDN dependent) |
-| CLS | < 0.1 | Likely ~0 (no dynamic layout shifts) |
-| Total page weight | < 500KB (excl. images) | ~45KB (HTML+CSS+JS, GSAP from CDN) |
+| Lighthouse Performance | ≥ 90 | ~80-90 est. (local images help; +Supabase fetch and 3 CDN scripts unmeasured) |
+| Lighthouse Accessibility | ≥ 90 | ~75-85 est. (cog has focus ring; no skip-link yet) |
+| Lighthouse SEO | ≥ 95 | ~90 est. (OG + JSON-LD + favicon live; custom domain detached — see risks) |
+| Lighthouse Best Practices | ≥ 90 | ~85 est. (all images local HTTPS; third-party CDNs remain) |
+| LCP | < 2.5s | Unknown (hero is 192KB JPG / 110KB WebP; needs field measurement) |
+| CLS | < 0.1 | Likely ~0 (no dynamic layout shifts; DB render replaces equal-size cards) |
+| Total page weight | < 500KB (excl. images) | ~60KB HTML+CSS+JS (GSAP + Supabase from CDN) |
 
 ### 9.3 SEO Meta (Target State)
 
 ```html
 <title>zaleavelle — Skincare Sederhana, Percaya Diri yang Alami</title>
-<meta name="description" content="Rutinitas tiga langkah yang lembut untuk kulit lembap dan tenang. Confidence Set, Glow Elixir, Soft Skin Lotion, Calm Ritual Scrub.">
+<meta name="description" content="Body wash, body lotion, dan body serum zaleavelle: Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal.">
 <meta property="og:title" content="zaleavelle — Naturally Confident">
 <meta property="og:description" content="Rutinitas kulit sederhana, autentik, dan penuh perhatian.">
 <meta property="og:image" content="https://zaleavelle.com/og-image.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="site.webmanifest">
 ```
 
 ## 10. Track 5: Maintenance Module (Supabase)
@@ -218,14 +226,17 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 | M6 | JSON backup download of all rows | File downloads with 4+ rows |
 | M7 | Stock-zero renders Stok Habis badge + disabled pill (layout stable) | stock=0 card shows badge, no data-cta links |
 | M8 | "Tarik dari Shopee" pull-on-demand via `shopee-sync` edge function fills name/price/image/stock | Sync fills form only; save stamps last_synced_at |
+| M9 | Go-live checklist: SETUP-SQL v2 → deploy function → 4 listing URLs → probe → seed → sync/OOS test | All green before announcing the module live |
 
 ## 11. Milestones
 
-| Milestone | Scope | Target |
+| Milestone | Scope | Status |
 |-----------|-------|--------|
-| **M1: Conversion Foundation** | Track 1 (E1-E6) + Track 4 (T1-T3, T10) | Week 1 |
-| **M2: Content & Polish** | Track 2 (L1-L7) + Track 3 (B1-B5) | Week 2 |
-| **M3: Performance & Accessibility** | Track 4 (T4-T9) + full Lighthouse pass | Week 3 |
+| **M1: Conversion Foundation** | Track 1 (E1-E6) + Track 4 (T1-T3, T10) | ✅ Shipped |
+| **M2: Content & Polish** | Track 2 (L1, L5-L7 done; L2/L3 open) + Track 3 (B3 done; B1/B2/B4/B5 open) | 🔶 Partial |
+| **M3: Performance & Accessibility** | Track 4 (T4-T7) + full Lighthouse pass | ⬜ Open |
+| **M4: Catalog & Brand Assets** | Scent-canonical rename, 7 web exports, vector wordmark, OG raster | ✅ Shipped |
+| **M5: Maintenance Go-Live** | Track 5 (M1-M9): SQL → deploy → URLs → probe → seed → sync/OOS test | ⬜ Blocked on 3 owner inputs |
 
 ### M1 Build Slices (Proposed)
 
@@ -245,20 +256,27 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Product images not available from brand owner | Blocks L1, degrades conversion | Use gradient fallbacks with real product names; image pipeline ready for swap |
-| GSAP CDN dependency (no self-hosted) | CDN outage breaks sticky-stack | Acceptable for MVP; add fallback: stack cards collapse to static layout |
-| Shopee product URLs may change | Broken CTAs | Use Shopee store link as single redirect; update per-product links in one place |
-| Indonesian copy quality | Brand perception | Flag for brand owner review before M2 launch |
+| ~~Product images unavailable~~ | Resolved M2 — 7 local exports live | Reserve shots documented in §7.2 |
+| GSAP CDN dependency (no self-hosted) | CDN outage breaks sticky-stack | Acceptable for MVP; static fallback layout holds content |
+| Shopee product URLs may change | Broken CTAs / stale sync | Single store link per product today; per-product URLs required for sync — update in panel |
+| CNAME/custom-domain drift | OG + JSON-LD absolute URLs 404 if domain detached (observed 2026-09-21) | Repoint to canonical host or reattach domain; verify with a link checker |
+| Open-write RLS abuse | Anyone can edit products via anon endpoint | CHECK constraints narrow damage; JSON backup button; revisit one-admin login |
+| Shopee API blocking sync | "Tarik dari Shopee" fails on bot-guards | Inline error + manual fill fallback; no silent overwrites by design |
+| Provisional seed stock (100) | False availability signal | Owner sets real counts before go-live; flagged in panel docs |
+| Slot-carryover prices unconfirmed | Wrong prices displayed | Single table to swap once the real price list arrives |
 
 ### Open Questions
 
 | # | Question | Owner | Status |
 |---|----------|-------|--------|
-| Q1 | Should product CTAs link to Shopee product pages or WhatsApp chat? | Brand owner | Open — recommend: Shopee primary, WhatsApp secondary |
+| Q1 | Shopee primary vs WhatsApp chat for CTAs? | — | ✅ Resolved: Shopee primary, WA secondary |
 | Q2 | Is i18n (ID/EN toggle) in scope for MVP? | Brand owner | Open — recommend: ID-only, EN as follow-up |
-| Q3 | Should we split index.html into modular files now or post-launch? | Developer | Open — recommend: defer to post-M3 |
-| Q4 | What is the brand's photography status? When will real images be available? | Brand owner | Open — blocks L1 |
-| Q5 | Should the WhatsApp number be the same for all products, or per-product agents? | Brand owner | Open — recommend: single number, pre-filled message |
+| Q3 | Split index.html into modules now or post-launch? | Developer | Open — single-file kept; revisit if panel code grows |
+| Q4 | Product photography mapping? | — | ✅ Resolved: scent-canonical, 4 SKUs mapped, reserve logged |
+| Q5 | Same WA number for all products? | — | ✅ Resolved: single number, pre-filled message |
+| Q6 | Real per-scent price list? | Brand owner | Open — slot-carryover assumed; blocks price trust |
+| Q7 | Real per-product Shopee listing URLs (for sync)? | Brand owner | Open — blocks M9 sync test |
+| Q8 | Edge-function deploy route (CLI vs dashboard)? | Brand owner | Open — blocks M9 go-live |
 
 ## 13. Out of Scope (Deferred)
 
@@ -268,21 +286,23 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 | User accounts | Post-MVP | No loyalty program yet |
 | Blog / content hub | Phase 2 | SEO content strategy is separate work |
 | Multi-language | Phase 2 i18n track | ID-first launch |
-| A/B testing infrastructure | Post-M1 | Need baseline metrics first |
+| Scheduled Shopee auto-sync | Future | Pull-on-demand suffices for 4 SKUs |
+| A/B testing infrastructure | Post go-live | Need baseline metrics first |
 
 ## 14. Appendix: Current State Audit
 
 | Component | Current | Target |
 |-----------|---------|--------|
-| Products | 4 scent-named cards with Shopee + WA links | Same (prices by slot until price list arrives) |
-| Images | 6 local web assets (WebP + JPG, ~40–190KB) + OG raster | Same (reserve: Classic Pink, Flavia Floral, alternates) |
-| Analytics | None | GA4 gtag with item-level events |
-| SEO meta | Basic title + description | Full OG + JSON-LD + favicon |
-| Accessibility | Basic aria labels | Skip-link, focus-visible, Lighthouse ≥90 |
-| Performance | ~75-85 Lighthouse | ≥90 Lighthouse, LCP <2.5s |
+| Products | 4 scent cards, Shopee + WA links, DB-driven when backend live | Real price list to confirm slot-carryover |
+| Images | 7 local exports (38–192KB) + OG raster, zero picsum | None — reserve logged |
+| Analytics | gtag stub + select_item tracking live; GA ID unset | Set `ZV_GA_ID` to activate |
+| SEO meta | Full OG + JSON-LD + SVG favicon; absolute URLs host-sensitive | Reattach domain or repoint after CNAME drift |
+| Accessibility | Cog has focus ring; page lacks skip-link + full focus-visible | M3 |
+| Performance | Local images; Supabase fetch unmeasured | M3 Lighthouse pass |
 | Social proof | None | Testimonials or IG embed |
-| FAQ | None | ≥5 questions |
-| CTA logic | All link to `#produk` | Product-specific Shopee/WA links |
+| FAQ | Draft copy only (§7.3), no page block | Page section |
+| CTA logic | Product-specific Shopee/WA links + product-aware sticky | None |
+| Maintenance | Code live, static fallback active; DB + deploy pending | M9 go-live checklist |
 
 ---
 

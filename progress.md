@@ -90,6 +90,17 @@ Chronological record of work performed, files changed, validation results, and e
 
 **Result: 10 of 10 gates PASS**
 
+## Session: 2026-09-21 (PRD v2.0 full sync)
+
+### Phase 9: Settings fields v2 + Shopee sync (docs)
+
+- **Status:** in_progress (code pushed; live verify still pending)
+- Actions taken:
+  - PRD v1.3 → v2.0: 12 deltas (header, problem, frictions, +9 decisions, L/T statuses, real image table, re-estimated budget, shipped SEO block, Track 5 M9, status milestones M1-M5, risks/questions refresh, scope + appendix corrections)
+  - Verified: 14 contiguous sections, 0 old product names, picsum mentions historical-only, GATES G7 clean
+- Files created/modified:
+  - `PRD.md`, `progress.md`, `task_plan.md`
+
 ## Session: 2026-09-21 (Settings v2 + Shopee sync)
 
 ### Phase 9: Settings fields v2 + Shopee sync
