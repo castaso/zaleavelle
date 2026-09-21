@@ -90,6 +90,21 @@ Chronological record of work performed, files changed, validation results, and e
 
 **Result: 10 of 10 gates PASS**
 
+## Session: 2026-09-21 (Lite Scarlett rebuild)
+
+### Phase 10: Lite Scarlett rebuild (taste skill)
+
+- **Status:** in_progress (code complete, uncommitted; owner inputs pending)
+- Actions taken:
+  - Lite teardown: dark tokens/toggle/storage/auto-dark/inverts removed; light palette locked
+  - Marquee deleted (HTML+CSS+keyframes); zero marquees; 2 eyebrows within budget
+  - Nav rebuilt (Belanja/Ritual/Tentang + unified +Keranjang CTA); 3-slide promo carousel; BEST SELLER tabs + tile grid replacing stack; GSAP removed
+  - Renderer: tiles with real-only compare badges; tab filter with DOM fallback; panel compare input; sticky/analytics contracts untouched
+  - Docs: PRD v2.1 (Track 6, M6, renumbered 12-15), Phase 10, GATES-SC (6/6 static gates PASS)
+  - Verified: 0 dark/marquee remnants, 23 SC3 refs, 48 SC4 refs, JS clean
+- Files created/modified:
+  - `index.html`, `PRD.md`, `task_plan.md`, `progress.md`, `GATES-SC.md` (new)
+
 ## Session: 2026-09-21 (PRD v2.0 full sync)
 
 ### Phase 9: Settings fields v2 + Shopee sync (docs)

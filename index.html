@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,7 +90,7 @@
   oversized kinetic type, stickers, ONE scroll-hijack (sticky-stack products), living mesh.
   Anchors kept: zaleavelle Didone wordmark + single rose accent.
   DIALS: DESIGN_VARIANCE 9 / MOTION_INTENSITY 8 / VISUAL_DENSITY 3
-  - Stack: single file, native CSS + GSAP CDN (ScrollTrigger). No build step.
+  - Stack: single file, native CSS + Supabase CDN. No build step. No GSAP (grid needs no scroll-hijack).
   - Serif justified (§4.1): brand wordmark is thin Didone; display = matching serif stack,
     emphasis = same-family italic only. No Fraunces / Instrument / Playfair defaults.
   - Palette locked: ONE rose accent (#9E3E4D light / #E3A7AC dark). No second accent,
@@ -100,7 +100,7 @@
   - z-scale: nav 40 / stack cards 1-4 / sticky CTA 45 / grain 60.
   - Motion: transform/opacity only. Everything collapses under prefers-reduced-motion
     and below 769px (stack → plain stacked reveals). No window scroll listeners (IO only).
-  - Logo: official vector wordmark at assets/zaleavelle-mark.svg (transparent, dark-mode inverted).
+  - Logo: official vector wordmark at assets/zaleavelle-mark.svg (transparent, light theme locked).
 -->
 <style>
   :root {
@@ -119,18 +119,6 @@
     --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Inter Tight", sans-serif;
     --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
     --spring: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  [data-theme="dark"] {
-    --surface: #171413;
-    --surface-2: #221D1C;
-    --ink: #F5EFEA;
-    --ink-2: #CFC4BD;
-    --muted: #9A8F89;
-    --line: rgba(245,239,234,0.18);
-    --accent: #E3A7AC;
-    --accent-soft: #3A2629;
-    --rose-1: #4A2E33;
-    --peach-1: #3A2A24;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -165,7 +153,6 @@
   .wordmark { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; line-height: 1; display: inline-block; }
   .wordmark:hover { animation: wiggle 0.45s var(--spring); }
   .wordmark img { height: 1.7rem; width: auto; display: block; }
-  [data-theme="dark"] .wordmark img { filter: invert(1); }
   @keyframes wiggle { 0% { transform: rotate(0); } 30% { transform: rotate(-4deg); } 65% { transform: rotate(3deg); } 100% { transform: rotate(0); } }
   .nav-links { display: flex; gap: 2.25rem; list-style: none; }
   .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; position: relative; }
@@ -181,8 +168,6 @@
   .btn-ghost:hover { background: var(--ink); color: var(--surface); }
   .btn .arr { display: inline-block; transition: transform 0.25s var(--spring); }
   .btn:hover .arr { transform: translateX(5px); }
-  .theme-toggle { background: transparent; border: 2px solid var(--line); color: var(--ink-2); border-radius: 999px; padding: 0.45rem 0.95rem; font-size: 0.75rem; cursor: pointer; transition: transform 0.25s var(--spring), border-color 0.25s; }
-  .theme-toggle:hover { transform: rotate(-8deg) scale(1.05); border-color: var(--accent); }
 
   /* ---------- Hero: kinetic oversized ---------- */
   .hero { max-width: 1400px; margin: 0 auto; padding: 4rem 4rem 5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; min-height: calc(100dvh - 68px); position: relative; }
@@ -209,20 +194,12 @@
   .scroll-hint { position: absolute; bottom: 1.25rem; left: 4rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); animation: hintdrop 2s var(--spring) infinite; }
   @keyframes hintdrop { 0%, 100% { transform: translateY(0); opacity: 0.7; } 50% { transform: translateY(8px); opacity: 1; } }
 
-  /* ---------- Marquee x1 ---------- */
-  .marquee { overflow: hidden; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--accent); color: #fff; padding: 1rem 0; transform: rotate(-1deg) scale(1.02); }
-  .marquee-track { display: flex; width: max-content; animation: scrollx 24s linear infinite; }
-  .marquee-track span { font-family: var(--font-display); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.2rem); letter-spacing: 0.02em; padding: 0 1.5rem; white-space: nowrap; }
-  .marquee-track span.o { color: transparent; -webkit-text-stroke: 1.5px #fff; font-style: normal; }
-  @keyframes scrollx { to { transform: translateX(-50%); } }
-
-  /* ---------- Channel wall (compact, under marquee) ---------- */
+  /* ---------- Channel wall (compact, under hero) ---------- */
   .wall-inner { max-width: 1400px; margin: 0 auto; padding: 1.75rem 4rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
   .wall-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
   .wall-logos { display: flex; gap: 1.75rem; align-items: center; flex-wrap: wrap; }
   .wall-logos img { height: 20px; opacity: 0.75; transition: transform 0.25s var(--spring), opacity 0.25s; }
   .wall-logos img:hover { transform: translateY(-3px) rotate(-4deg); opacity: 1; }
-  [data-theme="dark"] .wall-logos img { filter: invert(1); }
 
   /* ---------- Sections ---------- */
   section.block { padding-top: 6rem; padding-bottom: 6rem; }
@@ -232,22 +209,46 @@
   .sec-head p { color: var(--ink-2); font-size: 1rem; max-width: 58ch; }
   /* Eyebrows: hero + ritual only (≤1 per 3 sections). Products/manifesto/community: none. */
 
-  /* ---------- Sticky-stack products (GSAP §5.A; static fallback <769px / reduced-motion) ---------- */
-  .stack-hint { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-  .stack-card { position: sticky; top: 0; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
-  .p-card { width: min(920px, 92vw); border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); box-shadow: 12px 12px 0 var(--accent-soft); display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
-  .stack-card:nth-child(odd) .p-card { transform: rotate(-1.5deg); }
-  .stack-card:nth-child(even) .p-card { transform: rotate(1.5deg); }
-  .p-media { min-height: 380px; background: var(--surface-2); overflow: hidden; }
+  /* ---------- Promo carousel ---------- */
+  .promo { max-width: 1400px; margin: 0 auto; padding: 2rem 4rem 0; }
+  .promo-view { position: relative; border: 2px solid var(--ink); border-radius: var(--radius-card); overflow: hidden; box-shadow: 8px 8px 0 var(--accent-soft); background: var(--surface-2); }
+  .promo-slide { display: none; position: relative; }
+  .promo-slide.on { display: block; animation: fadeup 0.6s var(--spring) both; }
+  .promo-slide img { width: 100%; height: clamp(220px, 30vw, 420px); object-fit: cover; display: block; }
+  .promo-slide.brand { background: var(--accent); color: #fff; padding: 3rem 2rem; text-align: center; }
+  .promo-slide.brand h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.02; margin-bottom: 1.25rem; }
+  .promo-slide.brand h2 em { font-style: italic; }
+  .promo-slide.brand .btn-ghost { color: #fff; border-color: #fff; }
+  .promo-slide.brand .btn-ghost:hover { background: #fff; color: var(--accent); }
+  .promo-cap { position: absolute; left: 1.25rem; bottom: 1.25rem; background: var(--ink); color: var(--surface); border-radius: 999px; padding: 0.55rem 1.1rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .promo-dots { display: flex; gap: 0.6rem; justify-content: center; margin-top: 1rem; }
+  .promo-dots button { width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; cursor: pointer; padding: 0; }
+  .promo-dots button.on { background: var(--accent); border-color: var(--accent); }
+
+  /* ---------- BEST SELLER grid (Scarlett-style tabs + tiles) ---------- */
+  .tabs { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.75rem 0 2rem; }
+  .tab { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; border: 2px solid var(--ink); background: transparent; color: var(--ink-2); border-radius: 999px; padding: 0.6rem 1.4rem; cursor: pointer; transition: background 0.25s, color 0.25s; }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.on { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+  #stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .stack-card:nth-child(odd) .p-card { transform: rotate(-1deg); }
+  .stack-card:nth-child(even) .p-card { transform: rotate(1deg); }
+  .p-card { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); box-shadow: 8px 8px 0 var(--accent-soft); overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: transform 0.3s var(--spring); }
+  .p-card:hover { transform: translateY(-6px) rotate(0) !important; }
+  .p-media { aspect-ratio: 4/5; background: var(--surface-2); overflow: hidden; position: relative; min-height: 0; }
   .p-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--spring); }
   .p-card:hover .p-media img { transform: scale(1.05) rotate(0.5deg); }
   .p-media.tint { background: radial-gradient(110% 100% at 30% 20%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 80% 90%, var(--peach-1), transparent 55%), var(--surface-2); }
-  .p-body { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
-  .p-num { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1rem; }
-  .cat { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
-  .name { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.05; margin-bottom: 0.5rem; }
-  .price { font-family: var(--font-mono); font-size: 1rem; color: var(--ink-2); display: inline-block; background: var(--surface-2); border: 2px solid var(--ink); border-radius: 999px; padding: 0.3rem 1rem; margin-top: 0.75rem; width: fit-content; transform: rotate(-2deg); }
-  .why { color: var(--ink-2); margin-top: 1rem; max-width: 38ch; }
+  .disc-badge { position: absolute; top: 0.9rem; left: 0.9rem; background: var(--accent); color: #fff; border: 2px solid var(--ink); border-radius: 999px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.9rem; transform: rotate(-4deg); }
+  .p-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .cat { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .name { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; }
+  .price-row { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.25rem; }
+  .price { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--ink); }
+  .was-price { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); text-decoration: line-through; }
+  .why { color: var(--ink-2); font-size: 0.9rem; }
+  .p-body .p-ctas { margin-top: auto; padding-top: 1rem; }
+  .p-num { display: none; }
   .p-body .btn { margin-top: 1.75rem; width: fit-content; }
   .p-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; align-items: center; }
   .p-ctas .btn { margin-top: 0; }
@@ -281,10 +282,8 @@
 
   /* ---------- Community ---------- */
   .community { border: 2px solid var(--ink); border-radius: 24px; background: var(--ink); color: var(--surface); padding: 4rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; transform: rotate(0.5deg); box-shadow: 12px 12px 0 var(--accent-soft); }
-  [data-theme="dark"] .community { background: var(--surface-2); color: var(--ink); }
   .community h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.02; margin-bottom: 1rem; }
-  .community h3 em { font-style: italic; color: var(--accent); }
-  [data-theme="light"] .community h3 em { color: var(--rose-1); }
+  .community h3 em { font-style: italic; color: var(--rose-1); }
   .community p { opacity: 0.75; margin-bottom: 2rem; max-width: 46ch; }
   .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
   .social-grid a { border: 2px solid currentColor; color: inherit; text-decoration: none; border-radius: 999px; padding: 0.9rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; transition: transform 0.25s var(--spring), background 0.25s, color 0.25s; }
@@ -358,7 +357,7 @@
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; }
     .hero h1 .line-inner { animation: none; }
-    .stack-card { position: static; min-height: auto; }
+    .promo-slide.on { animation: none; }
   }
 
   @media (max-width: 968px) {
@@ -368,14 +367,14 @@
     .hero-media { aspect-ratio: 4/3; max-height: none; }
     .sticker.s1 { right: 6%; } .sticker.s2 { left: 4%; }
     .scroll-hint { display: none; }
-    .p-card { grid-template-columns: 1fr; }
-    .p-media { min-height: 240px; }
-    .stack-card { position: static; min-height: auto; }
+    #stack { grid-template-columns: 1fr 1fr; }
+    .promo { padding: 1.5rem 1.5rem 0; }
     .steps { grid-template-columns: 1fr; }
     .community { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
     section.block { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   }
   @media (max-width: 600px) {
+    #stack { grid-template-columns: 1fr; }
     .social-grid { grid-template-columns: 1fr; }
     .sticker { display: none; }
   }
@@ -387,13 +386,13 @@
   <div class="nav-inner">
     <a class="wordmark" href="#top" aria-label="zaleavelle beranda"><img src="assets/zaleavelle-mark.svg" alt="" width="320" height="320"></a>
     <ul class="nav-links">
-      <li><a href="#produk">Produk</a></li>
+      <li><a href="#produk">Belanja</a></li>
       <li><a href="#ritual">Ritual</a></li>
       <li><a href="#tentang">Tentang</a></li>
     </ul>
     <div style="display:flex;gap:.75rem;align-items:center">
-      <button class="theme-toggle" id="themeBtn" type="button" aria-label="Ganti tema">○ / ●</button>
-      <a href="#produk" class="btn btn-primary">Jelajahi Produk</a>
+      <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=landing_page&amp;utm_content=nav_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Shopee Store" data-utm-content="nav_cta">+ Keranjang</a>
+      <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle!" class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="nav_cta">Chat</a>
     </div>
   </div>
 </header>
@@ -423,12 +422,6 @@
     <span class="scroll-hint">gulir ↓</span>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>glow — lembap — tenang —&nbsp;</span><span class="o">glow — lembap — tenang —&nbsp;</span><span>glow — lembap — tenang —&nbsp;</span><span class="o">glow — lembap — tenang —&nbsp;</span>
-    </div>
-  </div>
-
   <div class="wall" aria-label="Kanal resmi">
     <div class="wall-inner">
       <span class="wall-label">Temukan kami di</span>
@@ -441,74 +434,103 @@
     </div>
   </div>
 
+  <div class="promo" id="promo">
+    <div class="promo-view">
+      <div class="promo-slide on">
+        <picture><source srcset="assets/web/emerald-ritual.webp" type="image/webp"><img src="assets/web/emerald-ritual.jpg" alt="Kandungan Niacinamide dan Vita 8 Complex zaleavelle" loading="lazy"></picture>
+        <span class="promo-cap">Emerald Sweet — busa glitter lembut</span>
+      </div>
+      <div class="promo-slide">
+        <img src="assets/web/og-image.jpg" alt="Koleksi body care zaleavelle" loading="lazy">
+        <span class="promo-cap">Koleksi aroma favorit</span>
+      </div>
+      <div class="promo-slide brand">
+        <h2>Lembut · <em>Autentik</em> · Konsisten</h2>
+        <a href="#produk" class="btn btn-ghost">Belanja Sekarang</a>
+      </div>
+    </div>
+    <div class="promo-dots" role="tablist" aria-label="Promo">
+      <button type="button" class="on" data-slide="0" aria-label="Promo 1"></button>
+      <button type="button" data-slide="1" aria-label="Promo 2"></button>
+      <button type="button" data-slide="2" aria-label="Promo 3"></button>
+    </div>
+  </div>
+
   <section class="block wrap" id="produk">
     <div class="sec-head reveal">
-      <p class="stack-hint">gulir — tiap produk punya momennya ↓</p>
-      <h2>Rutinitas kulitmu, <em>tanpa ribet.</em></h2>
-      <p>Body wash, body lotion, dan body serum dalam varian aroma favorit — bersih, lembap, dan cerah setiap hari.</p>
+      <h2>Best <em>Seller</em></h2>
+      <p>Body wash, body lotion, dan body serum dalam varian aroma favorit.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Kategori produk">
+      <button type="button" class="tab on" data-tab="all" role="tab" aria-selected="true">Semua</button>
+      <button type="button" class="tab" data-tab="Body Wash" role="tab" aria-selected="false">Body Wash</button>
+      <button type="button" class="tab" data-tab="Body Lotion" role="tab" aria-selected="false">Body Lotion</button>
+      <button type="button" class="tab" data-tab="Body Serum" role="tab" aria-selected="false">Body Serum</button>
     </div>
     <div id="stack">
       <div class="stack-card">
-        <article class="p-card">
+        <article class="p-card" data-cat="Body Wash">
           <div class="p-media"><picture><source srcset="assets/web/emerald-sweet-wash.webp" type="image/webp"><img src="assets/web/emerald-sweet-wash.jpg" alt="Emerald Sweet Green Body Wash zaleavelle" loading="lazy"></picture></div>
           <div class="p-body">
-            <div class="p-num">01 / 04</div>
             <div class="cat">Body Wash</div>
             <div class="name">Emerald Sweet</div>
-            <div class="price">Rp 389.000</div>
+            <div class="price-row"><span class="price">Rp 389.000</span></div>
             <p class="why">Body wash dengan glitter lembut, Niacinamide, dan aroma manis yang tahan lama.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=emerald_sweet_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">Beli di Shopee <span class="arr">→</span></a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Emerald%20Sweet%20%28Rp%20389.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">Tanya via WhatsApp</a>
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=emerald_sweet_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">+ Keranjang</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Emerald%20Sweet%20%28Rp%20389.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">Tanya</a>
             </div>
           </div>
         </article>
       </div>
       <div class="stack-card">
-        <article class="p-card">
+        <article class="p-card" data-cat="Body Lotion">
           <div class="p-media tint"><picture><source srcset="assets/web/blaine-floral-lotion.webp" type="image/webp"><img src="assets/web/blaine-floral-lotion.jpg" alt="Blaine Floral Whitening Body Lotion zaleavelle" loading="lazy" style="object-position:70% 50%"></picture></div>
           <div class="p-body">
-            <div class="p-num">02 / 04</div>
             <div class="cat">Body Lotion</div>
             <div class="name">Blaine Floral</div>
-            <div class="price">Rp 185.000</div>
+            <div class="price-row"><span class="price">Rp 185.000</span></div>
             <p class="why">Body lotion pencerah dengan Niacinamide 10% dan Vitamin E.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=blaine_floral_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">Beli di Shopee <span class="arr">→</span></a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Blaine%20Floral%20%28Rp%20185.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">Tanya via WhatsApp</a>
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=blaine_floral_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">+ Keranjang</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Blaine%20Floral%20%28Rp%20185.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">Tanya</a>
             </div>
           </div>
         </article>
       </div>
       <div class="stack-card">
-        <article class="p-card">
+        <article class="p-card" data-cat="Body Lotion">
           <div class="p-media"><picture><source srcset="assets/web/feminine-blush-lotion.webp" type="image/webp"><img src="assets/web/feminine-blush-lotion.jpg" alt="Feminine Blush Whitening Body Lotion zaleavelle" loading="lazy"></picture></div>
           <div class="p-body">
-            <div class="p-num">03 / 04</div>
             <div class="cat">Body Lotion</div>
             <div class="name">Feminine Blush</div>
-            <div class="price">Rp 145.000</div>
+            <div class="price-row"><span class="price">Rp 145.000</span></div>
             <p class="why">Body lotion pelembap dengan aroma floral manis untuk kulit halus.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=feminine_blush_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">Beli di Shopee <span class="arr">→</span></a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Feminine%20Blush%20%28Rp%20145.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">Tanya via WhatsApp</a>
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=feminine_blush_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">+ Keranjang</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Feminine%20Blush%20%28Rp%20145.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">Tanya</a>
             </div>
           </div>
         </article>
       </div>
+          </div>
+        </article>
+      </div>
       <div class="stack-card">
-        <article class="p-card">
+        <article class="p-card" data-cat="Body Serum">
           <div class="p-media tint"><picture><source srcset="assets/web/bright-petal-serum.webp" type="image/webp"><img src="assets/web/bright-petal-serum.jpg" alt="Bright Petal Calendula Body Serum zaleavelle" loading="lazy"></picture></div>
           <div class="p-body">
-            <div class="p-num">04 / 04</div>
             <div class="cat">Body Serum</div>
             <div class="name">Bright Petal</div>
-            <div class="price">Rp 165.000</div>
+            <div class="price-row"><span class="price">Rp 165.000</span></div>
             <p class="why">Body serum calendula untuk kulit tampak cerah dan ternutrisi.</p>
             <div class="p-ctas">
-              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=bright_petal_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">Beli di Shopee <span class="arr">→</span></a>
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Bright%20Petal%20%28Rp%20165.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">Tanya via WhatsApp</a>
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=bright_petal_cta" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="shopee" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">+ Keranjang</a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Bright%20Petal%20%28Rp%20165.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">Tanya</a>
             </div>
+          </div>
+        </article>
+      </div>
           </div>
         </article>
       </div>
@@ -597,12 +619,14 @@
     </div>
     <div class="m-grid">
       <div><label for="mfPrice">Harga (Rp)</label><input id="mfPrice" name="price" type="number" min="1000" max="10000000" step="1000" required></div>
-      <div><label for="mfStock">Stok</label><input id="mfStock" name="stock" type="number" min="0" max="1000000" step="1" value="0"></div>
+      <div><label for="mfCompare">Harga coret (Rp, opsional)</label><input id="mfCompare" name="compare" type="number" min="0" max="10000000" step="1000" placeholder="kosong = tanpa diskon"></div>
     </div>
     <div class="m-grid">
-      <div><label for="mfBpom">No. BPOM</label><input id="mfBpom" name="bpom" maxlength="30" placeholder="NA 18260102605"></div>
+      <div><label for="mfStock">Stok</label><input id="mfStock" name="stock" type="number" min="0" max="1000000" step="1" value="0"></div>
       <div><label for="mfSort">Urutan</label><input id="mfSort" name="sort" type="number" min="0" max="99" value="0"></div>
     </div>
+    <label for="mfBpom">No. BPOM</label>
+    <input id="mfBpom" name="bpom" maxlength="30" placeholder="NA 18260102605">
     <label for="mfDesc">Deskripsi</label>
     <textarea id="mfDesc" name="description" maxlength="280"></textarea>
     <label for="mfWebp">URL gambar WebP</label>
@@ -633,8 +657,6 @@
 
 <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=emerald_sweet_cta" class="btn btn-primary" id="stickyCta" target="_blank" rel="noopener" data-cta="shopee" data-product="Emerald Sweet" data-price="389000" data-utm-content="sticky_cta">Beli Emerald Sweet <span class="arr">→</span></a>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   // Backend config: publishable key is public by design (RLS enforces access).
@@ -643,22 +665,6 @@
 </script>
 <script>
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var desktopLayout = window.matchMedia("(min-width: 769px)").matches;
-
-  // Theme: respect prefers-color-scheme, manual toggle persists.
-  (function () {
-    var root = document.documentElement;
-    try {
-      var saved = localStorage.getItem("zv-theme");
-      if (saved) root.setAttribute("data-theme", saved);
-      else if (window.matchMedia("(prefers-color-scheme: dark)").matches) root.setAttribute("data-theme", "dark");
-    } catch (e) {}
-    document.getElementById("themeBtn").addEventListener("click", function () {
-      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      try { localStorage.setItem("zv-theme", next); } catch (e) {}
-    });
-  })();
 
   // Reveal on scroll via IntersectionObserver (no scroll listeners, §5.D).
   // Deferred: zvInitReveals() runs from the boot controller after products render.
@@ -758,35 +764,6 @@
     hero.addEventListener("pointerleave", function () { media.style.translate = "0px 0px"; });
   })();
 
-  // Sticky-stack products (§5.A canonical skeleton). Static fallback otherwise.
-  // Deferred: zvInitStackFX() runs from the boot controller after products render,
-  // so ScrollTriggers pin the live card set.
-  function zvInitStackFX() {
-    if (reduceMotion || !desktopLayout || !window.gsap || !window.ScrollTrigger) return;
-    gsap.registerPlugin(ScrollTrigger);
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    var ctx = gsap.context(function () {
-      var cards = gsap.utils.toArray(".stack-card");
-      cards.forEach(function (card, i) {
-        if (i === cards.length - 1) return;
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top top",
-          endTrigger: cards[cards.length - 1],
-          end: "top top",
-          pin: true,
-          pinSpacing: false
-        });
-        gsap.to(card, {
-          scale: 0.92,
-          opacity: 0.55,
-          ease: "none",
-          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: true }
-        });
-      });
-    });
-    reduce.addEventListener("change", function () { if (reduce.matches) ctx.revert(); });
-  }
 </script>
 <script>
   // ---------- Storefront data layer (Supabase) + boot controller ----------
@@ -805,6 +782,18 @@
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
   function zvPrice(n) { return "Rp " + Number(n || 0).toLocaleString("id-ID"); }
+  function zvCompare(p) {
+    // Discount badge + strikethrough only when a real compare price exists.
+    // Never invent discounts: compare_at_price unset (or <= price) renders clean.
+    var cmp = Number(p.compare_at_price) || 0;
+    var price = Number(p.price_idr) || 0;
+    if (!(cmp > price)) return { badge: "", was: "" };
+    var pct = Math.round((1 - price / cmp) * 100);
+    return {
+      badge: '<span class="disc-badge">-' + pct + '%</span>',
+      was: '<span class="was-price">' + zvEsc(zvPrice(cmp)) + '</span>'
+    };
+  }
   function zvShopeeHref(base, slug) {
     var utm = "utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=" + slug + "_cta";
     return base + (base.indexOf("?") >= 0 ? "&" : "?") + utm;
@@ -813,28 +802,28 @@
     return "https://wa.me/" + number + "?text=" + encodeURIComponent("Halo zaleavelle, saya mau tanya tentang " + name + " (" + zvPrice(price) + ").");
   }
   function zvCardHTML(p, i, total) {
-    var num = ("0" + (i + 1)).slice(-2) + " / " + ("0" + total).slice(-2);
     var focus = p.img_focus || "50% 50%";
     var focusAttr = (focus === "50% 50%") ? "" : ' style="object-position:' + zvEsc(focus) + '"';
     var oos = (p.stock != null && Number(p.stock) <= 0);
+    var cmp = zvCompare(p);
     var ctas = oos
       ? '<div class="p-ctas"><span class="oos-badge">Stok Habis</span>' +
         '<span class="btn btn-ghost btn-sm" aria-disabled="true">Segera Hadir</span></div>'
       : '<div class="p-ctas">' +
-      '<a href="' + zvEsc(zvShopeeHref(p.shopee_url, p.slug)) + '" class="btn btn-primary" target="_blank" rel="noopener"' +
-      ' data-cta="shopee" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Beli di Shopee <span class="arr">→</span></a>' +
+      '<a href="' + zvEsc(zvShopeeHref(p.shopee_url, p.slug)) + '" class="btn btn-primary btn-sm" target="_blank" rel="noopener"' +
+      ' data-cta="shopee" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">+ Keranjang</a>' +
       '<a href="' + zvEsc(zvWaHref(p.wa_number, p.name, p.price_idr)) + '" class="btn btn-ghost btn-sm" target="_blank" rel="noopener"' +
-      ' data-cta="whatsapp" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Tanya via WhatsApp</a>' +
+      ' data-cta="whatsapp" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Tanya</a>' +
       '</div>';
-    return '<div class="stack-card"><article class="p-card">' +
+    return '<div class="stack-card"><article class="p-card" data-cat="' + zvEsc(p.category) + '">' +
       '<div class="p-media"><picture>' +
       (p.image_webp ? '<source srcset="' + zvEsc(p.image_webp) + '" type="image/webp">' : '') +
       '<img src="' + zvEsc(p.image_jpg) + '" alt="' + zvEsc(p.image_alt || p.name) + '" loading="lazy"' + focusAttr + '>' +
-      '</picture></div>' +
-      '<div class="p-body"><div class="p-num">' + num + '</div>' +
+      '</picture>' + cmp.badge + '</div>' +
+      '<div class="p-body">' +
       '<div class="cat">' + zvEsc(p.category) + '</div>' +
       '<div class="name">' + zvEsc(p.name) + '</div>' +
-      '<div class="price">' + zvEsc(zvPrice(p.price_idr)) + '</div>' +
+      '<div class="price-row"><span class="price">' + zvEsc(zvPrice(p.price_idr)) + '</span>' + cmp.was + '</div>' +
       '<p class="why">' + zvEsc(p.description) + '</p>' +
       ctas +
       '</div></article></div>';
@@ -861,11 +850,66 @@
   }
   // Boot: try the DB, render on success, then init scroll FX either way.
   (function zvBoot() {
-    function init() { zvInitReveals(); zvTrackProductCards(); zvInitStackFX(); }
+    function init() { zvInitReveals(); zvTrackProductCards(); }
     zvFetchProducts(4000).then(function (rows) {
-      if (rows && rows.length) zvRenderProducts(rows);
+      if (rows && rows.length) { window.zvShopRows = rows; zvRenderProducts(rows); }
       init();
     }).catch(function () { init(); });
+  })();
+
+  // Category tabs: filter DB rows when present, else hide/show static tiles.
+  (function zvTabs() {
+    var tabs = document.querySelectorAll(".tab");
+    if (!tabs.length) return;
+    function apply(cat) {
+      tabs.forEach(function (b) {
+        var on = b.getAttribute("data-tab") === cat;
+        b.classList.toggle("on", on);
+        b.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      var rows = window.zvShopRows;
+      if (rows && rows.length) {
+        var list = (cat === "all") ? rows : rows.filter(function (p) { return p.category === cat; });
+        var stack = document.getElementById("stack");
+        if (!list.length) {
+          stack.innerHTML = "<p class='maint-sub' style='grid-column:1/-1'>Belum ada produk di kategori ini.</p>";
+        } else {
+          zvRenderProducts(list);
+        }
+        zvTrackProductCards();
+      } else {
+        document.querySelectorAll("#stack .p-card").forEach(function (c) {
+          c.parentElement.style.display = (cat === "all" || c.getAttribute("data-cat") === cat) ? "" : "none";
+        });
+      }
+    }
+    tabs.forEach(function (b) {
+      b.addEventListener("click", function () { apply(b.getAttribute("data-tab")); });
+    });
+  })();
+
+  // Promo carousel: auto-rotate with dots, pause on hover, static when reduced.
+  (function zvPromo() {
+    var slides = document.querySelectorAll(".promo-slide");
+    var dots = document.querySelectorAll(".promo-dots button");
+    if (!slides.length) return;
+    var i = 0, timer = null;
+    function go(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach(function (s, k) { s.classList.toggle("on", k === i); });
+      dots.forEach(function (d, k) { d.classList.toggle("on", k === i); });
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function play() { if (reduceMotion) return; stop(); timer = setInterval(function () { go(i + 1); }, 6000); }
+    dots.forEach(function (d) {
+      d.addEventListener("click", function () { go(Number(d.getAttribute("data-slide"))); play(); });
+    });
+    var view = document.querySelector(".promo-view");
+    if (view) {
+      view.addEventListener("pointerenter", stop);
+      view.addEventListener("pointerleave", play);
+    }
+    play();
   })();
 </script>
 
@@ -968,6 +1012,7 @@
       form.category.value = p.category || "";
       form.volume.value = p.volume || "";
       form.price.value = p.price_idr == null ? "" : p.price_idr;
+      form.compare.value = p.compare_at_price == null ? "" : p.compare_at_price;
       form.stock.value = p.stock == null ? 0 : p.stock;
       form.bpom.value = p.bpom || "";
       form.sort.value = p.sort_order == null ? 0 : p.sort_order;
@@ -1022,6 +1067,7 @@
         category: form.category.value.trim(),
         volume: form.volume.value.trim(),
         price_idr: parseInt(form.price.value, 10) || 0,
+        compare_at_price: (function () { var c = parseInt(form.compare.value, 10); return c > 0 ? c : null; })(),
         stock: Math.max(0, parseInt(form.stock.value, 10) || 0),
         bpom: form.bpom.value.trim(),
         sort_order: parseInt(form.sort.value, 10) || 0,

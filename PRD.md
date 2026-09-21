@@ -1,8 +1,8 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 2.0 · 2026-09-21
+> Version 2.1 · 2026-09-21
 > Author: opencode (AI-assisted)
-> Status: Code complete through Phase 9 (pushed `b298697`); live verify pending SETUP-SQL v2 + function deploy + listing URLs
+> Status: Phase 10 code complete (lite Scarlett rebuild); go-live inputs still pending
 
 ---
 
@@ -228,7 +228,21 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 | M8 | "Tarik dari Shopee" pull-on-demand via `shopee-sync` edge function fills name/price/image/stock | Sync fills form only; save stamps last_synced_at |
 | M9 | Go-live checklist: SETUP-SQL v2 → deploy function → 4 listing URLs → probe → seed → sync/OOS test | All green before announcing the module live |
 
-## 11. Milestones
+## 11. Track 6: Lite Scarlett Storefront (taste skill)
+
+Design read: DTC storefront for Gen-Z ID shoppers, clean light-commerce, Scarlett tabs+grid; dials 6/4/4. All Phase 8/9 functionality preserved (data layer, panel, analytics, sticky CTA, reveals, SEO).
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| S1 | Lite-only: no dark mode anywhere | Zero `data-theme`/toggle/storage/invert remnants; palette locked light |
+| S2 | Marquee deleted | Zero marquee markup/CSS/keyframes |
+| S3 | Promo hero carousel (3 slides, dots, autoplay) | Rotates 6s, pauses on hover, static under reduced-motion |
+| S4 | BEST SELLER tabbed grid replaces sticky-stack | Tabs filter DB rows (DOM fallback without JS); tiles keep `.p-card` + `data-*` contract |
+| S5 | Discount badge + strikethrough render only from real `compare_at_price` | No badge when unset; panel input included; real numbers from owner |
+| S6 | CTA intents unified (`+ Keranjang` purchase, `Tanya` WA, browse labels shared) | One label per intent; sticky keeps product-specific text per E5 |
+| S7 | GSAP removed | No CDN scripts, no pin logic; IO reveals + pointer parallax remain |
+
+## 12. Milestones
 
 | Milestone | Scope | Status |
 |-----------|-------|--------|
@@ -237,6 +251,7 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 | **M3: Performance & Accessibility** | Track 4 (T4-T7) + full Lighthouse pass | ⬜ Open |
 | **M4: Catalog & Brand Assets** | Scent-canonical rename, 7 web exports, vector wordmark, OG raster | ✅ Shipped |
 | **M5: Maintenance Go-Live** | Track 5 (M1-M9): SQL → deploy → URLs → probe → seed → sync/OOS test | ⬜ Blocked on 3 owner inputs |
+| **M6: Lite Scarlett Storefront** | Track 6 (S1-S7): lite teardown, marquee deletion, tabs+grid, carousel, compare badges | 🔶 Code complete, uncommitted; needs compare prices + live backend |
 
 ### M1 Build Slices (Proposed)
 
@@ -250,7 +265,7 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 | 1f | `favicon.ico`, `manifest.json` | Favicon + PWA manifest (T3) |
 | 1g | `index.html` | Optimize `<title>` and meta description (T10) |
 
-## 12. Risks & Open Questions
+## 13. Risks & Open Questions
 
 ### Risks
 
@@ -278,7 +293,7 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 | Q7 | Real per-product Shopee listing URLs (for sync)? | Brand owner | Open — blocks M9 sync test |
 | Q8 | Edge-function deploy route (CLI vs dashboard)? | Brand owner | Open — blocks M9 go-live |
 
-## 13. Out of Scope (Deferred)
+## 14. Out of Scope (Deferred)
 
 | Item | Deferred To | Rationale |
 |------|-------------|-----------|
@@ -289,7 +304,7 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 | Scheduled Shopee auto-sync | Future | Pull-on-demand suffices for 4 SKUs |
 | A/B testing infrastructure | Post go-live | Need baseline metrics first |
 
-## 14. Appendix: Current State Audit
+## 15. Appendix: Current State Audit
 
 | Component | Current | Target |
 |-----------|---------|--------|

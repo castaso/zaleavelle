@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 9 code complete. Next: owner runs SETUP-SQL v2 + deploys shopee-sync → I verify live (probe, seed, sync test, OOS test) → commit.
+Phase 10 code complete. Next: owner compare-prices + SQL v3 (compare_at_price) + function deploy + URLs → verify → commit.
 
 ## Current Phase
 
-Phase 9: Settings fields v2 + Shopee sync
+Phase 10: Lite Scarlett rebuild
 
 ## Phases
 
@@ -91,13 +91,18 @@ Phase 9: Settings fields v2 + Shopee sync
 
 ### Phase 9: Settings fields v2 + Shopee sync
 
-- [x] Panel form: SKU (+auto-suggest), BPOM, volume, stock; list shows SKU + stock; extended payload + validation
-- [x] Renderer: stock<=0 → Stok Habis badge + disabled pill (layout/numbering stable); sticky observer unaffected (skips cards without data-cta)
-- [x] Edge function `supabase/functions/shopee-sync` (Deno): URL → redirect-follow → shopid/itemid → item API → name/price/image/stock; panel "Tarik dari Shopee" fills form only
-- [x] `supabase/config.toml` (project ref + deploy commands); verify_jwt=false matches no-gate posture
-- [x] JS syntax: 5 inline blocks clean; deno unavailable locally (function un-typechecked — small, reviewed)
-- [ ] Owner runs SETUP-SQL v2 + `alter ... last_synced_at` + deploys function + provides 4 listing URLs
-- [ ] Live verify: probe, seed, sync test, OOS test, commit + push
+- **Status:** complete (code; live verify pending with Phase 10)
+
+### Phase 10: Lite Scarlett rebuild (taste skill)
+
+- Design read: DTC storefront, Gen-Z ID, clean light-commerce, Scarlett tabs+grid; dials 6/4/4
+- [x] A: lite teardown — dark tokens, toggle+storage, auto-dark, 3 invert rules; palette locked light
+- [x] Marquee deleted (HTML+CSS+keyframes); zero marquees on page
+- [x] B: nav (Belanja/Ritual/Tentang + Beli/Chat→unified +Keranjang), 3-slide promo carousel, BEST SELLER tabs + tile grid replacing stack+pin logic; GSAP CDN + stack FX removed (~2 requests saved)
+- [x] C: tile renderer with compare badge (real-only), tab filter (DB + DOM fallback), panel compare input + payload; sticky tracker + analytics untouched (class/data contract kept)
+- [x] CTA intent unify: nav Beli → + Keranjang (sticky keeps product-specific per E5)
+- [x] Verify: 0 dark/marquee/toggle remnants; 2 eyebrows (≤3); JS clean; figures balanced (verify at commit)
+- [ ] Owner: compare prices (or explicit no-badges), SQL v3 (v2 + compare_at_price + last_synced_at), deploy function, 4 listing URLs → probe/seed/sync/OOS test → commit
 - **Status:** in_progress
 
 ## Key Questions
