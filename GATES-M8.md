@@ -37,6 +37,16 @@ Scope: Hover-reveal cog + Supabase-backed full-CRUD product maintenance on a sta
   EXPECT: 0 in maint HTML (page-level hooks unchanged)
   EVIDENCE: 0 data-cta in panel lines 575-619 (sole hit was the stickyCta line itself)
 
+- [x] M8.8: Settings fields v2 present (SKU/BPOM/volume/stock) + OOS rendering
+  CHECK: grep -c "mfSku|mfBpom|mfVolume|mfStock|oos-badge|form.(sku|bpom|volume|stock)" index.html
+  EXPECT: >=10
+  EVIDENCE: 16 refs (4 field lines + payload/fill/autosuggest + badge CSS/JS)
+
+- [ ] M8.9: Shopee sync fills form from live listing (needs deployed function + listing URLs)
+  CHECK: panel sync test against one real listing
+  EXPECT: name/price/image/stock filled, last_synced_at stamped on save
+  EVIDENCE: pending
+
 <!--
 - A checked box with EVIDENCE still "pending" counts as UNMET.
 - M8.3–M8.5 require the live table; flip when the owner confirms SETUP-SQL.

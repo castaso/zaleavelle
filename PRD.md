@@ -210,12 +210,14 @@ Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, o
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| M1 | `products` table holds the catalog (slug, name, category, price_idr, description, image_webp/jpg/alt, img_focus, shopee_url, wa_number, sort_order, active) | Live probe returns 4 seeded scent rows |
+| M1 | `products` table holds the catalog (sku, slug, name, category, price_idr, stock, bpom, volume, description, image_webp/jpg/alt, img_focus, shopee_url, wa_number, sort_order, active, last_synced_at) | Live probe returns 4 seeded scent rows |
 | M2 | Page renders cards from DB, auto-numbered, static HTML stays as fallback | 4 cards with DB data on success; 4 static cards with backend blocked |
 | M3 | Hover-reveal cog bottom-left opens CRUD panel | opacity 0 → visible on hover/focus; faint on touch; ESC closes |
 | M4 | Panel edits/adds/deletes/toggles products with live page refresh | Round-trip clean; validation mirrors DB CHECKs |
 | M5 | Image upload to `product-images` Storage bucket or paste-URL | Public URL lands in both image fields |
 | M6 | JSON backup download of all rows | File downloads with 4+ rows |
+| M7 | Stock-zero renders Stok Habis badge + disabled pill (layout stable) | stock=0 card shows badge, no data-cta links |
+| M8 | "Tarik dari Shopee" pull-on-demand via `shopee-sync` edge function fills name/price/image/stock | Sync fills form only; save stamps last_synced_at |
 
 ## 11. Milestones
 

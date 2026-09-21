@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 8 code complete. Next: user runs SETUP-SQL in Supabase SQL editor → I verify live (probe + seed check) → E2E CRUD test → commit.
+Phase 9 code complete. Next: owner runs SETUP-SQL v2 + deploys shopee-sync → I verify live (probe, seed, sync test, OOS test) → commit.
 
 ## Current Phase
 
-Phase 8: Supabase maintenance module
+Phase 9: Settings fields v2 + Shopee sync
 
 ## Phases
 
@@ -87,14 +87,17 @@ Phase 8: Supabase maintenance module
 
 ### Phase 8: Supabase maintenance module
 
-- [x] Step 1: live probe → PGRST205, `public.products` does not exist; owner runs SETUP-SQL
-- [x] Step 2: data layer — Supabase JS CDN + config, fetch active by sort_order (4s timeout), render cards from template (auto 0X/0N), static HTML stays as fallback; UTM/WA builders centralized on slug+name+price
-- [x] Refactor: reveal / sticky-tracker / stack-FX converted to deferred functions; boot controller renders-then-inits
-- [x] Step 3: cog (fixed bottom-left, hover/focus reveal, spin, coarse-pointer + reduced-motion handling) + slide-over CRUD panel (list/edit/add/delete/active-toggle, Storage upload, JSON backup, ESC close)
-- [x] JS syntax: 5 inline blocks, node --check clean
-- [ ] Owner runs SETUP-SQL in Supabase SQL editor
-- [ ] Live verify: probe 200 + seed 4 scents via REST + E2E CRUD round-trip from the page
-- [ ] Commit + push
+- **Status:** complete (code; live verify folded into Phase 9)
+
+### Phase 9: Settings fields v2 + Shopee sync
+
+- [x] Panel form: SKU (+auto-suggest), BPOM, volume, stock; list shows SKU + stock; extended payload + validation
+- [x] Renderer: stock<=0 → Stok Habis badge + disabled pill (layout/numbering stable); sticky observer unaffected (skips cards without data-cta)
+- [x] Edge function `supabase/functions/shopee-sync` (Deno): URL → redirect-follow → shopid/itemid → item API → name/price/image/stock; panel "Tarik dari Shopee" fills form only
+- [x] `supabase/config.toml` (project ref + deploy commands); verify_jwt=false matches no-gate posture
+- [x] JS syntax: 5 inline blocks clean; deno unavailable locally (function un-typechecked — small, reviewed)
+- [ ] Owner runs SETUP-SQL v2 + `alter ... last_synced_at` + deploys function + provides 4 listing URLs
+- [ ] Live verify: probe, seed, sync test, OOS test, commit + push
 - **Status:** in_progress
 
 ## Key Questions

@@ -90,6 +90,20 @@ Chronological record of work performed, files changed, validation results, and e
 
 **Result: 10 of 10 gates PASS**
 
+## Session: 2026-09-21 (Settings v2 + Shopee sync)
+
+### Phase 9: Settings fields v2 + Shopee sync
+
+- **Status:** in_progress (code done; awaiting SETUP-SQL v2 + function deploy + listing URLs)
+- Actions taken:
+  - Panel form: SKU (+auto-suggest), BPOM, volume, stock; list shows SKU + stock; extended payload + validation
+  - Renderer: stock<=0 → Stok Habis badge + disabled pill; sticky observer needs no change
+  - Edge function `supabase/functions/shopee-sync/index.ts` + `supabase/config.toml`; panel sync button fills form only, stamps last_synced_at on save
+  - Docs: PRD Track 5 M1/M7/M8, Phase 9, GATES-M8 sync gates; fixed task_plan orphan block
+  - Verified: node --check clean on all 5 inline blocks
+- Files created/modified:
+  - `index.html`, `supabase/` (new), `PRD.md`, `task_plan.md`, `progress.md`, `GATES-M8.md`
+
 ## Session: 2026-09-21 (Supabase maintenance module)
 
 ### Phase 8: Supabase maintenance module

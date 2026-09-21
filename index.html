@@ -252,6 +252,8 @@
   .p-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; align-items: center; }
   .p-ctas .btn { margin-top: 0; }
   .btn-sm { padding: 0.8rem 1.6rem; }
+  .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+  .oos-badge { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; background: var(--accent); border: 2px solid var(--ink); border-radius: 999px; padding: 0.45rem 1.1rem; transform: rotate(-2deg); }
 
   /* ---------- Ritual ---------- */
   .ritual { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--surface-2); }
@@ -586,11 +588,19 @@
     <label for="mfName">Nama</label>
     <input id="mfName" name="name" maxlength="80" required>
     <div class="m-grid">
+      <div><label for="mfSku">SKU (unik)</label><input id="mfSku" name="sku" maxlength="24" placeholder="ZV-WASH-EMR-260" required></div>
       <div><label for="mfSlug">Slug (unik)</label><input id="mfSlug" name="slug" maxlength="60" required></div>
+    </div>
+    <div class="m-grid">
       <div><label for="mfCategory">Kategori</label><input id="mfCategory" name="category" maxlength="40" required></div>
+      <div><label for="mfVolume">Volume</label><input id="mfVolume" name="volume" maxlength="20" placeholder="260 mL"></div>
     </div>
     <div class="m-grid">
       <div><label for="mfPrice">Harga (Rp)</label><input id="mfPrice" name="price" type="number" min="1000" max="10000000" step="1000" required></div>
+      <div><label for="mfStock">Stok</label><input id="mfStock" name="stock" type="number" min="0" max="1000000" step="1" value="0"></div>
+    </div>
+    <div class="m-grid">
+      <div><label for="mfBpom">No. BPOM</label><input id="mfBpom" name="bpom" maxlength="30" placeholder="NA 18260102605"></div>
       <div><label for="mfSort">Urutan</label><input id="mfSort" name="sort" type="number" min="0" max="99" value="0"></div>
     </div>
     <label for="mfDesc">Deskripsi</label>
@@ -607,6 +617,10 @@
     </div>
     <label for="mfShopee">URL Shopee</label>
     <input id="mfShopee" name="shopee_url" type="url" maxlength="500">
+    <div class="m-actions" style="margin-top:.6rem">
+      <button class="maint-btn" type="button" id="mfSync">Tarik dari Shopee</button>
+      <span id="mfSyncNote" class="maint-sub" style="margin:0;align-self:center"></span>
+    </div>
     <label for="mfWa">Nomor WhatsApp</label>
     <input id="mfWa" name="wa_number" inputmode="numeric" maxlength="16" placeholder="6282121262593">
     <label style="display:flex;gap:.5rem;align-items:center;margin-top:1rem"><input id="mfActive" name="active" type="checkbox" checked style="width:auto"> Tampilkan di halaman</label>
@@ -802,6 +816,16 @@
     var num = ("0" + (i + 1)).slice(-2) + " / " + ("0" + total).slice(-2);
     var focus = p.img_focus || "50% 50%";
     var focusAttr = (focus === "50% 50%") ? "" : ' style="object-position:' + zvEsc(focus) + '"';
+    var oos = (p.stock != null && Number(p.stock) <= 0);
+    var ctas = oos
+      ? '<div class="p-ctas"><span class="oos-badge">Stok Habis</span>' +
+        '<span class="btn btn-ghost btn-sm" aria-disabled="true">Segera Hadir</span></div>'
+      : '<div class="p-ctas">' +
+      '<a href="' + zvEsc(zvShopeeHref(p.shopee_url, p.slug)) + '" class="btn btn-primary" target="_blank" rel="noopener"' +
+      ' data-cta="shopee" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Beli di Shopee <span class="arr">→</span></a>' +
+      '<a href="' + zvEsc(zvWaHref(p.wa_number, p.name, p.price_idr)) + '" class="btn btn-ghost btn-sm" target="_blank" rel="noopener"' +
+      ' data-cta="whatsapp" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Tanya via WhatsApp</a>' +
+      '</div>';
     return '<div class="stack-card"><article class="p-card">' +
       '<div class="p-media"><picture>' +
       (p.image_webp ? '<source srcset="' + zvEsc(p.image_webp) + '" type="image/webp">' : '') +
@@ -812,12 +836,8 @@
       '<div class="name">' + zvEsc(p.name) + '</div>' +
       '<div class="price">' + zvEsc(zvPrice(p.price_idr)) + '</div>' +
       '<p class="why">' + zvEsc(p.description) + '</p>' +
-      '<div class="p-ctas">' +
-      '<a href="' + zvEsc(zvShopeeHref(p.shopee_url, p.slug)) + '" class="btn btn-primary" target="_blank" rel="noopener"' +
-      ' data-cta="shopee" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Beli di Shopee <span class="arr">→</span></a>' +
-      '<a href="' + zvEsc(zvWaHref(p.wa_number, p.name, p.price_idr)) + '" class="btn btn-ghost btn-sm" target="_blank" rel="noopener"' +
-      ' data-cta="whatsapp" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Tanya via WhatsApp</a>' +
-      '</div></div></article></div>';
+      ctas +
+      '</div></article></div>';
   }
   function zvRenderProducts(rows) {
     var stack = document.getElementById("stack");
@@ -861,6 +881,7 @@
     var listEl = document.getElementById("maintList");
     var form = document.getElementById("maintForm");
     var editingId = null;
+    var zvSyncedAt = null;
     if (!cog || !panel) return;
 
     function status(msg, isErr) {
@@ -896,7 +917,7 @@
       return '<div class="maint-row' + (p.active ? "" : " m-off") + '">' +
         (img ? '<img src="' + zvEsc(img) + '" alt="" loading="lazy">' : "") +
         '<div class="m-info"><b>' + zvEsc(p.name) + '</b>' +
-        '<span>' + zvEsc(zvPrice(p.price_idr)) + (p.active ? "" : " · nonaktif") + '</span></div>' +
+        '<span>' + zvEsc(p.sku || "-") + " · " + zvEsc(zvPrice(p.price_idr)) + " · stok " + zvEsc(p.stock == null ? "?" : p.stock) + (p.active ? "" : " · nonaktif") + '</span></div>' +
         '<button class="maint-btn" type="button" data-edit="' + zvEsc(p.id) + '">Ubah</button>' +
         '<button class="maint-btn danger" type="button" data-del="' + zvEsc(p.id) + '" data-name="' + zvEsc(p.name) + '">Hapus</button>' +
         '</div>';
@@ -940,10 +961,15 @@
 
     function fillForm(p) {
       editingId = p.id || null;
+      zvSyncedAt = p.last_synced_at || null;
       form.name.value = p.name || "";
+      form.sku.value = p.sku || "";
       form.slug.value = p.slug || "";
       form.category.value = p.category || "";
+      form.volume.value = p.volume || "";
       form.price.value = p.price_idr == null ? "" : p.price_idr;
+      form.stock.value = p.stock == null ? 0 : p.stock;
+      form.bpom.value = p.bpom || "";
       form.sort.value = p.sort_order == null ? 0 : p.sort_order;
       form.description.value = p.description || "";
       form.image_webp.value = p.image_webp || "";
@@ -959,10 +985,12 @@
     document.getElementById("maintAdd").addEventListener("click", function () {
       fillForm({ active: true, sort_order: (window.zvMaintRows || []).length, wa_number: "6282121262593", shopee_url: "https://s.shopee.co.id/7VDaP3qhE5" });
     });
-    // Auto-slug from name for new rows.
+    // Auto-slug + auto-SKU from name for new rows.
     form.name.addEventListener("input", function () {
       if (editingId) return;
-      form.slug.value = form.name.value.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 60);
+      var slug = form.name.value.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 60);
+      form.slug.value = slug;
+      form.sku.value = ("ZV-" + slug.toUpperCase()).slice(0, 24);
     });
     // Upload to Supabase Storage, fill both image fields with the public URL.
     document.getElementById("mfImgFile").addEventListener("change", function (e) {
@@ -989,9 +1017,13 @@
       if (!db) { status("Backend tidak terjangkau.", true); return; }
       var payload = {
         name: form.name.value.trim(),
+        sku: form.sku.value.trim().toUpperCase(),
         slug: form.slug.value.trim().toLowerCase(),
         category: form.category.value.trim(),
+        volume: form.volume.value.trim(),
         price_idr: parseInt(form.price.value, 10) || 0,
+        stock: Math.max(0, parseInt(form.stock.value, 10) || 0),
+        bpom: form.bpom.value.trim(),
         sort_order: parseInt(form.sort.value, 10) || 0,
         description: form.description.value.trim(),
         image_webp: form.image_webp.value.trim(),
@@ -1002,10 +1034,11 @@
         wa_number: form.wa_number.value.trim(),
         active: form.active.checked
       };
-      if (!payload.name || !payload.slug || !payload.category || !(payload.price_idr > 0)) {
-        status("Lengkapi nama, slug, kategori, dan harga yang valid.", true);
+      if (!payload.name || !payload.sku || !payload.slug || !payload.category || !(payload.price_idr > 0)) {
+        status("Lengkapi nama, SKU, slug, kategori, dan harga yang valid.", true);
         return;
       }
+      if (zvSyncedAt) payload.last_synced_at = zvSyncedAt;
       status("Menyimpan…");
       var q = editingId
         ? db.from("products").update(payload).eq("id", editingId)
@@ -1018,6 +1051,29 @@
         refreshList();
         zvFetchProducts(4000).then(function (r) { if (r && r.length) { zvRenderProducts(r); zvTrackProductCards(); } });
       }).catch(function (err) { status("Gagal menyimpan: " + (err && err.message || err), true); });
+    });
+    // Pull name/price/image/stock from the Shopee listing via edge function.
+    // Fills the form only — nothing is saved until Simpan is clicked.
+    document.getElementById("mfSync").addEventListener("click", function () {
+      var note = document.getElementById("mfSyncNote");
+      var db = zvDb();
+      var url = form.shopee_url.value.trim();
+      function say(t) { if (note) note.textContent = t; }
+      if (!db) { say("Backend tidak terjangkau."); return; }
+      if (!url) { say("Isi URL Shopee dulu."); return; }
+      say("Menarik data dari Shopee…");
+      db.functions.invoke("shopee-sync", { body: { url: url } }).then(function (res) {
+        if (res.error) { say("Gagal: " + res.error.message + " — isi manual."); return; }
+        var d = res.data || {};
+        if (d.error) { say("Shopee menolak (" + d.error + ") — isi manual."); return; }
+        if (d.name) form.name.value = d.name;
+        if (d.price > 0) form.price.value = d.price;
+        if (d.image) { form.image_webp.value = d.image; form.image_jpg.value = d.image; }
+        if (typeof d.stock === "number") form.stock.value = d.stock;
+        if (!form.image_alt.value && d.name) form.image_alt.value = d.name + " zaleavelle";
+        zvSyncedAt = new Date().toISOString();
+        say("Ditarik dari Shopee ✓ — periksa lalu Simpan.");
+      }).catch(function (err) { say("Gagal: " + (err && err.message || err) + " — isi manual."); });
     });
     // Backup: download all rows as JSON.
     document.getElementById("maintBackup").addEventListener("click", function () {
