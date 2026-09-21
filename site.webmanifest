@@ -1,0 +1,17 @@
+{
+  "name": "zaleavelle — Naturally Confident",
+  "short_name": "zaleavelle",
+  "description": "Rutinitas kulit sederhana, autentik, dan penuh perhatian.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FBF8F5",
+  "theme_color": "#FBF8F5",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

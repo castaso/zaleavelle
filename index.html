@@ -3,8 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>zaleavelle — Naturally Confident</title>
-<meta name="description" content="Zaleavelle — rutinitas kulit sederhana, autentik, dan penuh perhatian.">
+<title>zaleavelle — Skincare Sederhana, Percaya Diri yang Alami</title>
+<meta name="description" content="Rutinitas tiga langkah yang lembut untuk kulit lembap dan tenang. Confidence Set, Glow Elixir, Soft Skin Lotion, Calm Ritual Scrub.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#FBF8F5">
+<meta property="og:title" content="zaleavelle — Naturally Confident">
+<meta property="og:description" content="Rutinitas kulit sederhana, autentik, dan penuh perhatian.">
+<meta property="og:image" content="https://picsum.photos/seed/zaleavelle-hero/1200/630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="zaleavelle — Naturally Confident">
+<meta name="twitter:description" content="Rutinitas kulit sederhana, autentik, dan penuh perhatian.">
+<meta name="twitter:image" content="https://picsum.photos/seed/zaleavelle-hero/1200/630">
+<script>
+  // Analytics stub (PRD E4): queues events in dataLayer; loads GA4 only when an ID is set.
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.ZV_GA_ID = "";
+  if (window.ZV_GA_ID) {
+    var zvGa = document.createElement("script");
+    zvGa.async = true;
+    zvGa.src = "https://www.googletagmanager.com/gtag/js?id=" + window.ZV_GA_ID;
+    document.head.appendChild(zvGa);
+    gtag("js", new Date());
+    gtag("config", window.ZV_GA_ID);
+  }
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://zaleavelle.com/#org",
+      "name": "zaleavelle",
+      "slogan": "Naturally Confident",
+      "sameAs": [
+        "https://instagram.com/zaleavelle",
+        "https://tiktok.com/@zaleavelle.official",
+        "https://s.shopee.co.id/7VDaP3qhE5",
+        "https://wa.me/6282121262593"
+      ]
+    },
+    {
+      "@type": "Product",
+      "name": "Confidence Set",
+      "category": "Paket Lengkap",
+      "brand": { "@type": "Brand", "name": "zaleavelle" },
+      "image": "https://picsum.photos/seed/zaleavelle-set/900/1100",
+      "description": "Tiga langkah pagi dan malam dalam satu paket hemat.",
+      "offers": { "@type": "Offer", "price": "389000", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
+    },
+    {
+      "@type": "Product",
+      "name": "Glow Elixir",
+      "category": "Brightening",
+      "brand": { "@type": "Brand", "name": "zaleavelle" },
+      "image": "https://picsum.photos/seed/zaleavelle-glow/800/900",
+      "description": "Cerah merata dengan formula ringan yang cepat meresap.",
+      "offers": { "@type": "Offer", "price": "185000", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
+    },
+    {
+      "@type": "Product",
+      "name": "Soft Skin Lotion",
+      "category": "Hidrasi Harian",
+      "brand": { "@type": "Brand", "name": "zaleavelle" },
+      "image": "https://picsum.photos/seed/zaleavelle-lotion/800/900",
+      "description": "Kunci hidrasi hingga pagi tanpa rasa lengket.",
+      "offers": { "@type": "Offer", "price": "145000", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
+    },
+    {
+      "@type": "Product",
+      "name": "Calm Ritual Scrub",
+      "category": "Eksfoliasi",
+      "brand": { "@type": "Brand", "name": "zaleavelle" },
+      "image": "https://picsum.photos/seed/zaleavelle-scrub/800/900",
+      "description": "Eksfoliasi lembut dua kali seminggu untuk tekstur halus.",
+      "offers": { "@type": "Offer", "price": "165000", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
+    }
+  ]
+}
+</script>
 <!--
   DESIGN READ: DTC skincare landing pushed playful Awwwards-experimental for Gen-Z —
   oversized kinetic type, stickers, ONE scroll-hijack (sticky-stack products), living mesh.
@@ -20,7 +100,7 @@
   - z-scale: nav 40 / stack cards 1-4 / sticky CTA 45 / grain 60.
   - Motion: transform/opacity only. Everything collapses under prefers-reduced-motion
     and below 769px (stack → plain stacked reveals). No window scroll listeners (IO only).
-  - JPG-only logo: wordmark re-typeset. TODO: drop assets/zaleavelle-mark.svg when available.
+  - Logo: official vector wordmark at assets/zaleavelle-mark.svg (transparent, dark-mode inverted).
 -->
 <style>
   :root {
@@ -84,6 +164,8 @@
   .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 4rem; height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
   .wordmark { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; line-height: 1; display: inline-block; }
   .wordmark:hover { animation: wiggle 0.45s var(--spring); }
+  .wordmark img { height: 1.7rem; width: auto; display: block; }
+  [data-theme="dark"] .wordmark img { filter: invert(1); }
   @keyframes wiggle { 0% { transform: rotate(0); } 30% { transform: rotate(-4deg); } 65% { transform: rotate(3deg); } 100% { transform: rotate(0); } }
   .nav-links { display: flex; gap: 2.25rem; list-style: none; }
   .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; position: relative; }
@@ -167,6 +249,9 @@
   .price { font-family: var(--font-mono); font-size: 1rem; color: var(--ink-2); display: inline-block; background: var(--surface-2); border: 2px solid var(--ink); border-radius: 999px; padding: 0.3rem 1rem; margin-top: 0.75rem; width: fit-content; transform: rotate(-2deg); }
   .why { color: var(--ink-2); margin-top: 1rem; max-width: 38ch; }
   .p-body .btn { margin-top: 1.75rem; width: fit-content; }
+  .p-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; align-items: center; }
+  .p-ctas .btn { margin-top: 0; }
+  .btn-sm { padding: 0.8rem 1.6rem; }
 
   /* ---------- Ritual ---------- */
   .ritual { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--surface-2); }
@@ -188,6 +273,9 @@
   .manifesto blockquote em { color: var(--accent); }
   .manifesto cite { font-style: normal; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
   .manifesto .body { color: var(--ink-2); max-width: 60ch; margin-top: 1.25rem; }
+  .brand-card { margin-top: 2.5rem; max-width: 340px; border: 2px solid var(--ink); border-radius: var(--radius-card); overflow: hidden; background: var(--surface); box-shadow: 8px 8px 0 var(--accent-soft); transform: rotate(-1deg); }
+  .brand-card img { width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; display: block; }
+  .brand-card figcaption { padding: 0.9rem 1.25rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); border-top: 2px solid var(--ink); }
 
   /* ---------- Community ---------- */
   .community { border: 2px solid var(--ink); border-radius: 24px; background: var(--ink); color: var(--surface); padding: 4rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; transform: rotate(0.5deg); box-shadow: 12px 12px 0 var(--accent-soft); }
@@ -247,7 +335,7 @@
 
 <header class="nav" id="siteNav">
   <div class="nav-inner">
-    <a class="wordmark" href="#top" aria-label="zaleavelle beranda">zaleavelle</a>
+    <a class="wordmark" href="#top" aria-label="zaleavelle beranda"><img src="assets/zaleavelle-mark.svg" alt="" width="320" height="320"></a>
     <ul class="nav-links">
       <li><a href="#produk">Produk</a></li>
       <li><a href="#ritual">Ritual</a></li>
@@ -320,7 +408,10 @@
             <div class="name">Confidence Set</div>
             <div class="price">Rp 389.000</div>
             <p class="why">Tiga langkah pagi dan malam dalam satu paket hemat.</p>
-            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+            <div class="p-ctas">
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=confidence_set_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Confidence Set" data-price="389000" data-utm-content="confidence_set_cta">Beli di Shopee <span class="arr">→</span></a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Confidence%20Set%20%28Rp%20389.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Confidence Set" data-price="389000" data-utm-content="confidence_set_cta">Tanya via WhatsApp</a>
+            </div>
           </div>
         </article>
       </div>
@@ -333,7 +424,10 @@
             <div class="name">Glow Elixir</div>
             <div class="price">Rp 185.000</div>
             <p class="why">Cerah merata dengan formula ringan yang cepat meresap.</p>
-            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+            <div class="p-ctas">
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=glow_elixir_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Glow Elixir" data-price="185000" data-utm-content="glow_elixir_cta">Beli di Shopee <span class="arr">→</span></a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Glow%20Elixir%20%28Rp%20185.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Glow Elixir" data-price="185000" data-utm-content="glow_elixir_cta">Tanya via WhatsApp</a>
+            </div>
           </div>
         </article>
       </div>
@@ -346,7 +440,10 @@
             <div class="name">Soft Skin Lotion</div>
             <div class="price">Rp 145.000</div>
             <p class="why">Kunci hidrasi hingga pagi tanpa rasa lengket.</p>
-            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+            <div class="p-ctas">
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=soft_skin_lotion_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Soft Skin Lotion" data-price="145000" data-utm-content="soft_skin_lotion_cta">Beli di Shopee <span class="arr">→</span></a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Soft%20Skin%20Lotion%20%28Rp%20145.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Soft Skin Lotion" data-price="145000" data-utm-content="soft_skin_lotion_cta">Tanya via WhatsApp</a>
+            </div>
           </div>
         </article>
       </div>
@@ -359,7 +456,10 @@
             <div class="name">Calm Ritual Scrub</div>
             <div class="price">Rp 165.000</div>
             <p class="why">Eksfoliasi lembut dua kali seminggu untuk tekstur halus.</p>
-            <a href="#kontak" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+            <div class="p-ctas">
+              <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=calm_ritual_scrub_cta" class="btn btn-primary" target="_blank" rel="noopener" data-cta="shopee" data-product="Calm Ritual Scrub" data-price="165000" data-utm-content="calm_ritual_scrub_cta">Beli di Shopee <span class="arr">→</span></a>
+              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Calm%20Ritual%20Scrub%20%28Rp%20165.000%29." class="btn btn-ghost btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Calm Ritual Scrub" data-price="165000" data-utm-content="calm_ritual_scrub_cta">Tanya via WhatsApp</a>
+            </div>
           </div>
         </article>
       </div>
@@ -391,6 +491,10 @@
       <cite>— Tim zaleavelle</cite>
       <p class="body">Kami percaya kecantikan bukan soal mengubah jati diri. Cukup rutinitas sederhana yang bisa dijalani setiap hari: autentik, menenangkan, dan jujur pada kulitmu.</p>
     </div>
+    <figure class="brand-card reveal" data-d="1">
+      <img src="assets/zaleavelle-mark.svg" alt="Logo resmi zaleavelle" loading="lazy" width="320" height="320">
+      <figcaption>Logo resmi — zaleavelle</figcaption>
+    </figure>
   </section>
 
   <section class="block wrap" id="kontak">
@@ -401,10 +505,10 @@
         <a href="#produk" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
       </div>
       <div class="social-grid">
-        <a href="https://instagram.com/zaleavelle" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://tiktok.com/@zaleavelle.official" target="_blank" rel="noopener">TikTok</a>
-        <a href="https://s.shopee.co.id/7VDaP3qhE5" target="_blank" rel="noopener">Shopee</a>
-        <a href="https://wa.me/6282121262593" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://instagram.com/zaleavelle" target="_blank" rel="noopener" data-cta="social" data-product="Instagram" data-utm-content="instagram_profile">Instagram</a>
+        <a href="https://tiktok.com/@zaleavelle.official" target="_blank" rel="noopener" data-cta="social" data-product="TikTok" data-utm-content="tiktok_profile">TikTok</a>
+        <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=landing_page&amp;utm_content=shopee_profile" target="_blank" rel="noopener" data-cta="shopee" data-product="Shopee Store" data-utm-content="shopee_profile">Shopee</a>
+        <a href="https://wa.me/6282121262593" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="whatsapp_profile">WhatsApp</a>
       </div>
     </div>
   </section>
@@ -412,12 +516,12 @@
 
 <footer>
   <div class="wrap foot">
-    <span>© 2025 zaleavelle</span>
+    <span>© 2026 zaleavelle</span>
     <span>Autentik · Percaya diri · Sederhana</span>
   </div>
 </footer>
 
-<a href="#produk" class="btn btn-primary" id="stickyCta">Jelajahi Produk <span class="arr">→</span></a>
+<a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=product_launch&amp;utm_content=confidence_set_cta" class="btn btn-primary" id="stickyCta" target="_blank" rel="noopener" data-cta="shopee" data-product="Confidence Set" data-price="389000" data-utm-content="sticky_cta">Beli Confidence Set <span class="arr">→</span></a>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -451,6 +555,8 @@
   })();
 
   // Nav border + sticky CTA visibility via sentinels (IO, not scroll events).
+  // Sticky CTA is product-aware (PRD E5): it tracks the card nearest the
+  // viewport center and points at that product's Shopee URL.
   (function () {
     var nav = document.getElementById("siteNav");
     new IntersectionObserver(function (en) {
@@ -460,6 +566,55 @@
     function sync() { cta.classList.toggle("show", past && !atContact); }
     new IntersectionObserver(function (en) { past = !en[0].isIntersecting; sync(); }).observe(document.getElementById("hero"));
     new IntersectionObserver(function (en) { atContact = en[0].isIntersecting; sync(); }).observe(document.getElementById("kontak"));
+
+    var shortNames = {
+      "Confidence Set": "Confidence Set",
+      "Glow Elixir": "Glow Elixir",
+      "Soft Skin Lotion": "Skin Lotion",
+      "Calm Ritual Scrub": "Ritual Scrub"
+    };
+    var cards = document.querySelectorAll(".p-card");
+    if (cards.length && cta) {
+      var active = null;
+      var prodIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          var link = en.target.querySelector('[data-cta="shopee"]');
+          if (!link) return;
+          var name = link.getAttribute("data-product");
+          if (!name || name === active) return;
+          active = name;
+          cta.href = link.href;
+          cta.setAttribute("data-product", name);
+          cta.setAttribute("data-price", link.getAttribute("data-price") || "");
+          cta.setAttribute("data-utm-content", "sticky_cta");
+          cta.innerHTML = "Beli " + (shortNames[name] || name) + ' <span class="arr">→</span>';
+        });
+      }, { rootMargin: "-40% 0px -40% 0px" });
+      cards.forEach(function (c) { prodIO.observe(c); });
+    }
+  })();
+
+  // Outbound click tracking (PRD E4): every [data-cta] link queues a
+  // select_item event. Works with real GA4 once window.ZV_GA_ID is set;
+  // until then events accumulate in window.dataLayer for later wiring.
+  (function () {
+    document.addEventListener("click", function (e) {
+      var a = e.target && e.target.closest ? e.target.closest("[data-cta]") : null;
+      if (!a) return;
+      var price = parseInt(a.getAttribute("data-price") || "0", 10) || 0;
+      var params = {
+        item_name: a.getAttribute("data-product") || a.textContent.trim(),
+        item_category: a.getAttribute("data-cta"),
+        price: price,
+        currency: "IDR",
+        utm_content: a.getAttribute("data-utm-content") || ""
+      };
+      try {
+        if (typeof gtag === "function") gtag("event", "select_item", params);
+        else window.dataLayer.push({ event: "select_item" });
+      } catch (err) { /* tracking must never break navigation */ }
+    });
   })();
 
   // Ritual progress hairline draws when steps enter.
