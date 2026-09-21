@@ -1,8 +1,8 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 1.2 · 2026-09-21
+> Version 1.3 · 2026-09-21
 > Author: opencode (AI-assisted)
-> Status: M2 image mapping built — scent-canonical catalog (user decision 2026-09-21)
+> Status: Phase 8 code complete — awaiting SETUP-SQL run for live verify
 
 ---
 
@@ -204,7 +204,20 @@ gtag('event', 'select_item', {
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 ```
 
-## 10. Milestones
+## 10. Track 5: Maintenance Module (Supabase)
+
+Owner decisions: Supabase backend, no access gate (obscurity only), full CRUD, open-write RLS accepted with JSON backup path.
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| M1 | `products` table holds the catalog (slug, name, category, price_idr, description, image_webp/jpg/alt, img_focus, shopee_url, wa_number, sort_order, active) | Live probe returns 4 seeded scent rows |
+| M2 | Page renders cards from DB, auto-numbered, static HTML stays as fallback | 4 cards with DB data on success; 4 static cards with backend blocked |
+| M3 | Hover-reveal cog bottom-left opens CRUD panel | opacity 0 → visible on hover/focus; faint on touch; ESC closes |
+| M4 | Panel edits/adds/deletes/toggles products with live page refresh | Round-trip clean; validation mirrors DB CHECKs |
+| M5 | Image upload to `product-images` Storage bucket or paste-URL | Public URL lands in both image fields |
+| M6 | JSON backup download of all rows | File downloads with 4+ rows |
+
+## 11. Milestones
 
 | Milestone | Scope | Target |
 |-----------|-------|--------|
@@ -224,7 +237,7 @@ gtag('event', 'select_item', {
 | 1f | `favicon.ico`, `manifest.json` | Favicon + PWA manifest (T3) |
 | 1g | `index.html` | Optimize `<title>` and meta description (T10) |
 
-## 11. Risks & Open Questions
+## 12. Risks & Open Questions
 
 ### Risks
 
@@ -245,7 +258,7 @@ gtag('event', 'select_item', {
 | Q4 | What is the brand's photography status? When will real images be available? | Brand owner | Open — blocks L1 |
 | Q5 | Should the WhatsApp number be the same for all products, or per-product agents? | Brand owner | Open — recommend: single number, pre-filled message |
 
-## 12. Out of Scope (Deferred)
+## 13. Out of Scope (Deferred)
 
 | Item | Deferred To | Rationale |
 |------|-------------|-----------|
@@ -255,7 +268,7 @@ gtag('event', 'select_item', {
 | Multi-language | Phase 2 i18n track | ID-first launch |
 | A/B testing infrastructure | Post-M1 | Need baseline metrics first |
 
-## 13. Appendix: Current State Audit
+## 14. Appendix: Current State Audit
 
 | Component | Current | Target |
 |-----------|---------|--------|

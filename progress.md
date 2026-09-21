@@ -90,6 +90,22 @@ Chronological record of work performed, files changed, validation results, and e
 
 **Result: 10 of 10 gates PASS**
 
+## Session: 2026-09-21 (Supabase maintenance module)
+
+### Phase 8: Supabase maintenance module
+
+- **Status:** in_progress (code done; awaiting SETUP-SQL run + live verify)
+- Actions taken:
+  - Live probe: PGRST205 — `public.products` does not exist; owner to run SETUP-SQL
+  - Data layer: Supabase JS CDN + publishable-key config; fetch active by sort_order with 4s timeout; template renderer with auto 0X/0N, HTML escaper, id-ID price fmt, centralized UTM/WA builders
+  - Refactored reveal / sticky-tracker / stack-FX into deferred functions; boot controller renders-then-inits (fixes ScrollTrigger pinning on dynamic cards)
+  - Cog: fixed bottom-left, transparent, hover/focus reveal + spin, coarse-pointer faint visibility, reduced-motion safe, aria-label, ESC-closable panel
+  - Panel: list/edit/add/delete/active-toggle, Storage upload to `product-images`, JSON backup download, validation mirroring DB CHECKs
+  - Verified: node --check clean on all 5 inline script blocks
+- Files created/modified:
+  - `index.html` (CSS + panel markup + config + refactors + 2 new script blocks)
+  - `task_plan.md`, `progress.md`, `PRD.md`, `GATES-M8.md`
+
 ## Session: 2026-09-21 (M2 image mapping)
 
 ### Phase 7: M2 image mapping (scent-canonical)

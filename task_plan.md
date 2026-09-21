@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 7 complete. Open: real per-scent price list (slot-carryover assumed), i18n/file-split decisions, Classic Pink/Flavia Floral reserve.
+Phase 8 code complete. Next: user runs SETUP-SQL in Supabase SQL editor → I verify live (probe + seed check) → E2E CRUD test → commit.
 
 ## Current Phase
 
-Phase 7: M2 image mapping (scent-canonical)
+Phase 8: Supabase maintenance module
 
 ## Phases
 
@@ -80,6 +80,22 @@ Phase 7: M2 image mapping (scent-canonical)
 - [ ] Step 3 (blocked on tooling): no SVG→PNG rasterizer on machine (rsvg/inkscape/magick/cairosvg all absent) — OG stays on interim picsum URL
 - [x] Step 4: favicon decision — keep serif-“z” `favicon.svg` (full wordmark unreadable at 32px)
 - **Status:** complete
+
+### Phase 7: M2 image mapping (scent-canonical)
+
+- **Status:** complete (see progress.md session)
+
+### Phase 8: Supabase maintenance module
+
+- [x] Step 1: live probe → PGRST205, `public.products` does not exist; owner runs SETUP-SQL
+- [x] Step 2: data layer — Supabase JS CDN + config, fetch active by sort_order (4s timeout), render cards from template (auto 0X/0N), static HTML stays as fallback; UTM/WA builders centralized on slug+name+price
+- [x] Refactor: reveal / sticky-tracker / stack-FX converted to deferred functions; boot controller renders-then-inits
+- [x] Step 3: cog (fixed bottom-left, hover/focus reveal, spin, coarse-pointer + reduced-motion handling) + slide-over CRUD panel (list/edit/add/delete/active-toggle, Storage upload, JSON backup, ESC close)
+- [x] JS syntax: 5 inline blocks, node --check clean
+- [ ] Owner runs SETUP-SQL in Supabase SQL editor
+- [ ] Live verify: probe 200 + seed 4 scents via REST + E2E CRUD round-trip from the page
+- [ ] Commit + push
+- **Status:** in_progress
 
 ## Key Questions
 
