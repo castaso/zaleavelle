@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 6 complete (nav + manifesto on vector mark; OG held for rasterizer access; favicon kept). Open: M2 image mapping (assets/ taxonomy question) + i18n/file-split decisions.
+Phase 7 complete. Open: real per-scent price list (slot-carryover assumed), i18n/file-split decisions, Classic Pink/Flavia Floral reserve.
 
 ## Current Phase
 
-Phase 6: Official logo integration
+Phase 7: M2 image mapping (scent-canonical)
 
 ## Phases
 

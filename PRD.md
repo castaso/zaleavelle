@@ -1,8 +1,8 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 1.1 · 2026-09-21
+> Version 1.2 · 2026-09-21
 > Author: opencode (AI-assisted)
-> Status: M1 built — M2 pending brand-owner input (assets mapping)
+> Status: M2 image mapping built — scent-canonical catalog (user decision 2026-09-21)
 
 ---
 
@@ -78,10 +78,10 @@ Ad / Social Post → zaleavelle landing page
 
 | Product | utm_source | utm_medium | utm_campaign | utm_content | Full utm_string |
 |---------|------------|------------|--------------|-------------|-----------------|
-| Confidence Set | zaleavelle | referral | product_launch | confidence_set_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=confidence_set_cta` |
-| Glow Elixir | zaleavelle | referral | product_launch | glow_elixir_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=glow_elixir_cta` |
-| Soft Skin Lotion | zaleavelle | referral | product_launch | soft_skin_lotion_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=soft_skin_lotion_cta` |
-| Calm Ritual Scrub | zaleavelle | referral | product_launch | calm_ritual_scrub_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=calm_ritual_scrub_cta` |
+| Emerald Sweet | zaleavelle | referral | product_launch | emerald_sweet_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=emerald_sweet_cta` |
+| Blaine Floral | zaleavelle | referral | product_launch | blaine_floral_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=blaine_floral_cta` |
+| Feminine Blush | zaleavelle | referral | product_launch | feminine_blush_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=feminine_blush_cta` |
+| Bright Petal | zaleavelle | referral | product_launch | bright_petal_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=bright_petal_cta` |
 | General CTA | zaleavelle | referral | landing_page | hero_cta / nav_cta | `utm_source=zaleavelle&utm_medium=referral&utm_campaign=landing_page&utm_content=hero_cta` |
 
 ### 6.3 Analytics Events
@@ -89,8 +89,8 @@ Ad / Social Post → zaleavelle landing page
 ```javascript
 // On Shopee/WA CTA click
 gtag('event', 'select_item', {
-  item_name: 'Confidence Set',
-  item_category: 'Skincare Set',
+  item_name: 'Emerald Sweet',
+  item_category: 'Body Wash',
   price: 389000,
   currency: 'IDR'
 });
@@ -125,7 +125,7 @@ gtag('event', 'select_item', {
 
 ### 7.3 FAQ Content (Draft)
 
-1. **Berapa lama satu paket Confidence Set bertahan?** — Sekitar 2-3 pemakaian rutin (pagi & malam).
+1. **Varian aroma apa saja yang tersedia?** — Emerald Sweet (body wash), Blaine Floral dan Feminine Blush (body lotion), Bright Petal (body serum).
 2. **Apakah aman untuk kulit sensitif?** — Ya, semua produk zaleavelle diformulasi lembut tanpa paraben.
 3. **Bagaimana cara pesan?** — Klik tombol Shopee untuk checkout langsung, atau chat kami via WhatsApp.
 4. **Kapan hasilnya terlihat?** — Kebanyakan pelanggan melihat perbedaan dalam 2-4 minggu.
@@ -259,8 +259,8 @@ gtag('event', 'select_item', {
 
 | Component | Current | Target |
 |-----------|---------|--------|
-| Products | 4 cards, anchor links only | 4 cards with Shopee + WA links |
-| Images | 6 picsum samples | Real brand photography |
+| Products | 4 scent-named cards with Shopee + WA links | Same (prices by slot until price list arrives) |
+| Images | 6 local web assets (WebP + JPG, ~40–190KB) + OG raster | Same (reserve: Classic Pink, Flavia Floral, alternates) |
 | Analytics | None | GA4 gtag with item-level events |
 | SEO meta | Basic title + description | Full OG + JSON-LD + favicon |
 | Accessibility | Basic aria labels | Skip-link, focus-visible, Lighthouse ≥90 |

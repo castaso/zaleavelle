@@ -90,6 +90,23 @@ Chronological record of work performed, files changed, validation results, and e
 
 **Result: 10 of 10 gates PASS**
 
+## Session: 2026-09-21 (M2 image mapping)
+
+### Phase 7: M2 image mapping (scent-canonical)
+
+- **Status:** complete
+- Actions taken:
+  - Exported 7 web assets to `assets/web/` (kebab-case, WebP+JPG, 38–192KB): emerald card/ritual, blaine, feminine, bright, fresh hero, og-image 1200×630
+  - Rewrote 4 cards to scent names + categories + slot-carryover prices; per-scent UTM/WA/data attrs; Blaine card object-position 70% (bottle right)
+  - Hero → Fresh Tickled; ritual → Emerald ingredients macro + rewritten wash/serum/lotion steps; section-head copy updated
+  - Meta description rewritten (110 chars); OG/Twitter → https://zaleavelle.com/og-image.jpg (CNAME domain — Step 3 unblocked by PIL export)
+  - JSON-LD 4 Products renamed with local image URLs; sticky default + shortNames → Emerald Sweet etc.
+  - PRD v1.2: UTM table, analytics example, FAQ Q1, appendix audit synced
+  - Verified: old names gone, zero picsum, 6 balanced picture tags, JSON-LD 5 nodes, node --check clean
+- Files created/modified:
+  - `assets/web/` (13 files: 6 WebP + 7 JPG)
+  - `index.html`, `PRD.md`, `task_plan.md`, `findings.md`, `progress.md`
+
 ## Session: 2026-09-21 (Vector logo integration)
 
 ### Phase 6: Official logo integration
