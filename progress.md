@@ -2,6 +2,24 @@
 
 Chronological record of work performed, files changed, validation results, and errors.
 
+## Session: 2026-09-24 (Remove marketplace → Odoo Shop)
+
+### Phase 12: Remove marketplace → Odoo Shop
+
+- **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
+- **Interview:** scope = full de-marketplace (grid, Shopee links, Supabase products, shopee-sync, maintenance panel); replacement = CTA banner linking out to `https://zaleavelle.odoo.com/shop`; Odoo primary + WA support-only; backend deleted; SEO/analytics untouched
+- Actions taken:
+  - Slice 12a: `#produk` grid + tabs → `#shop` banner; anchors retargeted; nav `Belanja` → Odoo; sticky CTA + tracker deleted; product-grid CSS → `.shop-banner` CSS
+  - Slice 12b: Shopee purged (1 ref left: JSON-LD `sameAs`, intentional); 5 Odoo refs, 5 `data-cta="odoo"`; WA support-only
+  - Slice 12c: deleted maint cog/panel, Supabase CDN/config, data-layer JS, `supabase/` dir; static boot; restored `.btn-sm`; 1139 → 560 lines
+  - Slice 12d: all `#` anchors resolve; `node --check` clean ×3; planning files updated
+- Files created/modified:
+  - `index.html` (+~60/-~640)
+  - `supabase/` (deleted: `config.toml`, `functions/shopee-sync/index.ts`)
+  - `task_plan.md`, `findings.md`, `progress.md` (Phase 12)
+- Known debt: JSON-LD still lists 4 Products + Shopee `sameAs` with no on-page catalog (owner-deferred); PRD/GATES-SC/GATES-M8 reference removed modules
+- PRD v2.3 (2026-09-24): E1-E6/T1/T7-T8/risks/questions/appendix rewritten for Odoo era; Track 5 retired, Track 6 superseded (S4-S6); M7 added; Q6-Q8 closed, Q9-Q10 opened; checks: 15 sections, 6 `utm_`, 0 TODO/lorem; all legacy Shopee/Supabase/sticky mentions now retired/historical/debt contexts only
+
 ## Session: 2026-09-21
 
 ### Phase 1: Requirements & Discovery

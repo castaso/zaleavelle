@@ -87,10 +87,13 @@ Durable knowledge base for discoveries, evidence, and decisions during zaleavell
 
 | Decision | Rationale |
 |----------|-----------|
+| Odoo Shop (`https://zaleavelle.odoo.com/shop`) is the sole purchase channel (2026-09-24) | Owner interview: marketplace section removed altogether; `#shop` banner + nav/promo/kontak CTAs link out with `data-cta="odoo"` |
+| Static storefront, no backend | Supabase products fetch, maintenance panel, and `shopee-sync` edge function deleted; page is static HTML again (560 lines) |
+| JSON-LD Product nodes retained as known debt | `sameAs` Shopee URL + 4 Product offers kept per owner "leave SEO untouched"; mismatch vs no-catalog page flagged for follow-up |
 | Keep single-file for MVP | Simplicity; no build step required; GSAP CDN approach works |
 | ID-first, EN as appendix | Primary audience is Indonesian; EN can be added later |
 | Analytics via inline script | Avoids external dependencies; GA4 gtag snippet is lightweight |
-| Shopee as primary CTA | Existing Shopee store link present; highest conversion path for ID market |
+| ~~Shopee as primary CTA~~ (superseded Phase 12) | ~~Existing Shopee store link~~ → Odoo Shop is now the only purchase channel |
 
 ## Issues Encountered
 

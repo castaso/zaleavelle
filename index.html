@@ -90,7 +90,7 @@
   oversized kinetic type, stickers, ONE scroll-hijack (sticky-stack products), living mesh.
   Anchors kept: zaleavelle Didone wordmark + single rose accent.
   DIALS: DESIGN_VARIANCE 9 / MOTION_INTENSITY 8 / VISUAL_DENSITY 3
-  - Stack: single file, native CSS + Supabase CDN. No build step. No GSAP (grid needs no scroll-hijack).
+  - Stack: single file, native CSS. No build step. Storefront is static; checkout lives on Odoo Shop.
   - Serif justified (§4.1): brand wordmark is thin Didone; display = matching serif stack,
     emphasis = same-family italic only. No Fraunces / Instrument / Playfair defaults.
   - Palette locked: ONE rose accent (#9E3E4D light / #E3A7AC dark). No second accent,
@@ -168,6 +168,7 @@
   .btn-ghost:hover { background: var(--ink); color: var(--surface); }
   .btn .arr { display: inline-block; transition: transform 0.25s var(--spring); }
   .btn:hover .arr { transform: translateX(5px); }
+  .btn-sm { padding: 0.8rem 1.6rem; }
 
   /* ---------- Hero: kinetic oversized ---------- */
   .hero { max-width: 1400px; margin: 0 auto; padding: 4rem 4rem 5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; min-height: calc(100dvh - 68px); position: relative; }
@@ -225,38 +226,19 @@
   .promo-dots button { width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; cursor: pointer; padding: 0; }
   .promo-dots button.on { background: var(--accent); border-color: var(--accent); }
 
-  /* ---------- BEST SELLER grid (Scarlett-style tabs + tiles) ---------- */
-  .tabs { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.75rem 0 2rem; }
-  .tab { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; border: 2px solid var(--ink); background: transparent; color: var(--ink-2); border-radius: 999px; padding: 0.6rem 1.4rem; cursor: pointer; transition: background 0.25s, color 0.25s; }
-  .tab:hover { border-color: var(--accent); color: var(--accent); }
-  .tab.on { background: var(--ink); border-color: var(--ink); color: var(--surface); }
-  #stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
-  .stack-card:nth-child(odd) .p-card { transform: rotate(-1deg); }
-  .stack-card:nth-child(even) .p-card { transform: rotate(1deg); }
-  .p-card { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); box-shadow: 8px 8px 0 var(--accent-soft); overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: transform 0.3s var(--spring); }
-  .p-card:hover { transform: translateY(-6px) rotate(0) !important; }
-  .p-media { aspect-ratio: 1/1; background: var(--surface-2); overflow: hidden; position: relative; min-height: 0; }
-  .p-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--spring); }
-  .p-card:hover .p-media img { transform: scale(1.05) rotate(0.5deg); }
-  .p-media img.zoom-out { transform: scale(0.82); }
-  .p-card:hover .p-media img.zoom-out { transform: scale(0.88) rotate(0.5deg); }
-  .p-media.tint { background: radial-gradient(110% 100% at 30% 20%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 80% 90%, var(--peach-1), transparent 55%), var(--surface-2); }
-  .disc-badge { position: absolute; top: 0.9rem; left: 0.9rem; background: var(--accent); color: #fff; border: 2px solid var(--ink); border-radius: 999px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.9rem; transform: rotate(-4deg); }
-  .p-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
-  .cat { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .name { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.1; }
-  .price-row { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.25rem; }
-  .price { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--ink); }
-  .was-price { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); text-decoration: line-through; }
-  .why { color: var(--ink-2); font-size: 0.9rem; }
-  .p-body .p-ctas { margin-top: auto; padding-top: 1rem; }
-  .p-num { display: none; }
-  .p-body .btn { margin-top: 1.75rem; width: fit-content; }
-  .p-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; align-items: center; }
-  .p-ctas .btn { margin-top: 0; }
-  .btn-sm { padding: 0.8rem 1.6rem; }
-  .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
-  .oos-badge { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; background: var(--accent); border: 2px solid var(--ink); border-radius: 999px; padding: 0.45rem 1.1rem; transform: rotate(-2deg); }
+  /* ---------- Shop banner (Odoo storefront) ---------- */
+  .shop-banner { border: 2px solid var(--ink); border-radius: 24px; background: var(--ink); color: var(--surface); padding: 4rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; transform: rotate(-0.5deg); box-shadow: 12px 12px 0 var(--accent-soft); }
+  .shop-banner h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.02; margin-bottom: 1rem; }
+  .shop-banner h3 em { font-style: italic; color: var(--rose-1); }
+  .shop-banner p { opacity: 0.75; margin-bottom: 2rem; max-width: 46ch; }
+  .shop-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .shop-banner .btn-primary { background: var(--surface); color: var(--ink); }
+  .shop-banner .btn-primary:hover { background: var(--accent); color: #fff; }
+  .shop-banner .btn-ghost { color: var(--surface); border-color: var(--surface); }
+  .shop-banner .btn-ghost:hover { background: var(--surface); color: var(--ink); }
+  .shop-points { list-style: none; display: grid; gap: 0.9rem; }
+  .shop-points li { border: 2px solid currentColor; border-radius: var(--radius-card); padding: 0.9rem 1.2rem; font-size: 0.8rem; }
+  .shop-points li b { display: block; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rose-1); margin-bottom: 0.25rem; }
 
   /* ---------- Ritual ---------- */
   .ritual { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--surface-2); }
@@ -296,58 +278,6 @@
   footer { border-top: 2px solid var(--ink); margin-top: 2rem; }
   .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 2rem; padding-bottom: 6rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
-  /* ---------- Sticky mobile CTA (same intent only) ---------- */
-  #stickyCta { position: fixed; left: 50%; bottom: 1.25rem; transform: translate(-50%, 150%); z-index: 45; transition: transform 0.4s var(--spring); }
-  #stickyCta.show { transform: translate(-50%, 0) rotate(-1deg); }
-
-  /* ---------- Maintenance: hover-reveal cog + slide-over panel ---------- */
-  #maintCog {
-    position: fixed; left: 1rem; bottom: 1rem; z-index: 70;
-    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
-    background: transparent; border: 0; padding: 6px; cursor: pointer;
-    opacity: 0; transition: opacity 0.3s var(--spring), transform 0.4s var(--spring);
-    border-radius: 50%; color: var(--muted);
-  }
-  #maintCog:hover, #maintCog:focus-visible, #maintCog.open { opacity: 0.9; }
-  #maintCog:hover svg { transform: rotate(45deg); }
-  #maintCog svg { width: 100%; height: 100%; transition: transform 0.4s var(--spring); }
-  #maintCog:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; opacity: 0.9; }
-  @media (pointer: coarse) { #maintCog { opacity: 0.35; } }
-  #maintPanel {
-    position: fixed; top: 0; left: 0; bottom: 0; z-index: 75;
-    width: min(420px, 94vw); overflow-y: auto;
-    background: var(--surface); color: var(--ink);
-    border-right: 2px solid var(--ink);
-    box-shadow: 8px 0 0 var(--accent-soft);
-    transform: translateX(-110%); transition: transform 0.45s var(--spring);
-    padding: 1.5rem;
-  }
-  #maintPanel.open { transform: none; }
-  #maintPanel h2 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 0.25rem; }
-  #maintPanel .maint-sub { font-size: 0.8rem; color: var(--ink-2); margin-bottom: 1.25rem; }
-  .maint-row { display: flex; gap: 0.75rem; align-items: center; border: 2px solid var(--ink); border-radius: var(--radius-card); padding: 0.75rem; margin-bottom: 0.75rem; background: var(--surface); }
-  .maint-row img { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; border: 2px solid var(--line); flex: none; }
-  .maint-row .m-info { flex: 1; min-width: 0; }
-  .maint-row .m-info b { display: block; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .maint-row .m-info span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); }
-  .maint-row .m-off { opacity: 0.55; }
-  .maint-btn { border: 2px solid var(--ink); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 0.4rem 0.9rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; cursor: pointer; white-space: nowrap; }
-  .maint-btn:hover { background: var(--ink); color: var(--surface); }
-  .maint-btn.danger:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .maint-btn.primary { background: var(--ink); color: var(--surface); }
-  .maint-btn.primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
-  #maintForm label { display: block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); margin: 0.9rem 0 0.3rem; }
-  #maintForm input, #maintForm textarea { width: 100%; font: inherit; font-size: 0.9rem; color: var(--ink); background: var(--surface); border: 2px solid var(--ink); border-radius: 10px; padding: 0.6rem 0.8rem; }
-  #maintForm textarea { min-height: 76px; resize: vertical; }
-  #maintForm .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  #maintForm .m-actions { display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap; }
-  #maintStatus { font-size: 0.8rem; color: var(--ink-2); margin-bottom: 1rem; min-height: 1.2em; }
-  #maintStatus.err { color: var(--accent); }
-  .maint-tools { display: flex; gap: 0.75rem; margin: 1.25rem 0; flex-wrap: wrap; }
-  @media (prefers-reduced-motion: reduce) {
-    #maintCog svg, #maintCog, #maintPanel { transition: none !important; }
-  }
-
   /* ---------- Reveal (IO-based) ---------- */
   .reveal { opacity: 0; transform: translateY(28px) rotate(0.5deg); transition: opacity 0.7s var(--spring), transform 0.7s var(--spring); }
   .reveal.in { opacity: 1; transform: none; }
@@ -369,14 +299,12 @@
     .hero-media { aspect-ratio: 4/3; max-height: none; }
     .sticker.s1 { right: 6%; } .sticker.s2 { left: 4%; }
     .scroll-hint { display: none; }
-    #stack { grid-template-columns: 1fr 1fr; }
     .promo { padding: 1.5rem 1.5rem 0; }
     .steps { grid-template-columns: 1fr; }
-    .community { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+    .community, .shop-banner { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
     section.block { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   }
   @media (max-width: 600px) {
-    #stack { grid-template-columns: 1fr; }
     .social-grid { grid-template-columns: 1fr; }
     .sticker { display: none; }
   }
@@ -388,12 +316,12 @@
   <div class="nav-inner">
     <a class="wordmark" href="#top" aria-label="zaleavelle beranda"><img src="assets/zaleavelle-mark.svg" alt="" width="320" height="320"></a>
     <ul class="nav-links">
-      <li><a href="#produk">Belanja</a></li>
+      <li><a href="https://zaleavelle.odoo.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="nav_link">Belanja</a></li>
       <li><a href="#ritual">Ritual</a></li>
       <li><a href="#tentang">Tentang</a></li>
     </ul>
     <div style="display:flex;gap:.75rem;align-items:center">
-      <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle!" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="nav_cta">Beli</a>
+      <a href="https://zaleavelle.odoo.com/shop" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="nav_cta">Beli</a>
     </div>
   </div>
 </header>
@@ -411,7 +339,7 @@
       </h1>
       <p class="sub">Rutinitas tiga langkah yang lembut untuk kulit lembap dan tenang setiap hari.</p>
       <div class="hero-ctas">
-        <a href="#produk" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+        <a href="#shop" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
         <a href="#ritual" class="btn btn-ghost">Lihat Ritual</a>
       </div>
     </div>
@@ -429,7 +357,6 @@
       <div class="wall-logos">
         <img src="https://cdn.simpleicons.org/instagram/1C1A19" alt="Instagram" loading="lazy">
         <img src="https://cdn.simpleicons.org/tiktok/1C1A19" alt="TikTok" loading="lazy">
-        <img src="https://cdn.simpleicons.org/shopee/1C1A19" alt="Shopee" loading="lazy">
         <img src="https://cdn.simpleicons.org/whatsapp/1C1A19" alt="WhatsApp" loading="lazy">
       </div>
     </div>
@@ -447,7 +374,7 @@
       </div>
       <div class="promo-slide brand">
         <h2>Lembut · <em>Autentik</em> · Konsisten</h2>
-        <a href="#produk" class="btn btn-ghost">Belanja Sekarang</a>
+        <a href="https://zaleavelle.odoo.com/shop" class="btn btn-ghost" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="promo_cta">Belanja Sekarang</a>
       </div>
     </div>
     <div class="promo-dots" role="tablist" aria-label="Promo">
@@ -457,80 +384,21 @@
     </div>
   </div>
 
-  <section class="block wrap" id="produk">
-    <div class="sec-head reveal">
-      <h2>Best <em>Seller</em></h2>
-      <p>Body wash, body lotion, dan body serum dalam varian aroma favorit.</p>
-    </div>
-    <div class="tabs" role="tablist" aria-label="Kategori produk">
-      <button type="button" class="tab on" data-tab="all" role="tab" aria-selected="true">Semua</button>
-      <button type="button" class="tab" data-tab="Body Wash" role="tab" aria-selected="false">Body Wash</button>
-      <button type="button" class="tab" data-tab="Body Lotion" role="tab" aria-selected="false">Body Lotion</button>
-      <button type="button" class="tab" data-tab="Body Serum" role="tab" aria-selected="false">Body Serum</button>
-    </div>
-    <div id="stack">
-      <div class="stack-card">
-        <article class="p-card" data-cat="Body Wash">
-          <div class="p-media"><picture><source srcset="assets/web/emerald-sweet-wash.webp" type="image/webp"><img src="assets/web/emerald-sweet-wash.jpg" alt="Emerald Sweet Green Body Wash zaleavelle" loading="lazy"></picture></div>
-          <div class="p-body">
-            <div class="cat">Body Wash</div>
-            <div class="name">Emerald Sweet</div>
-            <div class="price-row"><span class="price">Rp 389.000</span></div>
-            <p class="why">Body wash dengan glitter lembut, Niacinamide, dan aroma manis yang tahan lama.</p>
-            <div class="p-ctas">
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Emerald%20Sweet%20%28Rp%20389.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Emerald Sweet" data-price="389000" data-utm-content="emerald_sweet_cta">Beli</a>
-            </div>
-          </div>
-        </article>
+  <section class="block wrap" id="shop">
+    <div class="shop-banner reveal">
+      <div>
+        <h3>Belanja di <em>toko resmi</em> kami.</h3>
+        <p>Katalog lengkap Emerald Sweet, Blaine Floral, Feminine Blush, dan Bright Petal — stok real-time dan checkout aman via Odoo Shop.</p>
+        <div class="shop-ctas">
+          <a href="https://zaleavelle.odoo.com/shop" class="btn btn-primary" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="shop_banner">Belanja Sekarang <span class="arr">→</span></a>
+          <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle!" class="btn btn-ghost" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Support" data-utm-content="shop_support">Chat WhatsApp</a>
+        </div>
       </div>
-      <div class="stack-card">
-        <article class="p-card" data-cat="Body Lotion">
-          <div class="p-media tint"><picture><source srcset="assets/web/blaine-floral-lotion.webp" type="image/webp"><img src="assets/web/blaine-floral-lotion.jpg" alt="Blaine Floral Whitening Body Lotion zaleavelle" loading="lazy" style="object-position:70% 50%"></picture></div>
-          <div class="p-body">
-            <div class="cat">Body Lotion</div>
-            <div class="name">Blaine Floral</div>
-            <div class="price-row"><span class="price">Rp 185.000</span></div>
-            <p class="why">Body lotion pencerah dengan Niacinamide 10% dan Vitamin E.</p>
-            <div class="p-ctas">
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Blaine%20Floral%20%28Rp%20185.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Blaine Floral" data-price="185000" data-utm-content="blaine_floral_cta">Beli</a>
-            </div>
-          </div>
-        </article>
-      </div>
-      <div class="stack-card">
-        <article class="p-card" data-cat="Body Lotion">
-          <div class="p-media"><picture><source srcset="assets/web/feminine-blush-lotion.webp" type="image/webp"><img src="assets/web/feminine-blush-lotion.jpg" alt="Feminine Blush Whitening Body Lotion zaleavelle" loading="lazy"></picture></div>
-          <div class="p-body">
-            <div class="cat">Body Lotion</div>
-            <div class="name">Feminine Blush</div>
-            <div class="price-row"><span class="price">Rp 145.000</span></div>
-            <p class="why">Body lotion pelembap dengan aroma floral manis untuk kulit halus.</p>
-            <div class="p-ctas">
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Feminine%20Blush%20%28Rp%20145.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Feminine Blush" data-price="145000" data-utm-content="feminine_blush_cta">Beli</a>
-            </div>
-          </div>
-        </article>
-      </div>
-          </div>
-        </article>
-      </div>
-      <div class="stack-card">
-        <article class="p-card" data-cat="Body Serum">
-          <div class="p-media tint"><picture><source srcset="assets/web/bright-petal-serum.webp" type="image/webp"><img src="assets/web/bright-petal-serum.jpg" alt="Bright Petal Calendula Body Serum zaleavelle" loading="lazy" class="zoom-out"></picture></div>
-          <div class="p-body">
-            <div class="cat">Body Serum</div>
-            <div class="name">Bright Petal</div>
-            <div class="price-row"><span class="price">Rp 165.000</span></div>
-            <p class="why">Body serum calendula untuk kulit tampak cerah dan ternutrisi.</p>
-            <div class="p-ctas">
-              <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Bright%20Petal%20%28Rp%20165.000%29." class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Bright Petal" data-price="165000" data-utm-content="bright_petal_cta">Beli</a>
-            </div>
-          </div>
-        </article>
-      </div>
-          </div>
-        </article>
-      </div>
+      <ul class="shop-points">
+        <li><b>100% Original</b>Produk resmi langsung dari zaleavelle.</li>
+        <li><b>Pembayaran Aman</b>Checkout terproteksi via Odoo Shop.</li>
+        <li><b>Butuh Bantuan?</b>Tim kami siap membantu via WhatsApp.</li>
+      </ul>
     </div>
   </section>
 
@@ -570,12 +438,12 @@
       <div>
         <h3>Bergabung dengan <em>komunitas</em> kami.</h3>
         <p>Tips skincare, ulasan jujur, dan diskusi santai. Mulai dari katalog, lanjut mengobrol.</p>
-        <a href="#produk" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+        <a href="#shop" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
       </div>
       <div class="social-grid">
         <a href="https://instagram.com/zaleavelle" target="_blank" rel="noopener" data-cta="social" data-product="Instagram" data-utm-content="instagram_profile">Instagram</a>
         <a href="https://tiktok.com/@zaleavelle.official" target="_blank" rel="noopener" data-cta="social" data-product="TikTok" data-utm-content="tiktok_profile">TikTok</a>
-        <a href="https://s.shopee.co.id/7VDaP3qhE5?utm_source=zaleavelle&amp;utm_medium=referral&amp;utm_campaign=landing_page&amp;utm_content=shopee_profile" target="_blank" rel="noopener" data-cta="shopee" data-product="Shopee Store" data-utm-content="shopee_profile">Shopee</a>
+        <a href="https://zaleavelle.odoo.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="odoo_profile">Toko Resmi</a>
         <a href="https://wa.me/6282121262593" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="whatsapp_profile">WhatsApp</a>
       </div>
     </div>
@@ -589,82 +457,10 @@
   </div>
 </footer>
 
-<button id="maintCog" type="button" aria-label="Buka modul perawatan produk" title="Perawatan produk">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-</button>
-
-<div id="maintPanel" role="dialog" aria-modal="true" aria-labelledby="maintTitle" hidden>
-  <h2 id="maintTitle">Perawatan Produk</h2>
-  <p class="maint-sub">Ubah, tambah, atau nonaktifkan produk yang tampil di halaman.</p>
-  <div id="maintStatus" role="status"></div>
-  <div id="maintList"></div>
-  <div class="maint-tools">
-    <button class="maint-btn primary" id="maintAdd" type="button">+ Tambah produk</button>
-    <button class="maint-btn" id="maintBackup" type="button">Unduh JSON</button>
-    <button class="maint-btn" id="maintClose" type="button">Tutup</button>
-  </div>
-  <form id="maintForm" hidden novalidate>
-    <label for="mfName">Nama</label>
-    <input id="mfName" name="name" maxlength="80" required>
-    <div class="m-grid">
-      <div><label for="mfSku">SKU (unik)</label><input id="mfSku" name="sku" maxlength="24" placeholder="ZV-WASH-EMR-260" required></div>
-      <div><label for="mfSlug">Slug (unik)</label><input id="mfSlug" name="slug" maxlength="60" required></div>
-    </div>
-    <div class="m-grid">
-      <div><label for="mfCategory">Kategori</label><input id="mfCategory" name="category" maxlength="40" required></div>
-      <div><label for="mfVolume">Volume</label><input id="mfVolume" name="volume" maxlength="20" placeholder="260 mL"></div>
-    </div>
-    <div class="m-grid">
-      <div><label for="mfPrice">Harga (Rp)</label><input id="mfPrice" name="price" type="number" min="1000" max="10000000" step="1000" required></div>
-      <div><label for="mfCompare">Harga coret (Rp, opsional)</label><input id="mfCompare" name="compare" type="number" min="0" max="10000000" step="1000" placeholder="kosong = tanpa diskon"></div>
-    </div>
-    <div class="m-grid">
-      <div><label for="mfStock">Stok</label><input id="mfStock" name="stock" type="number" min="0" max="1000000" step="1" value="0"></div>
-      <div><label for="mfSort">Urutan</label><input id="mfSort" name="sort" type="number" min="0" max="99" value="0"></div>
-    </div>
-    <label for="mfBpom">No. BPOM</label>
-    <input id="mfBpom" name="bpom" maxlength="30" placeholder="NA 18260102605">
-    <label for="mfDesc">Deskripsi</label>
-    <textarea id="mfDesc" name="description" maxlength="280"></textarea>
-    <label for="mfWebp">URL gambar WebP</label>
-    <input id="mfWebp" name="image_webp" type="url" maxlength="500" placeholder="assets/web/nama.webp">
-    <label for="mfJpg">URL gambar JPG</label>
-    <input id="mfJpg" name="image_jpg" type="url" maxlength="500" placeholder="assets/web/nama.jpg">
-    <label for="mfImgFile">atau unggah gambar (disimpan di Supabase Storage)</label>
-    <input id="mfImgFile" type="file" accept="image/*">
-    <div class="m-grid">
-      <div><label for="mfAlt">Alt gambar</label><input id="mfAlt" name="image_alt" maxlength="160"></div>
-      <div><label for="mfFocus">Fokus gambar</label><input id="mfFocus" name="img_focus" maxlength="20" placeholder="50% 50%"></div>
-    </div>
-    <label for="mfShopee">URL Shopee</label>
-    <input id="mfShopee" name="shopee_url" type="url" maxlength="500">
-    <div class="m-actions" style="margin-top:.6rem">
-      <button class="maint-btn" type="button" id="mfSync">Tarik dari Shopee</button>
-      <span id="mfSyncNote" class="maint-sub" style="margin:0;align-self:center"></span>
-    </div>
-    <label for="mfWa">Nomor WhatsApp</label>
-    <input id="mfWa" name="wa_number" inputmode="numeric" maxlength="16" placeholder="6282121262593">
-    <label style="display:flex;gap:.5rem;align-items:center;margin-top:1rem"><input id="mfActive" name="active" type="checkbox" checked style="width:auto"> Tampilkan di halaman</label>
-    <div class="m-actions">
-      <button class="maint-btn primary" type="submit">Simpan</button>
-      <button class="maint-btn" type="button" id="maintCancel">Batal</button>
-    </div>
-  </form>
-</div>
-
-<a href="https://wa.me/6282121262593?text=Halo%20zaleavelle%2C%20saya%20mau%20tanya%20tentang%20Emerald%20Sweet%20%28Rp%20389.000%29." class="btn btn-primary" id="stickyCta" target="_blank" rel="noopener" data-cta="whatsapp" data-product="Emerald Sweet" data-price="389000" data-utm-content="sticky_cta">Beli Emerald Sweet</a>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // Backend config: publishable key is public by design (RLS enforces access).
-  window.ZV_SUPABASE_URL = "https://josmtglrdbprgcwktsps.supabase.co";
-  window.ZV_SUPABASE_KEY = "sb_publishable_T8YP9HdRIxeJSWKVy605Cw_tC50ClCz";
-</script>
 <script>
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Reveal on scroll via IntersectionObserver (no scroll listeners, §5.D).
-  // Deferred: zvInitReveals() runs from the boot controller after products render.
   function zvInitReveals() {
     var els = document.querySelectorAll(".reveal:not(.in)");
     if (reduceMotion) { els.forEach(function (el) { el.classList.add("in"); }); return; }
@@ -674,45 +470,13 @@
     els.forEach(function (el) { io.observe(el); });
   }
 
-  // Nav border + sticky CTA visibility via sentinels (IO, not scroll events).
-  // Sticky CTA is product-aware (PRD E5): it tracks the card nearest the
-  // viewport center and points at that product's Shopee URL.
+  // Nav border via sentinel (IO, not scroll events).
   (function () {
     var nav = document.getElementById("siteNav");
     new IntersectionObserver(function (en) {
       nav.classList.toggle("scrolled", !en[0].isIntersecting);
     }).observe(document.getElementById("navSentinel"));
-    var cta = document.getElementById("stickyCta"), past = false, atContact = false;
-    function sync() { cta.classList.toggle("show", past && !atContact); }
-    new IntersectionObserver(function (en) { past = !en[0].isIntersecting; sync(); }).observe(document.getElementById("hero"));
-    new IntersectionObserver(function (en) { atContact = en[0].isIntersecting; sync(); }).observe(document.getElementById("kontak"));
   })();
-
-  // Product-aware sticky CTA (PRD E5, WA-primary): it tracks the card nearest
-  // the viewport center and points at that product's WhatsApp link.
-  // Reads data-* only, so DB-driven renames/prices flow through untouched.
-  function zvTrackProductCards() {
-    var cta = document.getElementById("stickyCta");
-    var cards = document.querySelectorAll(".p-card");
-    if (!cards.length || !cta) return;
-    var active = null;
-    var prodIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var link = en.target.querySelector('[data-cta="whatsapp"]');
-        if (!link) return;
-        var name = link.getAttribute("data-product");
-        if (!name || name === active) return;
-        active = name;
-        cta.href = link.href;
-        cta.setAttribute("data-product", name);
-        cta.setAttribute("data-price", link.getAttribute("data-price") || "");
-        cta.setAttribute("data-utm-content", "sticky_cta");
-        cta.textContent = "Beli " + name;
-      });
-    }, { rootMargin: "-40% 0px -40% 0px" });
-    cards.forEach(function (c) { prodIO.observe(c); });
-  }
 
   // Outbound click tracking (PRD E4): every [data-cta] link queues a
   // select_item event. Works with real GA4 once window.ZV_GA_ID is set;
@@ -763,126 +527,9 @@
 
 </script>
 <script>
-  // ---------- Storefront data layer (Supabase) + boot controller ----------
-  // Static HTML cards above remain the no-JS / fetch-failure fallback.
-  // On success the stack re-renders from the DB, then scroll FX init.
-  var zvDbClient = null;
-  function zvDb() {
-    if (zvDbClient) return zvDbClient;
-    if (!window.supabase || !window.ZV_SUPABASE_URL || !window.ZV_SUPABASE_KEY) return null;
-    zvDbClient = window.supabase.createClient(window.ZV_SUPABASE_URL, window.ZV_SUPABASE_KEY);
-    return zvDbClient;
-  }
-  function zvEsc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-  }
-  function zvPrice(n) { return "Rp " + Number(n || 0).toLocaleString("id-ID"); }
-  function zvCompare(p) {
-    // Discount badge + strikethrough only when a real compare price exists.
-    // Never invent discounts: compare_at_price unset (or <= price) renders clean.
-    var cmp = Number(p.compare_at_price) || 0;
-    var price = Number(p.price_idr) || 0;
-    if (!(cmp > price)) return { badge: "", was: "" };
-    var pct = Math.round((1 - price / cmp) * 100);
-    return {
-      badge: '<span class="disc-badge">-' + pct + '%</span>',
-      was: '<span class="was-price">' + zvEsc(zvPrice(cmp)) + '</span>'
-    };
-  }
-  function zvShopeeHref(base, slug) {
-    var utm = "utm_source=zaleavelle&utm_medium=referral&utm_campaign=product_launch&utm_content=" + slug + "_cta";
-    return base + (base.indexOf("?") >= 0 ? "&" : "?") + utm;
-  }
-  function zvWaHref(number, name, price) {
-    return "https://wa.me/" + number + "?text=" + encodeURIComponent("Halo zaleavelle, saya mau tanya tentang " + name + " (" + zvPrice(price) + ").");
-  }
-  function zvCardHTML(p, i, total) {
-    var focus = p.img_focus || "50% 50%";
-    var focusAttr = (focus === "50% 50%") ? "" : ' style="object-position:' + zvEsc(focus) + '"';
-    var zoomCls = (p.img_zoom === "out") ? ' class="zoom-out"' : "";
-    var oos = (p.stock != null && Number(p.stock) <= 0);
-    var cmp = zvCompare(p);
-    var ctas = oos
-      ? '<div class="p-ctas"><span class="oos-badge">Stok Habis</span>' +
-        '<span class="btn btn-ghost btn-sm" aria-disabled="true">Segera Hadir</span></div>'
-      : '<div class="p-ctas">' +
-      '<a href="' + zvEsc(zvWaHref(p.wa_number, p.name, p.price_idr)) + '" class="btn btn-primary btn-sm" target="_blank" rel="noopener"' +
-      ' data-cta="whatsapp" data-product="' + zvEsc(p.name) + '" data-price="' + zvEsc(p.price_idr) + '" data-utm-content="' + zvEsc(p.slug) + '_cta">Beli</a>' +
-      '</div>';
-    return '<div class="stack-card"><article class="p-card" data-cat="' + zvEsc(p.category) + '">' +
-      '<div class="p-media"><picture>' +
-      (p.image_webp ? '<source srcset="' + zvEsc(p.image_webp) + '" type="image/webp">' : '') +
-      '<img src="' + zvEsc(p.image_jpg) + '" alt="' + zvEsc(p.image_alt || p.name) + '" loading="lazy"' + focusAttr + zoomCls + '>' +
-      '</picture>' + cmp.badge + '</div>' +
-      '<div class="p-body">' +
-      '<div class="cat">' + zvEsc(p.category) + '</div>' +
-      '<div class="name">' + zvEsc(p.name) + '</div>' +
-      '<div class="price-row"><span class="price">' + zvEsc(zvPrice(p.price_idr)) + '</span>' + cmp.was + '</div>' +
-      '<p class="why">' + zvEsc(p.description) + '</p>' +
-      ctas +
-      '</div></article></div>';
-  }
-  function zvRenderProducts(rows) {
-    var stack = document.getElementById("stack");
-    if (!stack || !rows || !rows.length) return false;
-    var html = "";
-    for (var i = 0; i < rows.length; i++) html += zvCardHTML(rows[i], i, rows.length);
-    stack.innerHTML = html;
-    return true;
-  }
-  function zvFetchProducts(timeoutMs) {
-    var db = zvDb();
-    if (!db) return Promise.resolve(null);
-    var fetchP = db.from("products").select("*").eq("active", true).order("sort_order", { ascending: true }).then(function (res) {
-      if (res.error) throw res.error;
-      return res.data;
-    });
-    var timeoutP = new Promise(function (_, reject) {
-      setTimeout(function () { reject(new Error("timeout")); }, timeoutMs || 4000);
-    });
-    return Promise.race([fetchP, timeoutP]).catch(function () { return null; });
-  }
-  // Boot: try the DB, render on success, then init scroll FX either way.
-  (function zvBoot() {
-    function init() { zvInitReveals(); zvTrackProductCards(); }
-    zvFetchProducts(4000).then(function (rows) {
-      if (rows && rows.length) { window.zvShopRows = rows; zvRenderProducts(rows); }
-      init();
-    }).catch(function () { init(); });
-  })();
-
-  // Category tabs: filter DB rows when present, else hide/show static tiles.
-  (function zvTabs() {
-    var tabs = document.querySelectorAll(".tab");
-    if (!tabs.length) return;
-    function apply(cat) {
-      tabs.forEach(function (b) {
-        var on = b.getAttribute("data-tab") === cat;
-        b.classList.toggle("on", on);
-        b.setAttribute("aria-selected", on ? "true" : "false");
-      });
-      var rows = window.zvShopRows;
-      if (rows && rows.length) {
-        var list = (cat === "all") ? rows : rows.filter(function (p) { return p.category === cat; });
-        var stack = document.getElementById("stack");
-        if (!list.length) {
-          stack.innerHTML = "<p class='maint-sub' style='grid-column:1/-1'>Belum ada produk di kategori ini.</p>";
-        } else {
-          zvRenderProducts(list);
-        }
-        zvTrackProductCards();
-      } else {
-        document.querySelectorAll("#stack .p-card").forEach(function (c) {
-          c.parentElement.style.display = (cat === "all" || c.getAttribute("data-cat") === cat) ? "" : "none";
-        });
-      }
-    }
-    tabs.forEach(function (b) {
-      b.addEventListener("click", function () { apply(b.getAttribute("data-tab")); });
-    });
-  })();
+  // ---------- Page boot: fully static storefront (Odoo) ----------
+  // No backend: reveals init directly; promo carousel below.
+  zvInitReveals();
 
   // Promo carousel: auto-rotate with dots, pause on hover, static when reduced.
   (function zvPromo() {
@@ -906,233 +553,6 @@
       view.addEventListener("pointerleave", play);
     }
     play();
-  })();
-</script>
-
-<script>
-  // ---------- Maintenance module: hover-reveal cog + CRUD panel ----------
-  // No gate by owner decision. Writes use the publishable key under open-write
-  // RLS; the Unduh JSON button is the backup path. Tracking-safe: panel links
-  // carry no data-cta, so clicks never pollute analytics.
-  (function () {
-    var cog = document.getElementById("maintCog");
-    var panel = document.getElementById("maintPanel");
-    var statusEl = document.getElementById("maintStatus");
-    var listEl = document.getElementById("maintList");
-    var form = document.getElementById("maintForm");
-    var editingId = null;
-    var zvSyncedAt = null;
-    if (!cog || !panel) return;
-
-    function status(msg, isErr) {
-      if (!statusEl) return;
-      statusEl.textContent = msg || "";
-      statusEl.className = isErr ? "err" : "";
-      statusEl.id = "maintStatus";
-    }
-    function openPanel() {
-      panel.hidden = false;
-      requestAnimationFrame(function () { panel.classList.add("open"); });
-      cog.classList.add("open");
-      cog.setAttribute("aria-expanded", "true");
-      refreshList();
-    }
-    function closePanel() {
-      panel.classList.remove("open");
-      cog.classList.remove("open");
-      cog.setAttribute("aria-expanded", "false");
-      setTimeout(function () { if (!panel.classList.contains("open")) panel.hidden = true; }, 450);
-    }
-    cog.addEventListener("click", function () {
-      if (panel.hidden || !panel.classList.contains("open")) openPanel(); else closePanel();
-    });
-    document.getElementById("maintClose").addEventListener("click", closePanel);
-    document.getElementById("maintCancel").addEventListener("click", function () { form.hidden = true; editingId = null; });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && !panel.hidden && panel.classList.contains("open")) closePanel();
-    });
-
-    function rowHTML(p) {
-      var img = p.image_jpg || p.image_webp || "";
-      return '<div class="maint-row' + (p.active ? "" : " m-off") + '">' +
-        (img ? '<img src="' + zvEsc(img) + '" alt="" loading="lazy">' : "") +
-        '<div class="m-info"><b>' + zvEsc(p.name) + '</b>' +
-        '<span>' + zvEsc(p.sku || "-") + " · " + zvEsc(zvPrice(p.price_idr)) + " · stok " + zvEsc(p.stock == null ? "?" : p.stock) + (p.active ? "" : " · nonaktif") + '</span></div>' +
-        '<button class="maint-btn" type="button" data-edit="' + zvEsc(p.id) + '">Ubah</button>' +
-        '<button class="maint-btn danger" type="button" data-del="' + zvEsc(p.id) + '" data-name="' + zvEsc(p.name) + '">Hapus</button>' +
-        '</div>';
-    }
-    function refreshList() {
-      var db = zvDb();
-      if (!db) { status("Backend tidak terjangkau (CDN/offline). Panel baca-saja.", true); return; }
-      status("Memuat produk…");
-      db.from("products").select("*").order("sort_order", { ascending: true }).then(function (res) {
-        if (res.error) { status("Gagal memuat: " + res.error.message, true); return; }
-        status("");
-        var rows = res.data || [];
-        window.zvMaintRows = rows;
-        if (!rows.length) { listEl.innerHTML = "<p class='maint-sub'>Belum ada produk. Tambahkan yang pertama.</p>"; return; }
-        var html = "";
-        for (var i = 0; i < rows.length; i++) html += rowHTML(rows[i]);
-        listEl.innerHTML = html;
-      }).catch(function (err) { status("Gagal memuat: " + (err && err.message || err), true); });
-    }
-    listEl.addEventListener("click", function (e) {
-      var rows = window.zvMaintRows || [];
-      var editBtn = e.target.closest ? e.target.closest("[data-edit]") : null;
-      var delBtn = e.target.closest ? e.target.closest("[data-del]") : null;
-      if (editBtn) {
-        var row = null;
-        for (var i = 0; i < rows.length; i++) if (String(rows[i].id) === editBtn.getAttribute("data-edit")) row = rows[i];
-        if (row) fillForm(row);
-      } else if (delBtn) {
-        if (!window.confirm("Hapus \"" + delBtn.getAttribute("data-name") + "\" dari halaman?")) return;
-        var db = zvDb();
-        if (!db) { status("Backend tidak terjangkau.", true); return; }
-        status("Menghapus…");
-        db.from("products").delete().eq("id", delBtn.getAttribute("data-del")).then(function (res) {
-          if (res.error) { status("Gagal menghapus: " + res.error.message, true); return; }
-          status("Terhapus.");
-          refreshList();
-          zvFetchProducts(4000).then(function (r) { if (r && r.length) { zvRenderProducts(r); zvTrackProductCards(); } });
-        });
-      }
-    });
-
-    function fillForm(p) {
-      editingId = p.id || null;
-      zvSyncedAt = p.last_synced_at || null;
-      form.name.value = p.name || "";
-      form.sku.value = p.sku || "";
-      form.slug.value = p.slug || "";
-      form.category.value = p.category || "";
-      form.volume.value = p.volume || "";
-      form.price.value = p.price_idr == null ? "" : p.price_idr;
-      form.compare.value = p.compare_at_price == null ? "" : p.compare_at_price;
-      form.stock.value = p.stock == null ? 0 : p.stock;
-      form.bpom.value = p.bpom || "";
-      form.sort.value = p.sort_order == null ? 0 : p.sort_order;
-      form.description.value = p.description || "";
-      form.image_webp.value = p.image_webp || "";
-      form.image_jpg.value = p.image_jpg || "";
-      form.image_alt.value = p.image_alt || "";
-      form.img_focus.value = p.img_focus || "";
-      form.shopee_url.value = p.shopee_url || "";
-      form.wa_number.value = p.wa_number || "";
-      form.active.checked = p.active !== false;
-      form.hidden = false;
-      form.scrollIntoView({ block: "nearest" });
-    }
-    document.getElementById("maintAdd").addEventListener("click", function () {
-      fillForm({ active: true, sort_order: (window.zvMaintRows || []).length, wa_number: "6282121262593", shopee_url: "https://s.shopee.co.id/7VDaP3qhE5" });
-    });
-    // Auto-slug + auto-SKU from name for new rows.
-    form.name.addEventListener("input", function () {
-      if (editingId) return;
-      var slug = form.name.value.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 60);
-      form.slug.value = slug;
-      form.sku.value = ("ZV-" + slug.toUpperCase()).slice(0, 24);
-    });
-    // Upload to Supabase Storage, fill both image fields with the public URL.
-    document.getElementById("mfImgFile").addEventListener("change", function (e) {
-      var file = e.target.files && e.target.files[0];
-      if (!file) return;
-      var db = zvDb();
-      if (!db) { status("Backend tidak terjangkau — unggah dibatalkan.", true); e.target.value = ""; return; }
-      var slug = (form.slug.value || "produk").replace(/[^a-z0-9_]+/g, "_");
-      var ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 4) || "jpg";
-      var path = slug + "-" + Date.now() + "." + ext;
-      status("Mengunggah gambar…");
-      db.storage.from("product-images").upload(path, file, { upsert: true }).then(function (res) {
-        if (res.error) { status("Gagal mengunggah: " + res.error.message, true); return; }
-        var pub = db.storage.from("product-images").getPublicUrl(path);
-        var url = pub && pub.data && pub.data.publicUrl || "";
-        form.image_webp.value = url;
-        form.image_jpg.value = url;
-        status("Gambar terunggah.");
-      }).catch(function (err) { status("Gagal mengunggah: " + (err && err.message || err), true); });
-    });
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var db = zvDb();
-      if (!db) { status("Backend tidak terjangkau.", true); return; }
-      var payload = {
-        name: form.name.value.trim(),
-        sku: form.sku.value.trim().toUpperCase(),
-        slug: form.slug.value.trim().toLowerCase(),
-        category: form.category.value.trim(),
-        volume: form.volume.value.trim(),
-        price_idr: parseInt(form.price.value, 10) || 0,
-        compare_at_price: (function () { var c = parseInt(form.compare.value, 10); return c > 0 ? c : null; })(),
-        stock: Math.max(0, parseInt(form.stock.value, 10) || 0),
-        bpom: form.bpom.value.trim(),
-        sort_order: parseInt(form.sort.value, 10) || 0,
-        description: form.description.value.trim(),
-        image_webp: form.image_webp.value.trim(),
-        image_jpg: form.image_jpg.value.trim(),
-        image_alt: form.image_alt.value.trim(),
-        img_focus: form.img_focus.value.trim() || "50% 50%",
-        shopee_url: form.shopee_url.value.trim(),
-        wa_number: form.wa_number.value.trim(),
-        active: form.active.checked
-      };
-      if (!payload.name || !payload.sku || !payload.slug || !payload.category || !(payload.price_idr > 0)) {
-        status("Lengkapi nama, SKU, slug, kategori, dan harga yang valid.", true);
-        return;
-      }
-      if (zvSyncedAt) payload.last_synced_at = zvSyncedAt;
-      status("Menyimpan…");
-      var q = editingId
-        ? db.from("products").update(payload).eq("id", editingId)
-        : db.from("products").insert(payload);
-      q.then(function (res) {
-        if (res.error) { status("Gagal menyimpan: " + res.error.message, true); return; }
-        status("Tersimpan — halaman diperbarui.");
-        form.hidden = true;
-        editingId = null;
-        refreshList();
-        zvFetchProducts(4000).then(function (r) { if (r && r.length) { zvRenderProducts(r); zvTrackProductCards(); } });
-      }).catch(function (err) { status("Gagal menyimpan: " + (err && err.message || err), true); });
-    });
-    // Pull name/price/image/stock from the Shopee listing via edge function.
-    // Fills the form only — nothing is saved until Simpan is clicked.
-    document.getElementById("mfSync").addEventListener("click", function () {
-      var note = document.getElementById("mfSyncNote");
-      var db = zvDb();
-      var url = form.shopee_url.value.trim();
-      function say(t) { if (note) note.textContent = t; }
-      if (!db) { say("Backend tidak terjangkau."); return; }
-      if (!url) { say("Isi URL Shopee dulu."); return; }
-      say("Menarik data dari Shopee…");
-      db.functions.invoke("shopee-sync", { body: { url: url } }).then(function (res) {
-        if (res.error) { say("Gagal: " + res.error.message + " — isi manual."); return; }
-        var d = res.data || {};
-        if (d.error) { say("Shopee menolak (" + d.error + ") — isi manual."); return; }
-        if (d.name) form.name.value = d.name;
-        if (d.price > 0) form.price.value = d.price;
-        if (d.image) { form.image_webp.value = d.image; form.image_jpg.value = d.image; }
-        if (typeof d.stock === "number") form.stock.value = d.stock;
-        if (!form.image_alt.value && d.name) form.image_alt.value = d.name + " zaleavelle";
-        zvSyncedAt = new Date().toISOString();
-        say("Ditarik dari Shopee ✓ — periksa lalu Simpan.");
-      }).catch(function (err) { say("Gagal: " + (err && err.message || err) + " — isi manual."); });
-    });
-    // Backup: download all rows as JSON.
-    document.getElementById("maintBackup").addEventListener("click", function () {
-      var db = zvDb();
-      if (!db) { status("Backend tidak terjangkau.", true); return; }
-      db.from("products").select("*").order("sort_order", { ascending: true }).then(function (res) {
-        if (res.error) { status("Gagal mengunduh: " + res.error.message, true); return; }
-        var blob = new Blob([JSON.stringify(res.data || [], null, 2)], { type: "application/json" });
-        var a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "zaleavelle-products-backup.json";
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-        status("Cadangan diunduh.");
-      });
-    });
   })();
 </script>
 </body>

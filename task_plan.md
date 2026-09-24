@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 11 code complete. Next: owner SQL v3 (v2 + compare_at_price + last_synced_at + img_zoom) + deploy + URLs → verify → commit.
+Phase 12 code + PRD v2.3 complete. Next: visual check in browser + commit (uncommitted: index.html rewrite, supabase/ deletion, PRD + planning files).
 
 ## Current Phase
 
-Phase 11: Square tiles + WA-only BELI
+Phase 12: Remove marketplace → Odoo Shop
 
 ## Phases
 
@@ -107,6 +107,14 @@ Phase 11: Square tiles + WA-only BELI
 - [ ] Owner SQL v3 (v2 + compare_at_price + last_synced_at + img_zoom) + deploy + URLs + compare prices → verify → commit
 - **Status:** in_progress
 
+### Phase 12: Remove marketplace → Odoo Shop
+
+- [x] Slice 12a: `#produk` Best Seller grid + tabs → `#shop` banner (dark card, Odoo CTA + WA support, 3 trust points); hero/promo/kontak `#produk` anchors → `#shop`; nav `Belanja` → Odoo URL; sticky CTA + tracker + sentinel JS/CSS deleted
+- [x] Slice 12b: Shopee purged (social-grid link → `Toko Resmi`/Odoo, wall icon removed, all `data-cta="shopee"` gone); WA-buy CTAs replaced by `data-cta="odoo"` (nav ×2, promo, banner, kontak); WA kept as support only (banner + kontak)
+- [x] Slice 12c: backend deleted — maint cog/panel HTML + CSS + JS, Supabase CDN + config, storefront data layer (`zvDb/zvCardHTML/zvRenderProducts/zvFetchProducts/zvBoot/zvTabs`), `supabase/` dir (incl. `shopee-sync` edge function); boot is now static `zvInitReveals()` + promo carousel; restored `.btn-sm` (nav still uses it)
+- [x] Slice 12d verify: 0 `#produk`/maint/supabase/sticky/p-card refs; 1 `shopee` ref left intentionally (JSON-LD `sameAs`, SEO untouched per owner); 5 Odoo refs; 4 `data-cta="odoo"`; all `#` anchors resolve; `node --check` clean on all 3 inline blocks; 1139 → 560 lines
+- **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
+
 ## Key Questions
 
 1. ~~Should product CTAs link directly to Shopee product pages, or to a WhatsApp chat flow?~~ → Resolved for M1: Shopee primary + WA secondary (PRD recommendation)
@@ -119,6 +127,11 @@ Phase 11: Square tiles + WA-only BELI
 
 | Decision | Rationale |
 |----------|-----------|
+| Odoo Shop as sole storefront (Phase 12) | Owner interview 2026-09-24: remove marketplace section altogether, replace with https://zaleavelle.odoo.com/shop CTA banner |
+| Sticky CTA deleted, not converted | Owner chose "Nav to Odoo, sticky removed" — no floating buy button in Odoo era |
+| JSON-LD Product schema kept (tech debt) | Owner chose "Leave SEO untouched" — 4 Product nodes still reference prices/images with no on-page catalog; follow-up: strip to Organization or point offers at Odoo |
+| Ritual/promo copy kept, links retargeted | Owner chose "Keep copy, links to Odoo" — product names remain editorial-only |
+| Supabase backend deleted, not dormant | Owner chose delete/disable — no products table fetch, no maintenance panel, no shopee-sync function |
 | Solo mode (not orchestrated) | PRD doc task ~30min, tree depth 3, no code integration needed |
 | Single GATES.md (not gates/) | Below 30min threshold; subagent overhead not justified |
 | ID-only default with EN appendix | Simplifies MVP; EN can be added via i18n track later |

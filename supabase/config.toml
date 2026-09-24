@@ -1,8 +1,0 @@
-# Supabase CLI config — deploy edge functions with:
-#   supabase login && supabase link --project-ref josmtglrdbprgcwktsps
-#   supabase functions deploy shopee-sync
-project_id = "josmtglrdbprgcwktsps"
-
-[functions.shopee-sync]
-enabled = true
-verify_jwt = false
