@@ -5,7 +5,7 @@ Scope: Comprehensive PRD covering e-commerce conversion, landing page optimizati
 - [x] G1: PRD has clear Problem, Goals, Non-Goals sections with at least one measurable metric per goal
   CHECK: grep -c "^## " PRD.md
   EXPECT: >=8
-  EVIDENCE: 13 sections found
+   EVIDENCE: 15 sections found (re-verified post-PRD v2.4)
 
 - [x] G2: All 4 tracks (e-com, landing opt, brand/content, tech split) are covered with scope in/out
   CHECK: grep -E "Track [1-4]" PRD.md

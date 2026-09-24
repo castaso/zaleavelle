@@ -8,7 +8,7 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 13 code + PRD v2.4 complete. Next: visual check in browser + commit (uncommitted: index.html SEO, robots.txt, sitemap.xml, PRD + planning files).
+Phase 13 code + PRD v2.4 + gates cleanup complete. Next: visual check in browser + commit (uncommitted: index.html SEO, robots.txt, sitemap.xml, PRD, planning + gates files).
 
 ## Current Phase
 

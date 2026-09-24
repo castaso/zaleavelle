@@ -18,6 +18,16 @@ Chronological record of work performed, files changed, validation results, and e
   - `index.html`, `robots.txt` (new), `sitemap.xml` (new), `PRD.md`, `task_plan.md`, `findings.md`, `progress.md`
 - Known debt: offers without price (no rich results, accepted); 3 new scents imageless; GATES files still assert removed modules
 
+## Session: 2026-09-24 (Gates cleanup)
+
+- Actions taken:
+  - `GATES.md`: still green post-v2.4; G1 evidence refreshed 13 → 15 sections (all other checks re-measured: tracks 7, utm_ 6, seo/perf 15, accent 4, TODO 0)
+  - `GATES-SC.md`: SC1/SC2/SC5 hold (re-verified); SC3/SC4/SC6/SC7/SC8 ABANDONed with reasons (grid/cards/backend/sticky deleted Phase 12)
+  - `GATES-M8.md`: fully RETIRED — all 9 gates ABANDONed (0 maintCog / from("products") / form-field refs verified)
+  - `GATES-SEO.md` (new): 8/8 PASS covering Odoo CTAs (12 refs), Shopee purge (1 sameAs), meta bounds (58/134), 9-node JSON-LD, JS syntax, FAQ==schema 6/6, crawl files, anchors
+- Files created/modified:
+  - `GATES.md`, `GATES-SC.md`, `GATES-M8.md`, `GATES-SEO.md` (new), `task_plan.md`, `progress.md`
+
 ## Session: 2026-09-24 (Remove marketplace → Odoo Shop)
 
 ### Phase 12: Remove marketplace → Odoo Shop
