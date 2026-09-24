@@ -2,6 +2,22 @@
 
 Chronological record of work performed, files changed, validation results, and errors.
 
+## Session: 2026-09-24 (SEO content from BPOM doc)
+
+### Phase 13: SEO content from BPOM doc
+
+- **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
+- **Interview:** all 7 products in schema + FAQ; FAQ + ingredients/BPOM trust block; full Products + Odoo offers; meta rewrite + robots/sitemap/canonical; doc-canonical names
+- Actions taken:
+  - Doc exported via `export?format=txt` (page fetch needed login); 7-product table logged to findings.md
+  - Slice 13a: title 58 / desc 134 chars + canonical + `robots.txt` + `sitemap.xml` (new)
+  - Slice 13b: JSON-LD 9 nodes (Org + 7 Products + FAQPage); stale slot-carryover prices removed; offers URL-only; BPOM + volume as additionalProperty
+  - Slice 13c: `#faq` after ritual (trust-list + 6 `<details>` verbatim = schema); `Feminine Blush` → `Feminine Blush Pink` (ritual + banner)
+  - Slice 13d: JSON parses; 25 BPOM refs; 12 Odoo refs; 0 stale prices; `node --check` ×3; anchors OK; PRD v2.4 (L3/T1/Q9 done, Q10 partial, M8 added)
+- Files created/modified:
+  - `index.html`, `robots.txt` (new), `sitemap.xml` (new), `PRD.md`, `task_plan.md`, `findings.md`, `progress.md`
+- Known debt: offers without price (no rich results, accepted); 3 new scents imageless; GATES files still assert removed modules
+
 ## Session: 2026-09-24 (Remove marketplace → Odoo Shop)
 
 ### Phase 12: Remove marketplace → Odoo Shop

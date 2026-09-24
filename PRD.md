@@ -1,8 +1,8 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 2.3 · 2026-09-24
+> Version 2.4 · 2026-09-24
 > Author: opencode (AI-assisted)
-> Status: Phase 12 code complete (marketplace removed → Odoo Shop sole storefront, page fully static); uncommitted
+> Status: Phase 13 code complete (SEO content from BPOM doc: 7-product schema + FAQ); uncommitted
 
 ---
 
@@ -118,7 +118,7 @@ gtag('event', 'select_item', {
 |----|-------------|---------------------|
 | L1 | Replace all picsum sample images with real brand photography | ✅ Done M2 — zero `picsum.photos` URLs; 7 local exports in `assets/web/` (card images now unused after Phase 12, kept for promo/OG) |
 | L2 | Add social proof / UGC section | ⬜ Open — ≥ 3 customer testimonials with names, or IG embed grid |
-| L3 | Add FAQ section | ⬜ Open — page has no FAQ block yet (draft copy in §7.3) |
+| L3 | Add FAQ section | ✅ Done v2.4 — `#faq` with trust block (ingredients + 7 BPOM) + 6 `<details>` Q&As mirrored in `FAQPage` schema |
 | L4 | Polish Indonesian copy | 🔶 Partial — ritual/promo copy kept (product names editorial-only); `#shop` banner copy new in Phase 12 |
 | L5 | ~~Improve sticky CTA logic~~ → sticky deleted (v2.3) | Phase 12 removed `#stickyCta` + tracker; purchase intent lives in nav + `#shop` banner |
 | L6 | Add favicon | ✅ Done M1 — crisp SVG serif-“z” + `site.webmanifest` (ICO/PNG skipped, no binary tooling) |
@@ -181,7 +181,7 @@ gtag('event', 'select_item', {
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| T1 | ~~JSON-LD Product schema for all 4 products~~ → known debt (v2.3) | Nodes still live but no on-page catalog; follow-up: strip to Organization-only or point `offers.url` at Odoo |
+| T1 | ~~JSON-LD Product schema~~ → resolved v2.4 | 7 Products from BPOM doc (descriptions, volume + BPOM `additionalProperty`, images for the 4 photographed scents); `offers.url` → Odoo, no prices (none in source); stale slot-carryover prices removed; `FAQPage` added |
 | T2 | Add JSON-LD Organization schema | ✅ Done — with `sameAs` social links (Shopee URL retained, owner-deferred) |
 | T3 | Add favicon + manifest | ✅ Done — `favicon.svg` + `site.webmanifest` + theme-color |
 | T4 | Lighthouse Performance ≥ 90 (mobile) | ⬜ Open — run and paste score in progress.md (no backend fetch anymore; should measure clean) |
@@ -259,6 +259,7 @@ gtag('event', 'select_item', {
 | **M5: Maintenance Go-Live** | Track 5 (M1-M9) | ❌ Cancelled — module retired in v2.3, owner inputs no longer needed |
 | **M6: Lite Scarlett Storefront** | Track 6 (S1-S7) | 🔶 Partial — S1-S3 + S7 survive; grid requirements (S4-S6) retired in v2.3 |
 | **M7: Odoo Storefront Migration** | Phase 12: `#produk` → `#shop` banner, Odoo CTAs, Shopee/backend/sticky deletion | ✅ Code complete, uncommitted; needs browser check + commit |
+| **M8: SEO Content (BPOM doc)** | Phase 13: 7-product + FAQPage schema, `#faq` section, keyword meta, robots/sitemap | ✅ Code complete, uncommitted; needs browser check + commit |
 
 ### M1 Build Slices (Proposed)
 
@@ -280,7 +281,7 @@ gtag('event', 'select_item', {
 |------|--------|------------|
 | ~~GSAP CDN dependency (no self-hosted)~~ | Retired — GSAP removed (Phase 10), zero third-party JS | — |
 | Odoo Shop dependency | Odoo outage/catalog change breaks all purchase paths; no on-page fallback | Monitor shop availability; keep WA support CTA as contact fallback |
-| JSON-LD Product mismatch (NEW v2.3) | 4 Product nodes + prices with no on-page catalog; Google may flag or drop rich results | Follow-up: strip to Organization-only or point `offers.url` at Odoo (owner-deferred) |
+| ~~JSON-LD Product mismatch~~ | Resolved v2.4 — 7 real Products + Odoo offers + FAQPage | Offer-without-price won't earn rich results (accepted); submit sitemap post-deploy |
 | Odoo catalog parity (NEW v2.3) | Ritual copy names 4 scents; if Odoo renames/restocks differently, shoppers bounce | Verify Odoo slugs/names match Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal |
 | ~~Shopee product URLs may change~~ | Retired — no Shopee links in shopper UI | — |
 | CNAME/custom-domain drift | OG + JSON-LD absolute URLs 404 if domain detached (observed 2026-09-21) | Repoint to canonical host or reattach domain; verify with a link checker |
@@ -301,8 +302,8 @@ gtag('event', 'select_item', {
 | Q6 | ~~Real per-scent price list?~~ | — | ❌ Closed v2.3: no prices on-page; Odoo owns pricing |
 | Q7 | ~~Real per-product Shopee listing URLs (for sync)?~~ | — | ❌ Closed v2.3: sync module deleted |
 | Q8 | ~~Edge-function deploy route (CLI vs dashboard)?~~ | — | ❌ Closed v2.3: function deleted |
-| Q9 | Strip JSON-LD Products or point offers at Odoo? (NEW v2.3) | Brand owner | Open — Product-nodes-without-catalog mismatch is live SEO debt |
-| Q10 | Odoo catalog names match ritual copy? (NEW v2.3) | Brand owner | Open — verify Emerald Sweet / Blaine Floral / Feminine Blush / Bright Petal exist on Odoo |
+| Q9 | Strip JSON-LD Products or point offers at Odoo? | — | ✅ Resolved v2.4: 7 real Products, `offers.url` → Odoo, no prices (Offer without price won't earn rich results — accepted) |
+| Q10 | Odoo catalog names match ritual copy? | Brand owner | 🔶 Partial v2.4: page follows doc-canonical names (`Feminine Blush Pink`); Odoo-side parity still owner to verify |
 
 ## 14. Out of Scope (Deferred)
 
@@ -319,14 +320,14 @@ gtag('event', 'select_item', {
 
 | Component | Current | Target |
 |-----------|---------|--------|
-| Products | No on-page catalog — `#shop` banner links out to Odoo Shop | Verify Odoo names match ritual copy (Q10) |
-| Images | Hero + ritual + promo/OG live; 4 card images unused on-page, kept on disk | Optional disk cleanup later |
+| Products | 7 scents in schema + FAQ (doc-canonical names); 4 named in page copy | Verify Odoo names match (Q10) |
+| Images | Hero + ritual + promo/OG live; 4 card images unused on-page, kept on disk; 3 new scents have no photos (schema omits `image`) | Optional photo shoot for Flavia / Fresh Tickled / Classic |
 | Analytics | gtag stub + `select_item` on all `[data-cta]` (odoo/whatsapp/social); GA ID unset | Set `ZV_GA_ID` to activate |
-| SEO meta | Full OG + SVG favicon; JSON-LD Product nodes are owner-deferred debt | Q9: strip Products or point offers at Odoo |
+| SEO meta | Keyword title (58) + description (134) + canonical + robots/sitemap; JSON-LD Org + 7 Products + FAQPage | Submit sitemap in Search Console after deploy |
 | Accessibility | No skip-link, no page-wide focus-visible | M3 |
 | Performance | Fully static, zero third-party JS; Supabase fetch gone | M3 Lighthouse pass |
 | Social proof | None | Testimonials or IG embed |
-| FAQ | Draft copy only (§7.3), no page block | Page section |
+| FAQ | ✅ `#faq` block + `FAQPage` schema (v2.4); copy sourced from BPOM doc | None |
 | CTA logic | Single Odoo intent everywhere (nav ×2, promo, banner, kontak); WA support-only; sticky deleted | None — verify Odoo shop is live |
 | Maintenance | Module deleted; page static | None |
 

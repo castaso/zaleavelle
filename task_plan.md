@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 12 code + PRD v2.3 complete. Next: visual check in browser + commit (uncommitted: index.html rewrite, supabase/ deletion, PRD + planning files).
+Phase 13 code + PRD v2.4 complete. Next: visual check in browser + commit (uncommitted: index.html SEO, robots.txt, sitemap.xml, PRD + planning files).
 
 ## Current Phase
 
-Phase 12: Remove marketplace → Odoo Shop
+Phase 13: SEO content from BPOM doc
 
 ## Phases
 
@@ -115,6 +115,15 @@ Phase 12: Remove marketplace → Odoo Shop
 - [x] Slice 12d verify: 0 `#produk`/maint/supabase/sticky/p-card refs; 1 `shopee` ref left intentionally (JSON-LD `sameAs`, SEO untouched per owner); 5 Odoo refs; 4 `data-cta="odoo"`; all `#` anchors resolve; `node --check` clean on all 3 inline blocks; 1139 → 560 lines
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
 
+### Phase 13: SEO content from BPOM doc
+
+- [x] Doc fetched via export URL; raw 7-product table logged to findings.md (external content rule)
+- [x] Slice 13a: title 58 / description 134 chars keyword-rich + canonical + `robots.txt` + `sitemap.xml` (new files)
+- [x] Slice 13b: JSON-LD rebuilt — Org + 7 Products (doc descriptions, BPOM + volume `additionalProperty`, images for 4 photographed scents, Odoo `offers` without price; stale slot-carryover prices removed) + `FAQPage` (6 Q&As)
+- [x] Slice 13c: visible `#faq` after ritual (trust list: Niacinamide/sarang walet/calendula + 7 BPOM + 6 `<details>` verbatim-matching schema); ritual + banner renamed to doc-canonical `Feminine Blush Pink`
+- [x] Slice 13d verify: JSON-LD parses (9 nodes); FAQ visible==schema; 0 stale prices; 0 bare `Feminine Blush`; `node --check` ×3 clean; all `#` anchors resolve; PRD v2.4
+- **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
+
 ## Key Questions
 
 1. ~~Should product CTAs link directly to Shopee product pages, or to a WhatsApp chat flow?~~ → Resolved for M1: Shopee primary + WA secondary (PRD recommendation)
@@ -130,7 +139,9 @@ Phase 12: Remove marketplace → Odoo Shop
 | Odoo Shop as sole storefront (Phase 12) | Owner interview 2026-09-24: remove marketplace section altogether, replace with https://zaleavelle.odoo.com/shop CTA banner |
 | Sticky CTA deleted, not converted | Owner chose "Nav to Odoo, sticky removed" — no floating buy button in Odoo era |
 | JSON-LD Product schema kept (tech debt) | Owner chose "Leave SEO untouched" — 4 Product nodes still reference prices/images with no on-page catalog; follow-up: strip to Organization or point offers at Odoo |
-| Ritual/promo copy kept, links retargeted | Owner chose "Keep copy, links to Odoo" — product names remain editorial-only |
+| Ritual/promo copy follows BPOM doc (Phase 13) | Owner chose "Follow the doc" — `Feminine Blush Pink` canonical everywhere; Odoo parity still owner-side (Q10) |
+| FAQ after ritual, trust + 6 Q&As (Phase 13) | Owner chose placement/size; schema mirrors visible text verbatim for FAQPage eligibility |
+| Offers without price accepted (Phase 13) | No prices in source doc; inventing forbidden — valid schema, no Product rich results |
 | Supabase backend deleted, not dormant | Owner chose delete/disable — no products table fetch, no maintenance panel, no shopee-sync function |
 | Solo mode (not orchestrated) | PRD doc task ~30min, tree depth 3, no code integration needed |
 | Single GATES.md (not gates/) | Below 30min threshold; subagent overhead not justified |
