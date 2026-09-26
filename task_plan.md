@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 13 code + PRD v2.4 + gates cleanup complete. Next: visual check in browser + commit (uncommitted: index.html SEO, robots.txt, sitemap.xml, PRD, planning + gates files).
+Phase 14 mobile-ready code + PRD v2.5 complete. Next: visual check at 375/390/430 + commit.
 
 ## Current Phase
 
-Phase 13: SEO content from BPOM doc
+Phase 14: Mobile-ready landing
 
 ## Phases
 
@@ -124,6 +124,14 @@ Phase 13: SEO content from BPOM doc
 - [x] Slice 13d verify: JSON-LD parses (9 nodes); FAQ visible==schema; 0 stale prices; 0 bare `Feminine Blush`; `node --check` ×3 clean; all `#` anchors resolve; PRD v2.4
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
 
+### Phase 14: Mobile-ready
+
+- [x] Slice 14a: hamburger drawer <968px (toggle 44px, full-screen, ESC / in-page / mq close, `body.nav-lock`); skip-link + `focus-visible`
+- [x] Slice 14b: phone stacking — full-width CTAs <600px, 1-col social/trust/steps, tilts flattened, gutters 1.1rem, 380px type scale
+- [x] Slice 14c: touch — 44px targets (btn/dots/FAQ/hamburger), promo swipe, `touch-action: manipulation`, `(hover: none)` hover kill, iOS safe-area + `viewport-fit=cover`
+- [x] Slice 14d: PRD v2.5 (L8-L10, T6/T7/T11-T13, M9, §7.4)
+- **Status:** in_progress (code complete; preview + commit pending)
+
 ## Key Questions
 
 1. ~~Should product CTAs link directly to Shopee product pages, or to a WhatsApp chat flow?~~ → Resolved for M1: Shopee primary + WA secondary (PRD recommendation)
@@ -141,6 +149,7 @@ Phase 13: SEO content from BPOM doc
 | JSON-LD Product schema kept (tech debt) | Owner chose "Leave SEO untouched" — 4 Product nodes still reference prices/images with no on-page catalog; follow-up: strip to Organization or point offers at Odoo |
 | Ritual/promo copy follows BPOM doc (Phase 13) | Owner chose "Follow the doc" — `Feminine Blush Pink` canonical everywhere; Odoo parity still owner-side (Q10) |
 | FAQ after ritual, trust + 6 Q&As (Phase 13) | Owner chose placement/size; schema mirrors visible text verbatim for FAQPage eligibility |
+| Mobile-first breakpoints 968 / 600 / 380 (Phase 14) | Persona is Gen-Z ID mobile; desktop nav unchanged; drawer replaces hidden-links-only pattern |
 | Offers without price accepted (Phase 13) | No prices in source doc; inventing forbidden — valid schema, no Product rich results |
 | Supabase backend deleted, not dormant | Owner chose delete/disable — no products table fetch, no maintenance panel, no shopee-sync function |
 | Solo mode (not orchestrated) | PRD doc task ~30min, tree depth 3, no code integration needed |

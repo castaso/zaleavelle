@@ -2,13 +2,18 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>zaleavelle — Body Lotion & Body Wash Whitening Niacinamide</title>
 <meta name="description" content="Body wash, body lotion & body serum zaleavelle: Niacinamide, sarang walet, calendula. 7 varian terdaftar BPOM — belanja di Toko Resmi.">
 <link rel="canonical" href="https://zaleavelle.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#FBF8F5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="zaleavelle">
+<link rel="apple-touch-icon" href="favicon.svg">
 <meta property="og:title" content="zaleavelle — Naturally Confident">
 <meta property="og:description" content="Rutinitas kulit sederhana, autentik, dan penuh perhatian.">
 <meta property="og:image" content="https://zaleavelle.com/og-image.jpg">
@@ -186,8 +191,9 @@
   - Shape rule (documented playful exception): tilt + hard offset shadow IS the system,
     applied consistently; buttons stay pill, cards 16px.
   - z-scale: nav 40 / stack cards 1-4 / sticky CTA 45 / grain 60.
-  - Motion: transform/opacity only. Everything collapses under prefers-reduced-motion
-    and below 769px (stack → plain stacked reveals). No window scroll listeners (IO only).
+    - Motion: transform/opacity only. Everything collapses under prefers-reduced-motion
+    and below 968px (single column, hamburger drawer, no tilt overflow). No window
+    scroll listeners (IO only). Promo carousel is swipeable on touch.
   - Logo: official vector wordmark at assets/zaleavelle-mark.svg (transparent, light theme locked).
 -->
 <style>
@@ -209,7 +215,7 @@
     --spring: cubic-bezier(0.16, 1, 0.3, 1);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: calc(80px + env(safe-area-inset-top)); }
   body {
     font-family: var(--font-body);
     background: var(--surface);
@@ -218,7 +224,21 @@
     line-height: 1.6;
     overflow-x: hidden;
     transition: background 0.3s, color 0.3s;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
+  body.nav-lock { overflow: hidden; }
+  img, svg, video { max-width: 100%; }
+  a, button { -webkit-tap-highlight-color: color-mix(in srgb, var(--accent) 22%, transparent); touch-action: manipulation; }
+  :focus { outline: none; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .skip-link {
+    position: absolute; left: 1rem; top: -4rem; z-index: 100;
+    background: var(--ink); color: var(--surface); padding: 0.7rem 1.2rem;
+    border-radius: 999px; text-decoration: none; font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .skip-link:focus, .skip-link:focus-visible { top: calc(0.75rem + env(safe-area-inset-top)); outline-color: var(--surface); }
   ::selection { background: var(--accent); color: #fff; }
   .wrap { max-width: 1400px; margin: 0 auto; padding-left: 4rem; padding-right: 4rem; }
 
@@ -235,6 +255,7 @@
     backdrop-filter: blur(12px);
     border-bottom: 1px solid transparent;
     transition: border-color 0.3s, background 0.3s;
+    padding-top: env(safe-area-inset-top);
   }
   header.nav.scrolled { border-bottom-color: var(--line); }
   .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 4rem; height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
@@ -247,8 +268,24 @@
   .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0; background: var(--accent); transition: width 0.3s var(--spring); }
   .nav-links a:hover { color: var(--ink); }
   .nav-links a:hover::after { width: 100%; }
+  .nav-toggle {
+    display: none; width: 44px; height: 44px; border: 2px solid var(--ink); border-radius: 999px;
+    background: var(--surface); color: var(--ink); cursor: pointer; padding: 0; flex-shrink: 0;
+    align-items: center; justify-content: center; position: relative; z-index: 42;
+  }
+  .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+    display: block; width: 16px; height: 2px; background: currentColor; position: relative; transition: transform 0.3s var(--spring), opacity 0.2s;
+  }
+  .nav-toggle span::before, .nav-toggle span::after { content: ""; position: absolute; left: 0; }
+  .nav-toggle span::before { top: -5px; }
+  .nav-toggle span::after { top: 5px; }
+  .nav-toggle[aria-expanded="true"] span { background: transparent; }
+  .nav-toggle[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span::after { top: 0; transform: rotate(-45deg); }
+  .nav-cta { display: flex; gap: 0.75rem; align-items: center; }
+  .nav-drawer-cta { display: none; }
 
-  .btn { display: inline-block; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 2.2rem; border-radius: 999px; border: 2px solid transparent; transition: transform 0.25s var(--spring), background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s; white-space: nowrap; }
+  .btn { display: inline-block; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 2.2rem; min-height: 44px; border-radius: 999px; border: 2px solid transparent; transition: transform 0.25s var(--spring), background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s; white-space: nowrap; }
   .btn:active { transform: translateY(1px) scale(0.98); }
   .btn-primary { background: var(--ink); color: var(--surface); }
   .btn-primary:hover { background: var(--accent); color: #fff; box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 35%, transparent); }
@@ -259,7 +296,7 @@
   .btn-sm { padding: 0.8rem 1.6rem; }
 
   /* ---------- Hero: kinetic oversized ---------- */
-  .hero { max-width: 1400px; margin: 0 auto; padding: 4rem 4rem 5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; min-height: calc(100dvh - 68px); position: relative; }
+  .hero { max-width: 1400px; margin: 0 auto; padding: 4rem 4rem 5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; min-height: calc(100dvh - 68px - env(safe-area-inset-top)); position: relative; }
   .eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: inline-block; }
   .eyebrow.pill { border: 2px solid var(--accent); border-radius: 999px; padding: 0.4rem 1rem; transform: rotate(-2deg); }
   .hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(3.2rem, 8.5vw, 7.5rem); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: 1.5rem; text-wrap: balance; }
@@ -272,6 +309,7 @@
   .hero .sub { font-size: 1.05rem; color: var(--ink-2); max-width: 44ch; margin-bottom: 2.25rem; animation: fadeup 0.8s var(--spring) 0.35s both; }
   @keyframes fadeup { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
   .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeup 0.8s var(--spring) 0.45s both; }
+  .hero-ctas .btn { display: inline-flex; align-items: center; justify-content: center; }
   .hero-media { border-radius: var(--radius-card); overflow: hidden; position: relative; aspect-ratio: 4/5; max-height: 620px; width: 100%; border: 2px solid var(--ink); box-shadow: 10px 10px 0 var(--accent-soft); background: radial-gradient(120% 90% at 20% 10%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 85% 90%, var(--peach-1), transparent 55%), var(--surface-2); transform: rotate(1.5deg); animation: fadeup 0.9s var(--spring) 0.3s both; will-change: transform; }
   .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.06); animation: meshdrift 22s ease-in-out infinite alternate; }
   @keyframes meshdrift { from { transform: scale(1.06) translate(0, 0); } to { transform: scale(1.12) translate(-2%, 2%); } }
@@ -300,7 +338,7 @@
 
   /* ---------- Promo carousel ---------- */
   .promo { max-width: 1400px; margin: 0 auto; padding: 2rem 4rem 0; }
-  .promo-view { position: relative; border: 2px solid var(--ink); border-radius: var(--radius-card); overflow: hidden; box-shadow: 8px 8px 0 var(--accent-soft); background: var(--surface-2); }
+  .promo-view { position: relative; border: 2px solid var(--ink); border-radius: var(--radius-card); overflow: hidden; box-shadow: 8px 8px 0 var(--accent-soft); background: var(--surface-2); touch-action: pan-y; }
   .promo-slide { display: none; position: relative; }
   .promo-slide.on { display: block; animation: fadeup 0.6s var(--spring) both; }
   .promo-slide img { width: 100%; height: clamp(220px, 30vw, 420px); object-fit: cover; display: block; }
@@ -310,9 +348,10 @@
   .promo-slide.brand .btn-ghost { color: #fff; border-color: #fff; }
   .promo-slide.brand .btn-ghost:hover { background: #fff; color: var(--accent); }
   .promo-cap { position: absolute; left: 1.25rem; bottom: 1.25rem; background: var(--ink); color: var(--surface); border-radius: 999px; padding: 0.55rem 1.1rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
-  .promo-dots { display: flex; gap: 0.6rem; justify-content: center; margin-top: 1rem; }
-  .promo-dots button { width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; cursor: pointer; padding: 0; }
-  .promo-dots button.on { background: var(--accent); border-color: var(--accent); }
+  .promo-dots { display: flex; gap: 0.4rem; justify-content: center; margin-top: 1rem; }
+  .promo-dots button { width: 44px; height: 44px; border: 0; background: transparent; cursor: pointer; padding: 0; display: grid; place-items: center; }
+  .promo-dots button::after { content: ""; width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; display: block; }
+  .promo-dots button.on::after { background: var(--accent); border-color: var(--accent); }
 
   /* ---------- Shop banner (Odoo storefront) ---------- */
   .shop-banner { border: 2px solid var(--ink); border-radius: 24px; background: var(--ink); color: var(--surface); padding: 4rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; transform: rotate(-0.5deg); box-shadow: 12px 12px 0 var(--accent-soft); }
@@ -364,14 +403,14 @@
   .community .btn-primary:hover { background: var(--accent); color: #fff; }
 
   footer { border-top: 2px solid var(--ink); margin-top: 2rem; }
-  .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 2rem; padding-bottom: 6rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 2rem; padding-bottom: calc(3rem + env(safe-area-inset-bottom)); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
   /* ---------- FAQ + trust (SEO) ---------- */
   .faq-list { display: grid; gap: 1rem; margin-top: 2.5rem; }
   .faq-list details { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); box-shadow: 6px 6px 0 var(--accent-soft); padding: 1.25rem 1.5rem; }
   .faq-list details:nth-child(odd) { transform: rotate(-0.5deg); }
   .faq-list details:nth-child(even) { transform: rotate(0.5deg); }
-  .faq-list summary { font-family: var(--font-display); font-size: 1.15rem; cursor: pointer; list-style: none; }
+  .faq-list summary { font-family: var(--font-display); font-size: 1.15rem; cursor: pointer; list-style: none; min-height: 44px; display: flex; align-items: center; }
   .faq-list summary::-webkit-details-marker { display: none; }
   .faq-list summary::before { content: "+ "; color: var(--accent); font-family: var(--font-mono); }
   .faq-list details[open] summary::before { content: "\2013  "; }
@@ -396,36 +435,106 @@
 
   @media (max-width: 968px) {
     .wrap, .nav-inner, .wall-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 1.5rem 4rem; min-height: auto; }
-    .hero-media { aspect-ratio: 4/3; max-height: none; }
+    .nav-toggle { display: inline-flex; }
+    .nav-cta { display: none; }
+    .nav-links {
+      display: flex; flex-direction: column; gap: 0;
+      position: fixed; inset: 0; z-index: 41;
+      background: var(--surface);
+      padding: calc(5.5rem + env(safe-area-inset-top)) 1.75rem calc(2rem + env(safe-area-inset-bottom));
+      transform: translateX(100%);
+      transition: transform 0.35s var(--spring);
+      overflow-y: auto;
+    }
+    header.nav.open .nav-links { transform: none; }
+    .nav-drawer-cta { display: block; }
+    .nav-links a:not(.btn) { font-size: 1.35rem; letter-spacing: 0.08em; padding: 1rem 0; min-height: 48px; display: flex; align-items: center; color: var(--ink); }
+    .nav-links a::after { display: none; }
+    .nav-drawer-cta .btn {
+      width: 100%; text-align: center; font-size: 0.8rem; letter-spacing: 0.1em;
+      padding: 0.95rem 1.4rem; min-height: 48px; display: inline-flex;
+      align-items: center; justify-content: center; color: var(--surface); background: var(--ink);
+    }
+    .nav-links li:last-child { margin-top: 1.25rem; }
+    .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 2.5rem 1.5rem 3.5rem; min-height: auto; }
+    .hero h1 { font-size: clamp(2.4rem, 11vw, 4.2rem); }
+    .hero-media { aspect-ratio: 4/5; max-height: 72vw; transform: none; }
     .sticker.s1 { right: 6%; } .sticker.s2 { left: 4%; }
     .scroll-hint { display: none; }
     .promo { padding: 1.5rem 1.5rem 0; }
+    .promo-slide.brand { padding: 2.5rem 1.5rem; }
+    .promo-cap { left: 0.85rem; right: 0.85rem; bottom: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .shop-banner, .community { transform: none; }
+    .ritual figure { transform: none; }
+    .step:nth-child(2), .step:nth-child(3) { transform: none; }
+    .faq-list details { transform: none; }
+    .brand-card { transform: none; }
     .steps { grid-template-columns: 1fr; }
     .trust-list { grid-template-columns: 1fr; }
-    .community, .shop-banner { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
-    section.block { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+    .community, .shop-banner { grid-template-columns: 1fr; padding: 2.5rem 1.5rem; }
+    .shop-ctas .btn, .hero-ctas .btn { flex: 1 1 100%; text-align: center; }
+    section.block { padding-top: 4rem; padding-bottom: 4rem; }
   }
   @media (max-width: 600px) {
-    .social-grid { grid-template-columns: 1fr; }
+    .wrap, .nav-inner, .wall-inner { padding-left: 1.1rem; padding-right: 1.1rem; }
+    .hero { padding: 2rem 1.1rem 2.75rem; gap: 2rem; }
+    .promo { padding: 1.1rem 1.1rem 0; }
+    .promo-slide img { height: clamp(180px, 48vw, 280px); }
+    .promo-slide.brand { padding: 2rem 1.15rem; }
+    .hero-media { aspect-ratio: 3/4; max-height: none; box-shadow: 6px 6px 0 var(--accent-soft); }
+    .hero-media figcaption { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; font-size: 0.65rem; text-align: center; transform: none; }
+    .eyebrow.pill { transform: none; }
     .sticker { display: none; }
+    .social-grid { grid-template-columns: 1fr; }
+    .social-grid a { min-height: 48px; display: flex; align-items: center; justify-content: center; }
+    .community, .shop-banner { padding: 2rem 1.15rem; border-radius: 18px; box-shadow: 8px 8px 0 var(--accent-soft); }
+    .shop-ctas { flex-direction: column; }
+    .hero-ctas { flex-direction: column; }
+    .btn { width: 100%; text-align: center; padding: 0.95rem 1.4rem; }
+    .faq-list details { padding: 1rem 1.15rem; box-shadow: 4px 4px 0 var(--accent-soft); }
+    .faq-list summary { font-size: 1.05rem; }
+    .sec-head h2 { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+    .manifesto blockquote { font-size: clamp(1.6rem, 8vw, 2.4rem); }
+    .brand-card { max-width: 100%; transform: none; }
+    section.block { padding-top: 3.25rem; padding-bottom: 3.25rem; }
+    .foot { flex-direction: column; gap: 0.4rem; }
+    .wall-inner { gap: 1rem; }
+  }
+  @media (max-width: 380px) {
+    .hero h1 { font-size: clamp(2rem, 12vw, 2.6rem); }
+    .eyebrow.pill { font-size: 0.62rem; padding: 0.3rem 0.75rem; }
+    .wordmark img { height: 1.4rem; }
+  }
+  @media (hover: none) {
+    .btn:hover .arr { transform: none; }
+    .btn-primary:hover { box-shadow: none; }
+    .step:hover { transform: none; }
+    .social-grid a:hover { transform: none; }
+    .wall-logos img:hover { transform: none; }
   }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#top">Lewati ke konten</a>
+
 <header class="nav" id="siteNav">
   <div class="nav-inner">
     <a class="wordmark" href="#top" aria-label="zaleavelle beranda"><img src="assets/zaleavelle-mark.svg" alt="" width="320" height="320"></a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="https://zaleavelle.odoo.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="nav_link">Belanja</a></li>
       <li><a href="#ritual">Ritual</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#kontak">Kontak</a></li>
+      <li class="nav-drawer-cta"><a href="https://zaleavelle.odoo.com/shop" class="btn btn-primary" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="nav_cta">Beli</a></li>
     </ul>
-    <div style="display:flex;gap:.75rem;align-items:center">
+    <div class="nav-cta">
       <a href="https://zaleavelle.odoo.com/shop" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="odoo" data-product="Odoo Shop" data-utm-content="nav_cta">Beli</a>
     </div>
+    <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Buka menu">
+      <span></span>
+    </button>
   </div>
 </header>
 <div id="navSentinel" aria-hidden="true"></div>
@@ -601,6 +710,35 @@
     }).observe(document.getElementById("navSentinel"));
   })();
 
+  // Mobile drawer: toggle, ESC, in-page close, restore on desktop.
+  (function () {
+    var nav = document.getElementById("siteNav");
+    var toggle = document.getElementById("navToggle");
+    var links = document.getElementById("navLinks");
+    if (!nav || !toggle || !links) return;
+    function setOpen(open) {
+      nav.classList.toggle("open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Tutup menu" : "Buka menu");
+      document.body.classList.toggle("nav-lock", open);
+    }
+    toggle.addEventListener("click", function () {
+      setOpen(!nav.classList.contains("open"));
+    });
+    links.addEventListener("click", function (e) {
+      var a = e.target && e.target.closest ? e.target.closest("a") : null;
+      if (!a) return;
+      if (a.getAttribute("href") && a.getAttribute("href").charAt(0) === "#") setOpen(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setOpen(false);
+    });
+    var mq = window.matchMedia("(min-width: 969px)");
+    function onMq(en) { if (en.matches) setOpen(false); }
+    if (mq.addEventListener) mq.addEventListener("change", onMq);
+    else if (mq.addListener) mq.addListener(onMq);
+  })();
+
   // Outbound click tracking (PRD E4): every [data-cta] link queues a
   // select_item event. Works with real GA4 once window.ZV_GA_ID is set;
   // until then events accumulate in window.dataLayer for later wiring.
@@ -674,6 +812,18 @@
     if (view) {
       view.addEventListener("pointerenter", stop);
       view.addEventListener("pointerleave", play);
+      var sx = 0;
+      view.addEventListener("touchstart", function (e) {
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+        sx = e.changedTouches[0].clientX;
+        stop();
+      }, { passive: true });
+      view.addEventListener("touchend", function (e) {
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+        var dx = e.changedTouches[0].clientX - sx;
+        if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
+        play();
+      }, { passive: true });
     }
     play();
   })();
