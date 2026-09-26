@@ -32,7 +32,8 @@ Durable knowledge base for discoveries, evidence, and decisions during zaleavell
 - **Dark mode:** supported via `data-theme` toggle + localStorage persistence
 - **Motion:** GSAP ScrollTrigger sticky-stack for products (desktop only), IntersectionObserver reveals, pointer parallax on hero
 - **Accessibility:** basic `aria-label` on nav/theme toggle, `aria-hidden="true"` on decorative elements; no skip-link, no focus-visible styles, no landmark roles beyond semantic HTML
-- **Mobile:** responsive at 968px and 600px breakpoints; nav links hidden on mobile; sticky CTA appears after hero scroll; stickers hidden on <600px
+- **Mobile (audit, Phase 1):** responsive at 968px and 600px breakpoints; nav links hidden on mobile; sticky CTA appears after hero scroll; stickers hidden on <600px
+- **Mobile (v2.5 / Phase 14):** hamburger drawer replaces hidden-links; 380px breakpoint added; skip-link + focus-visible; 44px tap targets; promo swipe; iOS safe-area; tilts flattened under 968px to stop horizontal overflow
 - **Reduced motion:** fully respected — all animations disabled, stack cards un-pinned, reveals shown immediately
 
 ### Design System Tokens (from CSS :root)
@@ -91,6 +92,7 @@ Durable knowledge base for discoveries, evidence, and decisions during zaleavell
 | Static storefront, no backend | Supabase products fetch, maintenance panel, and `shopee-sync` edge function deleted; page is static HTML again (560 lines) |
 | JSON-LD Product nodes retained as known debt | `sameAs` Shopee URL + 4 Product offers kept per owner "leave SEO untouched"; mismatch vs no-catalog page flagged for follow-up |
 | Keep single-file for MVP | Simplicity; no build step required; GSAP CDN approach works |
+| Mobile drawer at 968px (Phase 14) | Hidden-links-only left zero in-page nav on phones; drawer restores Ritual/FAQ/Tentang/Kontak + Beli |
 | ID-first, EN as appendix | Primary audience is Indonesian; EN can be added later |
 | Analytics via inline script | Avoids external dependencies; GA4 gtag snippet is lightweight |
 | ~~Shopee as primary CTA~~ (superseded Phase 12) | ~~Existing Shopee store link~~ → Odoo Shop is now the only purchase channel |

@@ -2,6 +2,21 @@
 
 Chronological record of work performed, files changed, validation results, and errors.
 
+## Session: 2026-09-26 (Mobile-ready)
+
+### Phase 14: Mobile-ready landing
+
+- **Status:** in_progress (code complete; preview + commit pending)
+- Actions taken:
+  - Hamburger drawer <968px: `#navToggle` 44px, full-screen links (Belanja/Ritual/FAQ/Tentang/Kontak + Beli), ESC / in-page / desktop-mq close, `body.nav-lock`
+  - Skip-link to `#top` + page-wide `:focus-visible` accent ring
+  - Breakpoints: 968 tablet / 600 phone / 380 small; tilts flattened; CTAs 100% width; social 1-col
+  - Touch: 44px buttons/dots/FAQ/hamburger; promo swipe 40px; `touch-action: manipulation`; `(hover: none)` kills hover transforms
+  - iOS: `viewport-fit=cover`, `env(safe-area-inset-*)` on body/nav/drawer/footer, `scroll-padding-top`, apple-mobile-web-app meta
+  - PRD v2.5: L8-L10, T6/T7/T11-T13, M9, §7.4, Q11
+- Files created/modified:
+  - `index.html`, `PRD.md`, `task_plan.md`, `findings.md`, `progress.md`
+
 ## Session: 2026-09-24 (SEO content from BPOM doc)
 
 ### Phase 13: SEO content from BPOM doc
