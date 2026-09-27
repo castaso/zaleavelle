@@ -1,8 +1,8 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 2.4 · 2026-09-24
+> Version 2.5 · 2026-09-26
 > Author: opencode (AI-assisted)
-> Status: Phase 13 code complete (SEO content from BPOM doc: 7-product schema + FAQ); uncommitted
+> Status: Phase 14 code complete (mobile-ready: hamburger drawer, 44px tap targets, safe-area, skip-link, swipe carousel)
 
 ---
 
@@ -10,7 +10,7 @@
 
 zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (`index.html`, ~560 lines, fully static). Since v2.2 the on-page marketplace was removed altogether (Phase 12, owner interview 2026-09-24): no product grid, no Supabase backend, no maintenance panel, no sticky CTA. Purchase happens exclusively on the Odoo Shop (`https://zaleavelle.odoo.com/shop`), reached via a `#shop` banner plus nav/promo/kontak CTAs (`data-cta="odoo"`). Ritual/promo copy still names the 4 scents (Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal) editorially; prices live only on Odoo.
 
-**Core problem:** Conversion now depends on a third-party storefront the page doesn't control — Odoo catalog names/prices must match the landing copy, JSON-LD still advertises 4 on-page Products that no longer exist (SEO mismatch debt), and the page still lacks social proof — so click-through to Odoo can't be measured or trusted end-to-end yet.
+**Core problem:** Conversion now depends on a third-party storefront the page doesn't control — Odoo catalog names/prices must match the landing copy, and the page still lacks social proof — so click-through to Odoo can't be measured or trusted end-to-end yet. Primary traffic is mobile (Gen-Z ID, TikTok/IG Reels); v2.5 makes the static landing usable on phones (drawer nav, 44px targets, safe-area, no horizontal overflow).
 
 ## 2. Goals
 
@@ -37,7 +37,7 @@ zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (
 - **Age:** 18-26, Indonesian, mobile-first
 - **Discovery:** TikTok / Instagram Reels → landing page → Odoo Shop (or WhatsApp for questions)
 - **Motivation:** Simple routine, affordable, aesthetic packaging, peer validation
-- **Friction points:** Must leave the landing page to see prices/stock; no social proof on page; Odoo catalog names must match the scents named in ritual copy
+- **Friction points:** Must leave the landing page to see prices/stock; no social proof on page; Odoo catalog names must match the scents named in ritual copy; one-handed phone use (thumb-reach nav, fat-finger CTAs)
 
 ### 4.2 User Journey (Target State)
 
@@ -70,6 +70,7 @@ Ad / Social Post → zaleavelle landing page
 | ~~WA-only purchase flow~~ → Odoo-primary, WA support-only (v2.3) | WA CTAs remain only as support (banner + kontak); no `wa.me` buy links |
 | ~~Square tiles + serum zoom hook~~ → retired with grid (v2.3) | `#produk` section replaced by `#shop` banner |
 | Single-file kept post-M3 | Split still deferred; page is static with zero backend scripts |
+| Mobile-first breakpoints (v2.5) | 968px tablet (drawer + single column), 600px phone (full-width CTAs), 380px small phone (type scale); desktop nav unchanged |
 
 ## 6. Track 1: E-Commerce Conversion
 
@@ -123,6 +124,9 @@ gtag('event', 'select_item', {
 | L5 | ~~Improve sticky CTA logic~~ → sticky deleted (v2.3) | Phase 12 removed `#stickyCta` + tracker; purchase intent lives in nav + `#shop` banner |
 | L6 | Add favicon | ✅ Done M1 — crisp SVG serif-“z” + `site.webmanifest` (ICO/PNG skipped, no binary tooling) |
 | L7 | Add Open Graph + Twitter Card meta tags | ✅ Done — absolute `https://zaleavelle.com/og-image.jpg` (CNAME drift noted in risks) |
+| L8 | Hamburger drawer nav on viewports <968px | ✅ Done v2.5 — `#navToggle` 44px, full-screen drawer with Belanja/Ritual/FAQ/Tentang/Kontak + Beli; ESC / in-page / desktop-mq close; `body.nav-lock` |
+| L9 | Phone CTAs stack full-width | ✅ Done v2.5 — `.hero-ctas` / `.shop-ctas` / `.btn` 100% width under 600px; social-grid 1-col |
+| L10 | Promo carousel is swipeable on touch | ✅ Done v2.5 — `touchstart`/`touchend` on `.promo-view` (40px threshold), `touch-action: pan-y` |
 
 ### 7.2 Image Pipeline
 
@@ -145,6 +149,23 @@ gtag('event', 'select_item', {
 3. **Bagaimana cara pesan?** — Klik tombol Belanja untuk checkout di Toko Resmi (Odoo Shop), atau chat kami via WhatsApp.
 4. **Kapan hasilnya terlihat?** — Kebanyakan pelanggan melihat perbedaan dalam 2-4 minggu.
 5. **Apakah ada program reseller?** — Hubungi WhatsApp kami untuk info kerja sama.
+
+### 7.4 Mobile Layout (v2.5)
+
+Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
+
+| Viewport | Layout |
+|----------|--------|
+| ≥969px | Desktop: inline nav links + `Beli` pill; 2-col hero / shop / community; 3-col steps + trust |
+| ≤968px | Tablet: hamburger drawer (full-screen, `body.nav-lock`); single-column; tilts flattened; CTAs wrap full-width |
+| ≤600px | Phone: 1.1rem gutters; stacked 100% CTAs; 1-col social; stickers off; hero 3/4 crop |
+| ≤380px | Small phone: tighter display type + wordmark |
+
+**Drawer contents:** Belanja (Odoo) · Ritual · FAQ · Tentang · Kontak · Beli (Odoo, `utm_content=nav_cta`). Close on ESC, in-page `#` click, or `min-width: 969px` media-query change.
+
+**Touch:** 44×44 minimum on buttons, dots, hamburger, FAQ summaries; `touch-action: manipulation` on `a, button`; promo swipe 40px threshold; no hover-only affordances under `(hover: none)`.
+
+**Safe area:** `viewport-fit=cover` + `env(safe-area-inset-*)` on body, sticky nav, drawer padding, footer. `scroll-padding-top` keeps in-page anchors below the sticky bar.
 
 ## 8. Track 3: Brand & Content
 
@@ -171,7 +192,7 @@ gtag('event', 'select_item', {
 | Button radius | 999px (pill) | All buttons |
 | Shadow accent | `color-mix(in srgb, var(--accent) 35%, transparent)` | Hard-offset shadows on shop banner, community card, hero media |
 | Motion spring | `cubic-bezier(0.16, 1, 0.3, 1)` | All transitions |
-| z-scale | nav 40 / grain 60 | Stacking context (sticky CTA + stack cards removed v2.3) |
+| z-scale | nav 40 / drawer 41 / toggle 42 / grain 60 / skip 100 | Stacking context (sticky CTA + stack cards removed v2.3; drawer added v2.5) |
 
 **Shape rule:** Tilt + hard offset shadow is the system. Applied consistently on the `#shop` banner, community card, and hero media. No second accent color. No neon glows. No AI-purple.
 
@@ -186,18 +207,21 @@ gtag('event', 'select_item', {
 | T3 | Add favicon + manifest | ✅ Done — `favicon.svg` + `site.webmanifest` + theme-color |
 | T4 | Lighthouse Performance ≥ 90 (mobile) | ⬜ Open — run and paste score in progress.md (no backend fetch anymore; should measure clean) |
 | T5 | Lighthouse Accessibility ≥ 90 | ⬜ Open — run and paste score in progress.md |
-| T6 | Add skip-link for keyboard navigation | ⬜ Open — jumps to `<main>` |
-| T7 | Add `focus-visible` styles | ⬜ Open — maintenance cog (the one focus-ringed element) deleted in Phase 12; page-wide ring styles still open |
+| T6 | Add skip-link for keyboard navigation | ✅ Done v2.5 — `.skip-link` jumps to `#top` (`<main>`), visible on `:focus` / `:focus-visible` |
+| T7 | Add `focus-visible` styles | ✅ Done v2.5 — page-wide 2px accent ring, 3px offset; tap-highlight tinted to accent |
 | T8 | Consider CSS/JS split | ✅ Resolved — single-file kept, zero backend scripts |
 | T9 | Image optimization pipeline | ✅ Done — 7 exports, WebP + JPG via `<picture>` |
-| T10 | Meta description + title optimized | ✅ Done — 56 / 110 chars; scent names; absolute OG URL |
+| T10 | Meta description + title optimized | ✅ Done — 58 / 134 chars; scent names; absolute OG URL |
+| T11 | Safe-area + notch support | ✅ Done v2.5 — `viewport-fit=cover`; padding uses `env(safe-area-inset-*)` on body, nav, drawer, footer; `scroll-padding-top` for sticky nav |
+| T12 | 44px minimum tap targets | ✅ Done v2.5 — `.btn` min-height 44px; promo dots 44×44 hit area; FAQ summary 44px; social links 48px on phone; hamburger 44×44 |
+| T13 | No horizontal overflow on phone | ✅ Done v2.5 — `overflow-x: hidden` + tilts flattened under 968px (shop banner, community, ritual figure, steps, FAQ, brand-card) |
 
 ### 9.2 Performance Budget
 
 | Metric | Target | Current (estimated) |
 |--------|--------|---------------------|
 | Lighthouse Performance | ≥ 90 | ~85-95 est. (local images; zero backend fetch; zero third-party scripts — only simpleicons images) |
-| Lighthouse Accessibility | ≥ 90 | ~75-85 est. (no skip-link yet) |
+| Lighthouse Accessibility | ≥ 90 | ~85-95 est. (skip-link + focus-visible + 44px targets shipped v2.5; still needs field Lighthouse) |
 | Lighthouse SEO | ≥ 95 | ~85-90 est. (OG + JSON-LD live BUT Product-nodes-without-catalog mismatch is a downgrade risk; custom domain detached — see risks) |
 | Lighthouse Best Practices | ≥ 90 | ~90 est. (all images local HTTPS; no third-party JS) |
 | LCP | < 2.5s | Unknown (hero is 192KB JPG / 110KB WebP; needs field measurement) |
@@ -253,13 +277,14 @@ gtag('event', 'select_item', {
 | Milestone | Scope | Status |
 |-----------|-------|--------|
 | **M1: Conversion Foundation** | Track 1 (E1-E6) + Track 4 (T1-T3, T10) | ✅ Shipped |
-| **M2: Content & Polish** | Track 2 (L1, L5-L7 done; L2/L3 open) + Track 3 (B3 done; B1/B2/B4/B5 open) | 🔶 Partial |
-| **M3: Performance & Accessibility** | Track 4 (T4-T7) + full Lighthouse pass | ⬜ Open |
+| **M2: Content & Polish** | Track 2 (L1, L3, L5-L10 done; L2/L4 open) + Track 3 (B3 done; B1/B2/B4/B5 open) | 🔶 Partial |
+| **M3: Performance & Accessibility** | Track 4 (T6/T7/T11-T13 done v2.5; T4-T5 Lighthouse still open) | 🔶 Partial |
 | **M4: Catalog & Brand Assets** | Scent-canonical rename, 7 web exports, vector wordmark, OG raster | ✅ Shipped |
 | **M5: Maintenance Go-Live** | Track 5 (M1-M9) | ❌ Cancelled — module retired in v2.3, owner inputs no longer needed |
 | **M6: Lite Scarlett Storefront** | Track 6 (S1-S7) | 🔶 Partial — S1-S3 + S7 survive; grid requirements (S4-S6) retired in v2.3 |
 | **M7: Odoo Storefront Migration** | Phase 12: `#produk` → `#shop` banner, Odoo CTAs, Shopee/backend/sticky deletion | ✅ Code complete, uncommitted; needs browser check + commit |
 | **M8: SEO Content (BPOM doc)** | Phase 13: 7-product + FAQPage schema, `#faq` section, keyword meta, robots/sitemap | ✅ Code complete, uncommitted; needs browser check + commit |
+| **M9: Mobile-Ready** | Phase 14: hamburger drawer, stacked CTAs, 44px targets, safe-area, skip-link, swipe carousel, overflow lock | ✅ Code complete 2026-09-26 |
 
 ### M1 Build Slices (Proposed)
 
@@ -304,6 +329,7 @@ gtag('event', 'select_item', {
 | Q8 | ~~Edge-function deploy route (CLI vs dashboard)?~~ | — | ❌ Closed v2.3: function deleted |
 | Q9 | Strip JSON-LD Products or point offers at Odoo? | — | ✅ Resolved v2.4: 7 real Products, `offers.url` → Odoo, no prices (Offer without price won't earn rich results — accepted) |
 | Q10 | Odoo catalog names match ritual copy? | Brand owner | 🔶 Partial v2.4: page follows doc-canonical names (`Feminine Blush Pink`); Odoo-side parity still owner to verify |
+| Q11 | Visual QA on real iPhone SE / Android 360px? | Developer | Open — CSS targets 380/600/968; needs device or browser-preview check |
 
 ## 14. Out of Scope (Deferred)
 
@@ -324,8 +350,9 @@ gtag('event', 'select_item', {
 | Images | Hero + ritual + promo/OG live; 4 card images unused on-page, kept on disk; 3 new scents have no photos (schema omits `image`) | Optional photo shoot for Flavia / Fresh Tickled / Classic |
 | Analytics | gtag stub + `select_item` on all `[data-cta]` (odoo/whatsapp/social); GA ID unset | Set `ZV_GA_ID` to activate |
 | SEO meta | Keyword title (58) + description (134) + canonical + robots/sitemap; JSON-LD Org + 7 Products + FAQPage | Submit sitemap in Search Console after deploy |
-| Accessibility | No skip-link, no page-wide focus-visible | M3 |
-| Performance | Fully static, zero third-party JS; Supabase fetch gone | M3 Lighthouse pass |
+| Accessibility | Skip-link + page-wide `focus-visible` + 44px targets (v2.5); Lighthouse a11y still unmeasured | M3 field Lighthouse |
+| Performance | Fully static, zero third-party JS; mobile overflow/tilts flattened | M3 Lighthouse pass |
+| Mobile | Drawer nav <968px; full-width CTAs <600px; swipe promo; iOS safe-area; `viewport-fit=cover` | None — visual check on 375 / 390 / 430 |
 | Social proof | None | Testimonials or IG embed |
 | FAQ | ✅ `#faq` block + `FAQPage` schema (v2.4); copy sourced from BPOM doc | None |
 | CTA logic | Single Odoo intent everywhere (nav ×2, promo, banner, kontak); WA support-only; sticky deleted | None — verify Odoo shop is live |
