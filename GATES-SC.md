@@ -17,7 +17,7 @@ Phase 12 removed the tabbed grid, cards, sticky CTA, and backend: grid-era gates
   CHECK: grep -c "promo-slide|data-tab|disc-badge|was-price" index.html
   EXPECT: >=10
   EVIDENCE: 13 refs but tabs/grid gone — survivors are promo carousel + brand-card CSS only
-  ABANDON: SC3 — tabbed BEST SELLER grid deleted in Phase 12 (replaced by #shop Odoo banner)
+  ABANDON: SC3 — tabbed BEST SELLER grid deleted in Phase 12 (replaced by #shop CASTADOO banner)
 
 - [ ] SC4: Functionality contract kept (.p-card + data-* + panel hooks)
   CHECK: grep -c "p-card|data-cta|zvRenderProducts|maintCog" index.html
@@ -34,7 +34,7 @@ Phase 12 removed the tabbed grid, cards, sticky CTA, and backend: grid-era gates
   CHECK: grep "cmp > price" guard in zvCompare
   EXPECT: present
   EVIDENCE: zvCompare deleted with the data layer — no discounts renderable at all
-  ABANDON: SC6 — discount machinery deleted in Phase 12; no prices on-page (Odoo owns pricing)
+  ABANDON: SC6 — discount machinery deleted in Phase 12; no prices on-page (CASTADOO owns pricing)
 
 - [ ] SC7: Square tiles + serum zoom hook
   CHECK: grep -c "aspect-ratio: 1/1|zoom-out" index.html
@@ -45,8 +45,8 @@ Phase 12 removed the tabbed grid, cards, sticky CTA, and backend: grid-era gates
 - [ ] SC8: WA-only purchase CTAs (no Keranjang/Shopee purchase links)
   CHECK: grep -c "Keranjang" index.html + shopee data-cta scope
   EXPECT: 0 and social-only
-  EVIDENCE: 0 Keranjang still true, but purchase CTAs are now Odoo (data-cta="odoo" x5), WA support-only
-  ABANDON: SC8 — WA-only flow superseded by Odoo-primary in Phase 12
+  EVIDENCE: 0 Keranjang still true, but purchase CTAs are now CASTADOO (data-cta="odoo" x6 — count corrected 2026-10-05, was stale at 5), WA support-only
+  ABANDON: SC8 — WA-only flow superseded by CASTADOO-primary in Phase 12
 
 <!--
 - A checked box with EVIDENCE still "pending" counts as UNMET.

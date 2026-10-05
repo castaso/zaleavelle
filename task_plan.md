@@ -107,19 +107,19 @@ Phase 14: Mobile-ready landing
 - [ ] Owner SQL v3 (v2 + compare_at_price + last_synced_at + img_zoom) + deploy + URLs + compare prices → verify → commit
 - **Status:** in_progress
 
-### Phase 12: Remove marketplace → Odoo Shop
+### Phase 12: Remove marketplace → CASTADOO Shop
 
-- [x] Slice 12a: `#produk` Best Seller grid + tabs → `#shop` banner (dark card, Odoo CTA + WA support, 3 trust points); hero/promo/kontak `#produk` anchors → `#shop`; nav `Belanja` → Odoo URL; sticky CTA + tracker + sentinel JS/CSS deleted
-- [x] Slice 12b: Shopee purged (social-grid link → `Toko Resmi`/Odoo, wall icon removed, all `data-cta="shopee"` gone); WA-buy CTAs replaced by `data-cta="odoo"` (nav ×2, promo, banner, kontak); WA kept as support only (banner + kontak)
+- [x] Slice 12a: `#produk` Best Seller grid + tabs → `#shop` banner (dark card, CASTADOO CTA + WA support, 3 trust points); hero/promo/kontak `#produk` anchors → `#shop`; nav `Belanja` → CASTADOO URL; sticky CTA + tracker + sentinel JS/CSS deleted
+- [x] Slice 12b: Shopee purged (social-grid link → `Toko Resmi`/CASTADOO, wall icon removed, all `data-cta="shopee"` gone); WA-buy CTAs replaced by `data-cta="odoo"` (nav ×2, promo, banner, kontak); WA kept as support only (banner + kontak)
 - [x] Slice 12c: backend deleted — maint cog/panel HTML + CSS + JS, Supabase CDN + config, storefront data layer (`zvDb/zvCardHTML/zvRenderProducts/zvFetchProducts/zvBoot/zvTabs`), `supabase/` dir (incl. `shopee-sync` edge function); boot is now static `zvInitReveals()` + promo carousel; restored `.btn-sm` (nav still uses it)
-- [x] Slice 12d verify: 0 `#produk`/maint/supabase/sticky/p-card refs; 1 `shopee` ref left intentionally (JSON-LD `sameAs`, SEO untouched per owner); 5 Odoo refs; 4 `data-cta="odoo"`; all `#` anchors resolve; `node --check` clean on all 3 inline blocks; 1139 → 560 lines
+- [x] Slice 12d verify: 0 `#produk`/maint/supabase/sticky/p-card refs; 1 `shopee` ref left intentionally (JSON-LD `sameAs`, SEO untouched per owner); 5 CASTADOO refs; 4 `data-cta="odoo"`; all `#` anchors resolve; `node --check` clean on all 3 inline blocks; 1139 → 560 lines
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
 
 ### Phase 13: SEO content from BPOM doc
 
 - [x] Doc fetched via export URL; raw 7-product table logged to findings.md (external content rule)
 - [x] Slice 13a: title 58 / description 134 chars keyword-rich + canonical + `robots.txt` + `sitemap.xml` (new files)
-- [x] Slice 13b: JSON-LD rebuilt — Org + 7 Products (doc descriptions, BPOM + volume `additionalProperty`, images for 4 photographed scents, Odoo `offers` without price; stale slot-carryover prices removed) + `FAQPage` (6 Q&As)
+- [x] Slice 13b: JSON-LD rebuilt — Org + 7 Products (doc descriptions, BPOM + volume `additionalProperty`, images for 4 photographed scents, CASTADOO `offers` without price; stale slot-carryover prices removed) + `FAQPage` (6 Q&As)
 - [x] Slice 13c: visible `#faq` after ritual (trust list: Niacinamide/sarang walet/calendula + 7 BPOM + 6 `<details>` verbatim-matching schema); ritual + banner renamed to doc-canonical `Feminine Blush Pink`
 - [x] Slice 13d verify: JSON-LD parses (9 nodes); FAQ visible==schema; 0 stale prices; 0 bare `Feminine Blush`; `node --check` ×3 clean; all `#` anchors resolve; PRD v2.4
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
@@ -144,10 +144,10 @@ Phase 14: Mobile-ready landing
 
 | Decision | Rationale |
 |----------|-----------|
-| Odoo Shop as sole storefront (Phase 12) | Owner interview 2026-09-24: remove marketplace section altogether, replace with https://zaleavelle.odoo.com/shop CTA banner |
-| Sticky CTA deleted, not converted | Owner chose "Nav to Odoo, sticky removed" — no floating buy button in Odoo era |
-| JSON-LD Product schema kept (tech debt) | Owner chose "Leave SEO untouched" — 4 Product nodes still reference prices/images with no on-page catalog; follow-up: strip to Organization or point offers at Odoo |
-| Ritual/promo copy follows BPOM doc (Phase 13) | Owner chose "Follow the doc" — `Feminine Blush Pink` canonical everywhere; Odoo parity still owner-side (Q10) |
+| CASTADOO Shop as sole storefront (Phase 12) | Owner interview 2026-09-24: remove marketplace section altogether, replace with https://beli.zaleavelle.com/shop CTA banner |
+| Sticky CTA deleted, not converted | Owner chose "Nav to CASTADOO, sticky removed" — no floating buy button in CASTADOO era |
+| JSON-LD Product schema kept (tech debt) | Owner chose "Leave SEO untouched" — 4 Product nodes still reference prices/images with no on-page catalog; follow-up: strip to Organization or point offers at CASTADOO |
+| Ritual/promo copy follows BPOM doc (Phase 13) | Owner chose "Follow the doc" — `Feminine Blush Pink` canonical everywhere; CASTADOO parity still owner-side (Q10) |
 | FAQ after ritual, trust + 6 Q&As (Phase 13) | Owner chose placement/size; schema mirrors visible text verbatim for FAQPage eligibility |
 | Mobile-first breakpoints 968 / 600 / 380 (Phase 14) | Persona is Gen-Z ID mobile; desktop nav unchanged; drawer replaces hidden-links-only pattern |
 | Offers without price accepted (Phase 13) | No prices in source doc; inventing forbidden — valid schema, no Product rich results |

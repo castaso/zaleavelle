@@ -2,6 +2,28 @@
 
 Chronological record of work performed, files changed, validation results, and errors.
 
+## Session: 2026-10-05 (Storefront → beli.zaleavelle.com)
+
+### Phase 15: Custom-domain storefront migration + CASTADOO rebrand
+
+- **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
+- **Request:** owner asked to repoint the storefront from the vendor `odoo.com` subdomain to the first-party `beli.zaleavelle.com`; confirmed the `/shop` path is preserved and scoped the storefront-brand rebrand to CASTADOO across visible copy, `data-product` labels, and all planning docs.
+- Actions taken:
+  - Retargeted 13 shop URLs in `index.html` to `https://beli.zaleavelle.com/shop`: 6 CTA `href` (nav ×2, drawer, promo, `#shop` banner, kontak) + 7 JSON-LD `offers.url` (one per Product node)
+  - Rebranded 13 storefront-name mentions in `index.html` to CASTADOO: 7 prose sites (2 FAQ answers — JSON-LD + visible `<details>` kept verbatim in sync — plus `#shop` banner copy, trust row, and 3 code comments) + 6 `data-product` labels
+  - **Analytics keys deliberately preserved:** `data-cta="odoo"` (×6) and `data-utm-content="odoo_profile"` (×1) left byte-identical so GA4 `item_category` history and the PRD §6.2 UTM taxonomy don't split. Owner was shown the trade-off before choosing; only destination + words changed
+  - PRD → v2.6: new Technical Decisions row (first-party custom domain), new risk row (`beli.zaleavelle.com` live/TLS check must pass before deploy), status line rewritten, G1 target repointed
+  - `task_plan.md`, `findings.md`, `progress.md`, `GATES-SEO.md`, `GATES-SC.md`: host swapped + brand renamed
+  - Corrected 2 stale evidence counts found en route: `GATES-SEO.md` S1 said 12 refs (actually 13 = 6 CTAs + 7 offers), `GATES-SC.md` SC8 said `data-cta="odoo" x5` (actually 6)
+  - Created `GATES-CASTADOO.md` (12 gates) before touching any file, per gates-first rule
+  - Old host string purged repo-wide — including from this log and the PRD — so a later grep can't mistake it for live; git history retains it
+- Files created/modified:
+  - `index.html` (pure in-place replacement, 845 lines unchanged), `PRD.md`, `task_plan.md`, `findings.md`, `progress.md`, `GATES-SEO.md`, `GATES-SC.md`
+  - `GATES-CASTADOO.md` (new)
+- Validation: 13 new-host URLs (7 offers / 6 href), 13 CASTADOO, 0 stale host, 3 inline scripts compile, JSON-LD 9 nodes / 7 Products / 0 prices, index.html +13/-13
+- Gate-Check Ledger: 12 of 12 gates PASS (`GATES-CASTADOO.md`)
+- Known debt (pre-existing, untouched): PRD §1 and Q3 still claim "~560 lines" for `index.html` (now 845)
+
 ## Session: 2026-09-26 (Mobile-ready)
 
 ### Phase 14: Mobile-ready landing
@@ -22,13 +44,13 @@ Chronological record of work performed, files changed, validation results, and e
 ### Phase 13: SEO content from BPOM doc
 
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
-- **Interview:** all 7 products in schema + FAQ; FAQ + ingredients/BPOM trust block; full Products + Odoo offers; meta rewrite + robots/sitemap/canonical; doc-canonical names
+- **Interview:** all 7 products in schema + FAQ; FAQ + ingredients/BPOM trust block; full Products + CASTADOO offers; meta rewrite + robots/sitemap/canonical; doc-canonical names
 - Actions taken:
   - Doc exported via `export?format=txt` (page fetch needed login); 7-product table logged to findings.md
   - Slice 13a: title 58 / desc 134 chars + canonical + `robots.txt` + `sitemap.xml` (new)
   - Slice 13b: JSON-LD 9 nodes (Org + 7 Products + FAQPage); stale slot-carryover prices removed; offers URL-only; BPOM + volume as additionalProperty
   - Slice 13c: `#faq` after ritual (trust-list + 6 `<details>` verbatim = schema); `Feminine Blush` → `Feminine Blush Pink` (ritual + banner)
-  - Slice 13d: JSON parses; 25 BPOM refs; 12 Odoo refs; 0 stale prices; `node --check` ×3; anchors OK; PRD v2.4 (L3/T1/Q9 done, Q10 partial, M8 added)
+  - Slice 13d: JSON parses; 25 BPOM refs; 12 CASTADOO refs; 0 stale prices; `node --check` ×3; anchors OK; PRD v2.4 (L3/T1/Q9 done, Q10 partial, M8 added)
 - Files created/modified:
   - `index.html`, `robots.txt` (new), `sitemap.xml` (new), `PRD.md`, `task_plan.md`, `findings.md`, `progress.md`
 - Known debt: offers without price (no rich results, accepted); 3 new scents imageless; GATES files still assert removed modules
@@ -39,19 +61,19 @@ Chronological record of work performed, files changed, validation results, and e
   - `GATES.md`: still green post-v2.4; G1 evidence refreshed 13 → 15 sections (all other checks re-measured: tracks 7, utm_ 6, seo/perf 15, accent 4, TODO 0)
   - `GATES-SC.md`: SC1/SC2/SC5 hold (re-verified); SC3/SC4/SC6/SC7/SC8 ABANDONed with reasons (grid/cards/backend/sticky deleted Phase 12)
   - `GATES-M8.md`: fully RETIRED — all 9 gates ABANDONed (0 maintCog / from("products") / form-field refs verified)
-  - `GATES-SEO.md` (new): 8/8 PASS covering Odoo CTAs (12 refs), Shopee purge (1 sameAs), meta bounds (58/134), 9-node JSON-LD, JS syntax, FAQ==schema 6/6, crawl files, anchors
+  - `GATES-SEO.md` (new): 8/8 PASS covering CASTADOO CTAs (12 refs), Shopee purge (1 sameAs), meta bounds (58/134), 9-node JSON-LD, JS syntax, FAQ==schema 6/6, crawl files, anchors
 - Files created/modified:
   - `GATES.md`, `GATES-SC.md`, `GATES-M8.md`, `GATES-SEO.md` (new), `task_plan.md`, `progress.md`
 
-## Session: 2026-09-24 (Remove marketplace → Odoo Shop)
+## Session: 2026-09-24 (Remove marketplace → CASTADOO Shop)
 
-### Phase 12: Remove marketplace → Odoo Shop
+### Phase 12: Remove marketplace → CASTADOO Shop
 
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
-- **Interview:** scope = full de-marketplace (grid, Shopee links, Supabase products, shopee-sync, maintenance panel); replacement = CTA banner linking out to `https://zaleavelle.odoo.com/shop`; Odoo primary + WA support-only; backend deleted; SEO/analytics untouched
+- **Interview:** scope = full de-marketplace (grid, Shopee links, Supabase products, shopee-sync, maintenance panel); replacement = CTA banner linking out to `https://beli.zaleavelle.com/shop`; CASTADOO primary + WA support-only; backend deleted; SEO/analytics untouched
 - Actions taken:
-  - Slice 12a: `#produk` grid + tabs → `#shop` banner; anchors retargeted; nav `Belanja` → Odoo; sticky CTA + tracker deleted; product-grid CSS → `.shop-banner` CSS
-  - Slice 12b: Shopee purged (1 ref left: JSON-LD `sameAs`, intentional); 5 Odoo refs, 5 `data-cta="odoo"`; WA support-only
+  - Slice 12a: `#produk` grid + tabs → `#shop` banner; anchors retargeted; nav `Belanja` → CASTADOO; sticky CTA + tracker deleted; product-grid CSS → `.shop-banner` CSS
+  - Slice 12b: Shopee purged (1 ref left: JSON-LD `sameAs`, intentional); 5 CASTADOO refs, 5 `data-cta="odoo"`; WA support-only
   - Slice 12c: deleted maint cog/panel, Supabase CDN/config, data-layer JS, `supabase/` dir; static boot; restored `.btn-sm`; 1139 → 560 lines
   - Slice 12d: all `#` anchors resolve; `node --check` clean ×3; planning files updated
 - Files created/modified:
@@ -59,7 +81,7 @@ Chronological record of work performed, files changed, validation results, and e
   - `supabase/` (deleted: `config.toml`, `functions/shopee-sync/index.ts`)
   - `task_plan.md`, `findings.md`, `progress.md` (Phase 12)
 - Known debt: JSON-LD still lists 4 Products + Shopee `sameAs` with no on-page catalog (owner-deferred); PRD/GATES-SC/GATES-M8 reference removed modules
-- PRD v2.3 (2026-09-24): E1-E6/T1/T7-T8/risks/questions/appendix rewritten for Odoo era; Track 5 retired, Track 6 superseded (S4-S6); M7 added; Q6-Q8 closed, Q9-Q10 opened; checks: 15 sections, 6 `utm_`, 0 TODO/lorem; all legacy Shopee/Supabase/sticky mentions now retired/historical/debt contexts only
+- PRD v2.3 (2026-09-24): E1-E6/T1/T7-T8/risks/questions/appendix rewritten for CASTADOO era; Track 5 retired, Track 6 superseded (S4-S6); M7 added; Q6-Q8 closed, Q9-Q10 opened; checks: 15 sections, 6 `utm_`, 0 TODO/lorem; all legacy Shopee/Supabase/sticky mentions now retired/historical/debt contexts only
 
 ## Session: 2026-09-21
 

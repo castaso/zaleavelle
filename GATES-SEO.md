@@ -1,11 +1,11 @@
-# Gates: Odoo + SEO storefront (SEO)
+# Gates: CASTADOO + SEO storefront (SEO)
 
-Scope: Phase 12 marketplace removal (Odoo sole storefront, static page, backend deleted) + Phase 13 BPOM-doc SEO content (7-product + FAQPage schema, #faq section, keyword meta, crawl files). Verified 2026-09-24.
+Scope: Phase 12 marketplace removal (CASTADOO sole storefront, static page, backend deleted) + Phase 13 BPOM-doc SEO content (7-product + FAQPage schema, #faq section, keyword meta, crawl files). Verified 2026-09-24; storefront host + copy re-verified 2026-10-05 after the Phase 15 custom-domain migration.
 
-- [x] S1: All buy CTAs point at the Odoo Shop
-  CHECK: grep -c "zaleavelle\.odoo\.com/shop" index.html
+- [x] S1: All buy CTAs point at the CASTADOO Shop
+  CHECK: grep -c "beli\.zaleavelle\.com/shop" index.html
   EXPECT: >=10
-  EVIDENCE: 12 refs (5 page CTAs + 7 schema offers)
+  EVIDENCE: 13 refs (6 page CTAs + 7 schema offers) — re-verified 2026-10-05 on the custom domain
 
 - [x] S2: Shopee purged from shopper UI (JSON-LD sameAs debt excepted)
   CHECK: grep -ci "shopee" index.html
@@ -17,7 +17,7 @@ Scope: Phase 12 marketplace removal (Odoo sole storefront, static page, backend 
   EXPECT: title <=60, description <=155, canonical present
   EVIDENCE: title 58, description 134, canonical https://zaleavelle.com/
 
-- [x] S4: JSON-LD parses — Org + 7 Products + FAQPage, Odoo offers, no stale prices
+- [x] S4: JSON-LD parses — Org + 7 Products + FAQPage, CASTADOO offers, no stale prices
   CHECK: python json.loads on ld+json block; inspect offers
   EXPECT: 9 nodes, offers url-only, 0 slot-carryover prices
   EVIDENCE: 9 nodes; offers {url, priceCurrency, availability}; 0 stale prices; BPOM + volume per product; images for 4 photographed scents only

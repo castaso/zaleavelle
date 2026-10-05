@@ -1,22 +1,22 @@
 # PRD: zaleavelle — Product Requirements Document
 
-> Version 2.5 · 2026-09-26
+> Version 2.6 · 2026-10-05
 > Author: opencode (AI-assisted)
-> Status: Phase 14 code complete (mobile-ready: hamburger drawer, 44px tap targets, safe-area, skip-link, swipe carousel)
+> Status: Phase 15 code complete (storefront migrated to first-party custom domain `beli.zaleavelle.com`; page copy and `data-product` labels rebranded to CASTADOO; analytics keys unchanged)
 
 ---
 
 ## 1. Problem Statement
 
-zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (`index.html`, ~560 lines, fully static). Since v2.2 the on-page marketplace was removed altogether (Phase 12, owner interview 2026-09-24): no product grid, no Supabase backend, no maintenance panel, no sticky CTA. Purchase happens exclusively on the Odoo Shop (`https://zaleavelle.odoo.com/shop`), reached via a `#shop` banner plus nav/promo/kontak CTAs (`data-cta="odoo"`). Ritual/promo copy still names the 4 scents (Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal) editorially; prices live only on Odoo.
+zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (`index.html`, ~560 lines, fully static). Since v2.2 the on-page marketplace was removed altogether (Phase 12, owner interview 2026-09-24): no product grid, no Supabase backend, no maintenance panel, no sticky CTA. Purchase happens exclusively on the CASTADOO Shop (`https://beli.zaleavelle.com/shop`), reached via a `#shop` banner plus nav/promo/kontak CTAs (`data-cta="odoo"`). Ritual/promo copy still names the 4 scents (Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal) editorially; prices live only on CASTADOO.
 
-**Core problem:** Conversion now depends on a third-party storefront the page doesn't control — Odoo catalog names/prices must match the landing copy, and the page still lacks social proof — so click-through to Odoo can't be measured or trusted end-to-end yet. Primary traffic is mobile (Gen-Z ID, TikTok/IG Reels); v2.5 makes the static landing usable on phones (drawer nav, 44px targets, safe-area, no horizontal overflow).
+**Core problem:** Conversion now depends on a third-party storefront the page doesn't control — CASTADOO catalog names/prices must match the landing copy, and the page still lacks social proof — so click-through to CASTADOO can't be measured or trusted end-to-end yet. Primary traffic is mobile (Gen-Z ID, TikTok/IG Reels); v2.5 makes the static landing usable on phones (drawer nav, 44px targets, safe-area, no horizontal overflow).
 
 ## 2. Goals
 
 | # | Goal | Metric | Target |
 |---|------|--------|--------|
-| G1 | Increase landing-to-shop clicks | Click-through rate from Odoo CTAs (`data-cta="odoo"`) to `zaleavelle.odoo.com/shop` | ≥ 8% of `#shop` banner views |
+| G1 | Increase landing-to-shop clicks | Click-through rate from CASTADOO CTAs (`data-cta="odoo"`) to `beli.zaleavelle.com/shop` | ≥ 8% of `#shop` banner views |
 | G2 | Strengthen brand recall | Time on page + return visits (GA4) | ≥ 90s avg session, ≥ 15% return rate within 30 days |
 | G3 | Improve SEO + mobile performance | Lighthouse Performance score (mobile), LCP, CLS | ≥ 90 score, LCP < 2.5s, CLS < 0.1 |
 
@@ -24,7 +24,7 @@ zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (
 
 | # | Non-Goal | Rationale |
 |---|----------|-----------|
-| NG1 | Full e-commerce checkout on-site | Odoo Shop is the payment/logistics backbone; no cart on zaleavelle |
+| NG1 | Full e-commerce checkout on-site | CASTADOO Shop is the payment/logistics backbone; no cart on zaleavelle |
 | NG2 | User accounts / login | Out of scope for MVP; community engagement via social only |
 | NG3 | Multi-language at launch | ID-first; EN can be added in a follow-up i18n track |
 | NG4 | Mobile app | Web-only; PWA is a future consideration |
@@ -35,9 +35,9 @@ zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (
 ### 4.1 Primary Persona: Gen-Z ID Skincare Buyer
 
 - **Age:** 18-26, Indonesian, mobile-first
-- **Discovery:** TikTok / Instagram Reels → landing page → Odoo Shop (or WhatsApp for questions)
+- **Discovery:** TikTok / Instagram Reels → landing page → CASTADOO Shop (or WhatsApp for questions)
 - **Motivation:** Simple routine, affordable, aesthetic packaging, peer validation
-- **Friction points:** Must leave the landing page to see prices/stock; no social proof on page; Odoo catalog names must match the scents named in ritual copy; one-handed phone use (thumb-reach nav, fat-finger CTAs)
+- **Friction points:** Must leave the landing page to see prices/stock; no social proof on page; CASTADOO catalog names must match the scents named in ritual copy; one-handed phone use (thumb-reach nav, fat-finger CTAs)
 
 ### 4.2 User Journey (Target State)
 
@@ -45,9 +45,9 @@ zaleavelle is an Indonesian DTC skincare brand with a single-file landing page (
 Ad / Social Post → zaleavelle landing page
   → Hero: brand promise + CTA
   → Shop banner (#shop): catalog pitch + trust points
-  → CTA → Odoo Shop (https://zaleavelle.odoo.com/shop, new tab)
+  → CTA → CASTADOO Shop (https://beli.zaleavelle.com/shop, new tab)
   → OR WhatsApp support: "Halo zaleavelle!"
-  → Purchase on Odoo
+  → Purchase on CASTADOO
   → Return visit: community section → IG/TikTok follow
 ```
 
@@ -57,20 +57,21 @@ Ad / Social Post → zaleavelle landing page
 |----------|-----------|
 | Single-file HTML for MVP | No build step required; simplicity over modularity |
 | ID-first language | Primary audience is Indonesian; EN can be added via i18n follow-up track |
-| ~~Shopee as primary CTA~~ → Odoo Shop sole storefront (v2.3) | Owner interview 2026-09-24: marketplace removed altogether; all buy CTAs link out to `zaleavelle.odoo.com/shop` |
+| ~~Shopee as primary CTA~~ → CASTADOO Shop sole storefront (v2.3) | Owner interview 2026-09-24: marketplace removed altogether; all buy CTAs link out to `beli.zaleavelle.com/shop` |
 | GA4 gtag for analytics | Lightweight, free, industry standard; avoids third-party analytics bloat |
 | WebP with JPG fallback | Modern format for perf; JPG fallback for older browsers |
 | ~~Supabase as product backend~~ → static page, no backend (v2.3) | Phase 12 deleted the data layer, maintenance panel, and `shopee-sync` function; DB table left untouched server-side |
 | ~~Open-write RLS, no access gate~~ → retired with backend (v2.3) | No client writes remain; revisit only if a backend returns |
 | Scent names canonical | Photos sell scent-named SKUs; old set/serum/lotion/scrub names retired in M2 |
-| ~~Slot-carryover prices~~ → Odoo is price source of truth (v2.3) | No prices on the landing page anymore; Odoo catalog owns pricing/stock |
+| ~~Slot-carryover prices~~ → CASTADOO is price source of truth (v2.3) | No prices on the landing page anymore; CASTADOO catalog owns pricing/stock |
 | SVG favicon over ICO/PNG | No binary tooling in repo; full wordmark illegible at 32px, serif-“z” kept |
-| ~~Stock-zero badge semantics~~ → retired with cards (v2.3) | Stock display lives on Odoo now |
+| ~~Stock-zero badge semantics~~ → retired with cards (v2.3) | Stock display lives on CASTADOO now |
 | ~~Shopee pull-on-demand sync~~ → retired with backend (v2.3) | `shopee-sync` edge function deleted |
-| ~~WA-only purchase flow~~ → Odoo-primary, WA support-only (v2.3) | WA CTAs remain only as support (banner + kontak); no `wa.me` buy links |
+| ~~WA-only purchase flow~~ → CASTADOO-primary, WA support-only (v2.3) | WA CTAs remain only as support (banner + kontak); no `wa.me` buy links |
 | ~~Square tiles + serum zoom hook~~ → retired with grid (v2.3) | `#produk` section replaced by `#shop` banner |
 | Single-file kept post-M3 | Split still deferred; page is static with zero backend scripts |
 | Mobile-first breakpoints (v2.5) | 968px tablet (drawer + single column), 600px phone (full-width CTAs), 380px small phone (type scale); desktop nav unchanged |
+| Storefront on first-party custom domain (v2.6) | Owner 2026-10-05: shop moved off the vendor's `odoo.com` subdomain to `beli.zaleavelle.com` with the `/shop` path unchanged; all 6 CTA `href` + 7 JSON-LD `offers.url` retargeted, page copy and `data-product` labels rebranded to CASTADOO. Analytics keys `data-cta="odoo"` and `data-utm-content="odoo_profile"` were deliberately **kept** so GA4 `item_category` history and the §6.2 UTM taxonomy stay continuous — only the destination and the words changed |
 
 ## 6. Track 1: E-Commerce Conversion
 
@@ -78,14 +79,14 @@ Ad / Social Post → zaleavelle landing page
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| E1 | Every buy CTA links out to the Odoo Shop in a new tab | `href="https://zaleavelle.odoo.com/shop"` with `target="_blank" rel="noopener"` and `data-cta="odoo"`; WA CTAs exist support-only (banner + kontak) |
+| E1 | Every buy CTA links out to the CASTADOO Shop in a new tab | `href="https://beli.zaleavelle.com/shop"` with `target="_blank" rel="noopener"` and `data-cta="odoo"`; WA CTAs exist support-only (banner + kontak) |
 | E2 | Shopee fully removed from shopper UI | Zero `data-cta="shopee"`, zero `s.shopee.co.id` links outside JSON-LD `sameAs` (known SEO debt, owner-deferred) |
-| E3 | UTM taxonomy defined and documented | Table in PRD (§6.2) with source/medium/campaign/content per Odoo CTA placement |
+| E3 | UTM taxonomy defined and documented | Table in PRD (§6.2) with source/medium/campaign/content per CASTADOO CTA placement |
 | E4 | Event tracking on CTA clicks | `select_item` queued on every `[data-cta]` click with product name + `utm_content`; works with real GA4 once `ZV_GA_ID` is set |
 | E5 | ~~Sticky CTA~~ → deleted (v2.3) | No floating buy button; nav `Belanja` + `#shop` banner carry the purchase intent |
-| E6 | ~~Price formatting~~ → no prices on-page (v2.3) | Odoo catalog is the single source of truth for price/stock |
+| E6 | ~~Price formatting~~ → no prices on-page (v2.3) | CASTADOO catalog is the single source of truth for price/stock |
 
-### 6.2 UTM Taxonomy (Odoo era — per placement, v2.3)
+### 6.2 UTM Taxonomy (CASTADOO era — per placement, v2.3)
 
 | Placement | utm_source | utm_medium | utm_campaign | utm_content |
 |-----------|------------|------------|--------------|-------------|
@@ -101,9 +102,9 @@ Ad / Social Post → zaleavelle landing page
 ### 6.3 Analytics Events
 
 ```javascript
-// On Odoo CTA click (delegated [data-cta] listener queues select_item)
+// On CASTADOO CTA click (delegated [data-cta] listener queues select_item)
 gtag('event', 'select_item', {
-  item_name: 'Odoo Shop',
+  item_name: 'CASTADOO Shop',
   item_category: 'odoo',
   price: 0,
   currency: 'IDR',
@@ -146,7 +147,7 @@ gtag('event', 'select_item', {
 
 1. **Varian aroma apa saja yang tersedia?** — Emerald Sweet (body wash), Blaine Floral dan Feminine Blush (body lotion), Bright Petal (body serum).
 2. **Apakah aman untuk kulit sensitif?** — Ya, semua produk zaleavelle diformulasi lembut tanpa paraben.
-3. **Bagaimana cara pesan?** — Klik tombol Belanja untuk checkout di Toko Resmi (Odoo Shop), atau chat kami via WhatsApp.
+3. **Bagaimana cara pesan?** — Klik tombol Belanja untuk checkout di Toko Resmi (CASTADOO Shop), atau chat kami via WhatsApp.
 4. **Kapan hasilnya terlihat?** — Kebanyakan pelanggan melihat perbedaan dalam 2-4 minggu.
 5. **Apakah ada program reseller?** — Hubungi WhatsApp kami untuk info kerja sama.
 
@@ -161,7 +162,7 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 | ≤600px | Phone: 1.1rem gutters; stacked 100% CTAs; 1-col social; stickers off; hero 3/4 crop |
 | ≤380px | Small phone: tighter display type + wordmark |
 
-**Drawer contents:** Belanja (Odoo) · Ritual · FAQ · Tentang · Kontak · Beli (Odoo, `utm_content=nav_cta`). Close on ESC, in-page `#` click, or `min-width: 969px` media-query change.
+**Drawer contents:** Belanja (CASTADOO) · Ritual · FAQ · Tentang · Kontak · Beli (CASTADOO, `utm_content=nav_cta`). Close on ESC, in-page `#` click, or `min-width: 969px` media-query change.
 
 **Touch:** 44×44 minimum on buttons, dots, hamburger, FAQ summaries; `touch-action: manipulation` on `a, button`; promo swipe 40px threshold; no hover-only affordances under `(hover: none)`.
 
@@ -175,7 +176,7 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 |----|-------------|---------------------|
 | B1 | Expand ritual section with before/after or routine timeline | Visual timeline or step-by-step with real imagery |
 | B2 | Strengthen manifesto section | Add founder story or brand origin (2-3 sentences) |
-| B3 | Community section links all work | IG / TikTok / Toko Resmi (Odoo) / WhatsApp open in new tab, correct URLs, `data-cta` tagged |
+| B3 | Community section links all work | IG / TikTok / Toko Resmi (CASTADOO) / WhatsApp open in new tab, correct URLs, `data-cta` tagged |
 | B4 | Add newsletter / WhatsApp broadcast signup | Email input or WA link for "Tips skincare mingguan" |
 | B5 | ~~Marquee text reviewed~~ → marquee deleted (Phase 10) | No marquee on-page; brand rhythm lives in stickers/eyebrows |
 
@@ -202,7 +203,7 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| T1 | ~~JSON-LD Product schema~~ → resolved v2.4 | 7 Products from BPOM doc (descriptions, volume + BPOM `additionalProperty`, images for the 4 photographed scents); `offers.url` → Odoo, no prices (none in source); stale slot-carryover prices removed; `FAQPage` added |
+| T1 | ~~JSON-LD Product schema~~ → resolved v2.4 | 7 Products from BPOM doc (descriptions, volume + BPOM `additionalProperty`, images for the 4 photographed scents); `offers.url` → CASTADOO, no prices (none in source); stale slot-carryover prices removed; `FAQPage` added |
 | T2 | Add JSON-LD Organization schema | ✅ Done — with `sameAs` social links (Shopee URL retained, owner-deferred) |
 | T3 | Add favicon + manifest | ✅ Done — `favicon.svg` + `site.webmanifest` + theme-color |
 | T4 | Lighthouse Performance ≥ 90 (mobile) | ⬜ Open — run and paste score in progress.md (no backend fetch anymore; should measure clean) |
@@ -254,7 +255,7 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 | M4 | Panel CRUD with live refresh | Retired |
 | M5 | Image upload / paste-URL | Retired |
 | M6 | JSON backup download | Retired |
-| M7 | Stock-zero Stok Habis badge | Retired — stock display lives on Odoo |
+| M7 | Stock-zero Stok Habis badge | Retired — stock display lives on CASTADOO |
 | M8 | "Tarik dari Shopee" via `shopee-sync` | Retired — function deleted |
 | M9 | Go-live checklist (SQL → deploy → URLs → probe → seed → test) | Cancelled — owner inputs no longer needed |
 
@@ -266,10 +267,10 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 |----|-------------|-------------|
 | S1 | Lite-only: no dark mode anywhere | ✅ Holds |
 | S2 | Marquee deleted | ✅ Holds |
-| S3 | Promo hero carousel (3 slides, dots, autoplay) | ✅ Holds (slide-3 CTA retargeted to Odoo) |
-| S4 | BEST SELLER tabbed grid | Retired — replaced by `#shop` Odoo banner |
+| S3 | Promo hero carousel (3 slides, dots, autoplay) | ✅ Holds (slide-3 CTA retargeted to CASTADOO) |
+| S4 | BEST SELLER tabbed grid | Retired — replaced by `#shop` CASTADOO banner |
 | S5 | Discount badge from real `compare_at_price` | Retired with cards |
-| S6 | CTA intents unified / sticky product text | Retired — sticky deleted; single Odoo intent everywhere |
+| S6 | CTA intents unified / sticky product text | Retired — sticky deleted; single CASTADOO intent everywhere |
 | S7 | GSAP removed | ✅ Holds |
 
 ## 12. Milestones
@@ -282,7 +283,7 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 | **M4: Catalog & Brand Assets** | Scent-canonical rename, 7 web exports, vector wordmark, OG raster | ✅ Shipped |
 | **M5: Maintenance Go-Live** | Track 5 (M1-M9) | ❌ Cancelled — module retired in v2.3, owner inputs no longer needed |
 | **M6: Lite Scarlett Storefront** | Track 6 (S1-S7) | 🔶 Partial — S1-S3 + S7 survive; grid requirements (S4-S6) retired in v2.3 |
-| **M7: Odoo Storefront Migration** | Phase 12: `#produk` → `#shop` banner, Odoo CTAs, Shopee/backend/sticky deletion | ✅ Code complete, uncommitted; needs browser check + commit |
+| **M7: CASTADOO Storefront Migration** | Phase 12: `#produk` → `#shop` banner, CASTADOO CTAs, Shopee/backend/sticky deletion | ✅ Code complete, uncommitted; needs browser check + commit |
 | **M8: SEO Content (BPOM doc)** | Phase 13: 7-product + FAQPage schema, `#faq` section, keyword meta, robots/sitemap | ✅ Code complete, uncommitted; needs browser check + commit |
 | **M9: Mobile-Ready** | Phase 14: hamburger drawer, stacked CTAs, 44px targets, safe-area, skip-link, swipe carousel, overflow lock | ✅ Code complete 2026-09-26 |
 
@@ -305,37 +306,38 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | ~~GSAP CDN dependency (no self-hosted)~~ | Retired — GSAP removed (Phase 10), zero third-party JS | — |
-| Odoo Shop dependency | Odoo outage/catalog change breaks all purchase paths; no on-page fallback | Monitor shop availability; keep WA support CTA as contact fallback |
-| ~~JSON-LD Product mismatch~~ | Resolved v2.4 — 7 real Products + Odoo offers + FAQPage | Offer-without-price won't earn rich results (accepted); submit sitemap post-deploy |
-| Odoo catalog parity (NEW v2.3) | Ritual copy names 4 scents; if Odoo renames/restocks differently, shoppers bounce | Verify Odoo slugs/names match Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal |
+| CASTADOO Shop dependency | CASTADOO outage/catalog change breaks all purchase paths; no on-page fallback | Monitor shop availability; keep WA support CTA as contact fallback |
+| ~~JSON-LD Product mismatch~~ | Resolved v2.4 — 7 real Products + CASTADOO offers + FAQPage | Offer-without-price won't earn rich results (accepted); submit sitemap post-deploy |
+| CASTADOO catalog parity (NEW v2.3) | Ritual copy names 4 scents; if CASTADOO renames/restocks differently, shoppers bounce | Verify CASTADOO slugs/names match Emerald Sweet, Blaine Floral, Feminine Blush, Bright Petal |
 | ~~Shopee product URLs may change~~ | Retired — no Shopee links in shopper UI | — |
 | CNAME/custom-domain drift | OG + JSON-LD absolute URLs 404 if domain detached (observed 2026-09-21) | Repoint to canonical host or reattach domain; verify with a link checker |
+| `beli.zaleavelle.com` not live / TLS missing (NEW v2.6) | All 6 buy CTAs and 7 JSON-LD `offers.url` now point at the custom subdomain; an unpropagated DNS record or unissued cert 500s the entire purchase path | Verify `https://beli.zaleavelle.com/shop` returns 200 over HTTPS **before** deploy; confirm CNAME + cert, then re-point — the vendor host remains reachable as fallback until then |
 | ~~Open-write RLS abuse~~ | Retired with backend — no client writes remain | — |
 | ~~Shopee API blocking sync~~ | Retired — `shopee-sync` deleted | — |
-| ~~Provisional seed stock (100)~~ | Retired — stock display lives on Odoo | — |
-| ~~Slot-carryover prices unconfirmed~~ | Retired — Odoo owns pricing; no prices on-page | — |
+| ~~Provisional seed stock (100)~~ | Retired — stock display lives on CASTADOO | — |
+| ~~Slot-carryover prices unconfirmed~~ | Retired — CASTADOO owns pricing; no prices on-page | — |
 
 ### Open Questions
 
 | # | Question | Owner | Status |
 |---|----------|-------|--------|
-| Q1 | Shopee primary vs WhatsApp chat for CTAs? | — | ✅ Superseded v2.3: Odoo Shop sole storefront, WA support-only |
+| Q1 | Shopee primary vs WhatsApp chat for CTAs? | — | ✅ Superseded v2.3: CASTADOO Shop sole storefront, WA support-only |
 | Q2 | Is i18n (ID/EN toggle) in scope for MVP? | Brand owner | Open — recommend: ID-only, EN as follow-up |
 | Q3 | Split index.html into modules now or post-launch? | Developer | Open — single-file kept (560 lines static); revisit only if page grows |
 | Q4 | Product photography mapping? | — | ✅ Resolved: scent-canonical, 4 SKUs mapped, reserve logged |
 | Q5 | Same WA number for all products? | — | ✅ Resolved: single number 6282121262593, support-only role |
-| Q6 | ~~Real per-scent price list?~~ | — | ❌ Closed v2.3: no prices on-page; Odoo owns pricing |
+| Q6 | ~~Real per-scent price list?~~ | — | ❌ Closed v2.3: no prices on-page; CASTADOO owns pricing |
 | Q7 | ~~Real per-product Shopee listing URLs (for sync)?~~ | — | ❌ Closed v2.3: sync module deleted |
 | Q8 | ~~Edge-function deploy route (CLI vs dashboard)?~~ | — | ❌ Closed v2.3: function deleted |
-| Q9 | Strip JSON-LD Products or point offers at Odoo? | — | ✅ Resolved v2.4: 7 real Products, `offers.url` → Odoo, no prices (Offer without price won't earn rich results — accepted) |
-| Q10 | Odoo catalog names match ritual copy? | Brand owner | 🔶 Partial v2.4: page follows doc-canonical names (`Feminine Blush Pink`); Odoo-side parity still owner to verify |
+| Q9 | Strip JSON-LD Products or point offers at CASTADOO? | — | ✅ Resolved v2.4: 7 real Products, `offers.url` → CASTADOO, no prices (Offer without price won't earn rich results — accepted) |
+| Q10 | CASTADOO catalog names match ritual copy? | Brand owner | 🔶 Partial v2.4: page follows doc-canonical names (`Feminine Blush Pink`); CASTADOO-side parity still owner to verify |
 | Q11 | Visual QA on real iPhone SE / Android 360px? | Developer | Open — CSS targets 380/600/968; needs device or browser-preview check |
 
 ## 14. Out of Scope (Deferred)
 
 | Item | Deferred To | Rationale |
 |------|-------------|-----------|
-| Shopping cart on-site | Post-MVP | Odoo Shop handles checkout |
+| Shopping cart on-site | Post-MVP | CASTADOO Shop handles checkout |
 | User accounts | Post-MVP | No loyalty program yet |
 | Blog / content hub | Phase 2 | SEO content strategy is separate work |
 | Multi-language | Phase 2 i18n track | ID-first launch |
@@ -346,7 +348,7 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 
 | Component | Current | Target |
 |-----------|---------|--------|
-| Products | 7 scents in schema + FAQ (doc-canonical names); 4 named in page copy | Verify Odoo names match (Q10) |
+| Products | 7 scents in schema + FAQ (doc-canonical names); 4 named in page copy | Verify CASTADOO names match (Q10) |
 | Images | Hero + ritual + promo/OG live; 4 card images unused on-page, kept on disk; 3 new scents have no photos (schema omits `image`) | Optional photo shoot for Flavia / Fresh Tickled / Classic |
 | Analytics | gtag stub + `select_item` on all `[data-cta]` (odoo/whatsapp/social); GA ID unset | Set `ZV_GA_ID` to activate |
 | SEO meta | Keyword title (58) + description (134) + canonical + robots/sitemap; JSON-LD Org + 7 Products + FAQPage | Submit sitemap in Search Console after deploy |
@@ -355,7 +357,7 @@ Primary audience is mobile-first (persona §4.1). Breakpoints and contracts:
 | Mobile | Drawer nav <968px; full-width CTAs <600px; swipe promo; iOS safe-area; `viewport-fit=cover` | None — visual check on 375 / 390 / 430 |
 | Social proof | None | Testimonials or IG embed |
 | FAQ | ✅ `#faq` block + `FAQPage` schema (v2.4); copy sourced from BPOM doc | None |
-| CTA logic | Single Odoo intent everywhere (nav ×2, promo, banner, kontak); WA support-only; sticky deleted | None — verify Odoo shop is live |
+| CTA logic | Single CASTADOO intent everywhere (nav ×2, promo, banner, kontak); WA support-only; sticky deleted | None — verify CASTADOO shop is live |
 | Maintenance | Module deleted; page static | None |
 
 ---
