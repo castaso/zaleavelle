@@ -1,6 +1,6 @@
 # Task Plan: zaleavelle PRD
 
-Comprehensive PRD for the zaleavelle DTC skincare brand — single-file Indonesian landing page.
+Comprehensive PRD for the zaleavelle DTC skincare brand — single-file English landing page.
 
 ## Goal
 
@@ -8,11 +8,11 @@ Produce a complete, verifiable PRD that covers e-commerce conversion, landing pa
 
 ## Next Step
 
-Phase 14 mobile-ready code + PRD v2.5 complete. Next: visual check at 375/390/430 + commit.
+Phase 16 brand overhaul committed. Next: field Lighthouse run (PRD T4/T5), then social proof (L2) and owner verification of store catalog parity for the four showcase scents (Q10).
 
 ## Current Phase
 
-Phase 14: Mobile-ready landing
+Phase 16: Brand overhaul — botanical palette, English page, verified harness
 
 ## Phases
 
@@ -113,7 +113,7 @@ Phase 14: Mobile-ready landing
 - [x] Slice 12b: Shopee purged (social-grid link → `Toko Resmi`/CASTADOO, wall icon removed, all `data-cta="shopee"` gone); WA-buy CTAs replaced by `data-cta="odoo"` (nav ×2, promo, banner, kontak); WA kept as support only (banner + kontak)
 - [x] Slice 12c: backend deleted — maint cog/panel HTML + CSS + JS, Supabase CDN + config, storefront data layer (`zvDb/zvCardHTML/zvRenderProducts/zvFetchProducts/zvBoot/zvTabs`), `supabase/` dir (incl. `shopee-sync` edge function); boot is now static `zvInitReveals()` + promo carousel; restored `.btn-sm` (nav still uses it)
 - [x] Slice 12d verify: 0 `#produk`/maint/supabase/sticky/p-card refs; 1 `shopee` ref left intentionally (JSON-LD `sameAs`, SEO untouched per owner); 5 CASTADOO refs; 4 `data-cta="odoo"`; all `#` anchors resolve; `node --check` clean on all 3 inline blocks; 1139 → 560 lines
-- **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
+- **Status:** complete (committed `33b0de1`)
 
 ### Phase 13: SEO content from BPOM doc
 
@@ -122,7 +122,7 @@ Phase 14: Mobile-ready landing
 - [x] Slice 13b: JSON-LD rebuilt — Org + 7 Products (doc descriptions, BPOM + volume `additionalProperty`, images for 4 photographed scents, CASTADOO `offers` without price; stale slot-carryover prices removed) + `FAQPage` (6 Q&As)
 - [x] Slice 13c: visible `#faq` after ritual (trust list: Niacinamide/sarang walet/calendula + 7 BPOM + 6 `<details>` verbatim-matching schema); ritual + banner renamed to doc-canonical `Feminine Blush Pink`
 - [x] Slice 13d verify: JSON-LD parses (9 nodes); FAQ visible==schema; 0 stale prices; 0 bare `Feminine Blush`; `node --check` ×3 clean; all `#` anchors resolve; PRD v2.4
-- **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
+- **Status:** complete (committed `645c3c7`)
 
 ### Phase 14: Mobile-ready
 
@@ -130,12 +130,35 @@ Phase 14: Mobile-ready landing
 - [x] Slice 14b: phone stacking — full-width CTAs <600px, 1-col social/trust/steps, tilts flattened, gutters 1.1rem, 380px type scale
 - [x] Slice 14c: touch — 44px targets (btn/dots/FAQ/hamburger), promo swipe, `touch-action: manipulation`, `(hover: none)` hover kill, iOS safe-area + `viewport-fit=cover`
 - [x] Slice 14d: PRD v2.5 (L8-L10, T6/T7/T11-T13, M9, §7.4)
-- **Status:** in_progress (code complete; preview + commit pending)
+- **Status:** complete (committed `54e498f`)
+
+### Phase 15: Custom-domain storefront migration
+
+- [x] Slice 15a: 13 shop URLs retargeted to `beli.zaleavelle.com/shop` (6 CTA href + 7 JSON-LD `offers.url`), `/shop` path preserved
+- [x] Slice 15b: 13 storefront mentions renamed to CASTADOO; `data-cta="odoo"` and `odoo_profile` deliberately preserved for GA4 continuity
+- [x] Slice 15c: PRD v2.6 (first-party custom domain decision row + new risk row); `GATES-CASTADOO.md` created with 12 gates
+- [x] Slice 15d verify: 13 shop URLs, 0 stale vendor host repo-wide, 12/12 gates PASS
+- **Status:** complete (committed `ee1d40c`)
+
+### Phase 16: Brand overhaul — botanical palette, English page, verified harness
+
+Owner supplied two brand documents (identity + colour palette) and asked for the page rebuilt on them. The shipped page used a deep-rose playful system (tilt, hard offset shadows, rotated stickers) that contradicted the documented personality: elegant, graceful, serene, fresh. Owner decisions taken in session: full overhaul; page to English; apricot accent with espresso text; purely marketing with every transaction on `beli.zaleavelle.com`; wordmark recolour approved; self-hosted fonts; promo carousel deleted outright.
+
+- [x] Slice 16a: token rebuild on the documented palette, with two documented values **rejected on measured contrast** — white-on-apricot 1.74:1 (so buttons take espresso text at 4.71:1) and the documented taupe `#8A786E` at 3.64:1 (darkened to `#6B5C53`, 5.53:1). Apricot is banned as a border stroke at 1.50:1; `#B4601F` at 3.92:1 is used instead
+- [x] Slice 16b: English migration across body copy, `lang`, title, description, OG/Twitter, 7 JSON-LD product descriptions, Organization slogan, 6 FAQ answers, webmanifest. `lang="en"`
+- [x] Slice 16c: retire the v2.6 visual system wholesale (tilt, offset shadows, stickers, bob, mesh drift, promo carousel); collapse six buy-intent labels into one "Shop now"; dials 9/8/3 → 7/5/3
+- [x] Slice 16d: self-host Cormorant Garamond + Geist (89 KB latin woff2, preloaded). The old stack named `Bodoni MT`/`Didot`, neither of which exists on iOS or Android, so most visitors were silently rendering Georgia
+- [x] Slice 16e: new sections — editorial 4-scent showcase (no prices, no per-tile buy buttons), Ingredients band, Cleanse/Treat/Seal timeline replacing `01 · Bersihkan` labels, founder origin paragraph (closes PRD B2)
+- [x] Slice 16f: fix 5 defects found by rendering, not reading — invalid `site.webmanifest` JSON; wordmark SVG declaring mm dimensions against a square canvas (nav rendered it at ~⅓ size); `aspect-ratio` defeated by `<img>` height attributes; drawer moved outside `<header>` so it never opened; `100dvh` hero stretching on tall viewports
+- [x] Slice 16g: tooling — `tools/check.py` (41 mechanical checks), `build-web-images.py`, `vendor-fonts.py`, `svg-bounds.py`
+- [x] Slice 16h verify: 41/41 harness checks; storefront integrity re-measured (13 shop URLs, 6 `data-cta="odoo"`, 7 lowercase odoo); rendered at 1440px and a true 390px viewport; PRD v2.7; `GATES-BRAND.md` added (16 gates)
+- [ ] Field Lighthouse on mobile (PRD T4/T5) — never run on any version of this page
+- **Status:** complete (harness-verified; field Lighthouse open)
 
 ## Key Questions
 
 1. ~~Should product CTAs link directly to Shopee product pages, or to a WhatsApp chat flow?~~ → Resolved for M1: Shopee primary + WA secondary (PRD recommendation)
-2. Is i18n (ID/EN toggle) in scope, or ID-only for launch?
+2. ~~Is i18n (ID/EN toggle) in scope, or ID-only for launch?~~ → Resolved in Phase 16: owner chose English-only. The page is English throughout; Indonesian is a possible follow-up, not a launch requirement
 3. Should we split index.html into modular files now, or defer to post-launch?
 4. NEW: `assets/` photos use BODY WASH/LOTION/SERUM taxonomy — how do they map to the 4 landing products? (blocks M2/L1)
 5. NEW: who compresses the 0.75–2MB asset images to WebP before the M2 swap? (T9)
@@ -154,18 +177,35 @@ Phase 14: Mobile-ready landing
 | Supabase backend deleted, not dormant | Owner chose delete/disable — no products table fetch, no maintenance panel, no shopee-sync function |
 | Solo mode (not orchestrated) | PRD doc task ~30min, tree depth 3, no code integration needed |
 | Single GATES.md (not gates/) | Below 30min threshold; subagent overhead not justified |
-| ID-only default with EN appendix | Simplifies MVP; EN can be added via i18n track later |
+| ID-only default with EN appendix | Superseded by the Phase 16 English-only decision |
 | Q1 Shopee primary + WA secondary (M1 default) | PRD recommendation; per-product Shopee links use store URL + UTM until per-product URLs provided |
 | Q5 single WA number with pre-filled product text | PRD recommendation; one agent number 6282121262593 |
 | Q3 defer file split to post-M3 | Keep single-file for M1; no build step |
 | Analytics without GA4 ID: dataLayer queue + guarded loader | No 404s, no dead requests; set window.ZV_GA_ID to enable |
 | favicon.svg + site.webmanifest instead of .ico/.png | No binary tooling in repo; SVG favicon satisfies T3 intent |
+| Full overhaul over re-skin (Phase 16) | The documented personality is incompatible with the shipped tilt/sticker system; a re-skin would have produced a mismatch |
+| Apricot CTA with espresso text, not white (Phase 16) | White on `#F6B78E` measures 1.74:1. Espresso text on the same fill measures 4.71:1 and keeps the documented swatch |
+| `#B4601F` for borders and icons, not apricot (Phase 16) | Apricot on the alabaster base is 1.50:1 and invisible as a stroke. Decorative rules may stay low-contrast; control borders need 3:1 |
+| Secondary taupe darkened to `#6B5C53` (Phase 16) | The documented `#8A786E` is 3.64:1 on alabaster and fails AA for body text |
+| Sage `#D7E0D1` kept as a load-bearing surface | Without the one cool botanical tone the page reads as generic cream, the default failure mode for this brand category |
+| English-only (Phase 16) | Owner decision; supersedes the ID-first default recorded below |
+| Self-hosted fonts, 89 KB (Phase 16) | `Bodoni MT` and `Didot` do not exist on iOS or Android, so the old stack silently rendered Georgia for most visitors |
+| Light theme only, no dark mode (Phase 16) | PRD S1 lite-only decision retained and made explicit; deliberately overrides the design-skill dual-mode default |
+| Product showcase is editorial, not commerce (Phase 16) | Owner confirmed purely marketing. Images and descriptions only, so the no-prices boundary holds |
+| Promo carousel deleted rather than restyled (Phase 16) | One slide reused the OG image as page content and another duplicated an existing CTA intent |
+| Verification harness over ad-hoc greps (Phase 16) | 41 mechanical checks make contrast, tell-sweep and schema integrity re-runnable after any future edit |
 
 ## Errors Encountered
 
 | Error | Attempt | Resolution |
 |-------|---------|------------|
-| (none yet) | — | — |
+| `site.webmanifest` was invalid JSON | Only noticed when rewriting the file | A corrupt byte in `name` meant PWA install was silently dead. Rewritten; `tools/check.py` now parses it on every run |
+| Wordmark rendered at ~⅓ size | Visible in the first desktop screenshot | The SVG declared `width`/`height` in **millimetres** against a square Inkscape canvas, so its intrinsic ratio stayed 1:1. viewBox re-cut from measured ink bounds via `tools/svg-bounds.py` |
+| Figure images rendered portrait despite `aspect-ratio` | Visible once the manifesto image loaded | `width`/`height` attributes on `<img>` become UA presentational hints; an unset CSS `height` let the literal attribute win. Fixed with explicit `height: auto` |
+| Mobile drawer did not open | Clicked the toggle in a headless harness; `aria-expanded` flipped but no panel appeared | The element had been moved outside `<header>` while its `.nav.open .drawer` selector stayed. Moved back inside; `list-style: none` added |
+| "390px" screenshots showed horizontal overflow | Screenshot appeared wrong | Not a page bug. Chrome clamps `--window-size` to ~496px minimum, so the capture was cropped rather than rendered narrow. Re-tested through an iframe harness giving a true 390px viewport |
+| Two false-positive failures in `tools/check.py` | First harness run reported a decorative tilt and Indonesian residue | Own bugs, not page bugs: the tilt regex matched the FAQ chevron's functional 45° rotation, and the Indonesian scan spanned the whole JSON-LD block via `[^<]*`. Both patterns tightened |
+| Heading ran to 3 lines on desktop | Hero screenshot | Column too narrow for the type scale. Widened the text column and eased the clamp so the headline resolves to exactly 2 lines |
 
 ## Notes
 

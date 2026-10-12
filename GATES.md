@@ -22,10 +22,10 @@ Scope: Comprehensive PRD covering e-commerce conversion, landing page optimizati
   EXPECT: >=4 matches
   EVIDENCE: 13 matches
 
-- [x] G5: Brand system tokens (palette, type, shape, motion, z-scale) documented with no second accent
-  CHECK: grep -E "#9E3E4D|#E3A7AC|accent" PRD.md
-  EXPECT: >=2 (one per theme)
-  EVIDENCE: 4 matches (accent values + token table)
+- [x] G5: Brand system tokens (palette, type, shape, motion, z-scale) documented with measured contrast
+  CHECK: grep -cE "#F6B78E|#5E4B43|#6B5C53" PRD.md
+  EXPECT: >=3 (base, accent, secondary ink)
+  EVIDENCE: 5 lines match (token table rows plus the two contrast-rejection notes). **Pattern rewritten in v2.7.** The gate hard-coded the v2.6 accent `#9E3E4D` and its dark-mode twin `#E3A7AC`. Both are gone: v2.7 rebuilt the palette on the owner's colour documentation and dropped dark mode, so the pattern now asserts the three tokens that actually carry the page
 
 - [x] G6: Tech split/CMS/i18n decision stated with rationale
   CHECK: grep -E "Decision|Rationale" PRD.md

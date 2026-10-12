@@ -2,6 +2,36 @@
 
 Chronological record of work performed, files changed, validation results, and errors.
 
+## Session: 2026-10-12 (Brand overhaul: botanical palette, English, verified harness)
+
+### Phase 16: Full brand rebuild to the owner's colour documentation
+
+- **Status:** code complete, uncommitted; field Lighthouse still open (PRD T4/T5)
+- **Request:** owner supplied two brand documents (identity + colour palette) and asked for the landing page rebuilt on them. Owner decisions taken in session: full overhaul rather than re-skin; page moves to English; apricot accent with espresso text; page is purely marketing with every transaction on `beli.zaleavelle.com`; wordmark recolour approved; self-hosted fonts; promo carousel deleted outright.
+- Actions taken:
+  - **Tokens rebuilt** on the documented palette (alabaster `#F2EEE6`, petal `#F7D6DA`, nude `#FCE8D6`, sage `#D7E0D1`, champagne `#E6C9A3`, apricot `#F6B78E`, espresso `#5E4B43`). Two documented values were **rejected on measured contrast**: white-on-apricot is 1.74:1 so buttons take espresso text instead, and the documented secondary taupe `#8A786E` is 3.64:1 so it was darkened to `#6B5C53` (5.53:1)
+  - **English migration** across body copy, `<html lang>`, title, description, OG/Twitter, all 7 JSON-LD Product descriptions, Organization slogan, all 6 FAQ answers and the webmanifest. FAQPage eligibility preserved by mirroring each answer rather than paraphrasing
+  - **Retired the v2.6 visual system wholesale:** tilt, hard offset shadows, rotated stickers, bob animations, mesh drift, the promo carousel, and the 6-labels-for-one-intent CTA set (all now "Shop now")
+  - **Dials dropped 9/8/3 to 7/5/3.** The documented personality (elegant, graceful, serene, fresh) is not compatible with a sticker system, and claiming motion we do not ship is its own failure
+  - **Self-hosted fonts.** The old stack named `Bodoni MT` and `Didot`, neither of which exists on iOS or Android, so most visitors silently got Georgia. Cormorant Garamond (named in the docs) and Geist are now latin-subset woff2, 89 KB, preloaded
+  - **New sections:** an editorial four-scent showcase (no prices, no per-tile buy buttons, so the marketing-only boundary holds), an Ingredients band, a vertical Cleanse/Treat/Seal timeline replacing `01 · Bersihkan` step labels, and a founder origin paragraph (closes PRD B2)
+  - **CTA intent unified**, six outbound links kept so the storefront counts did not move. `nav_link` and `promo_cta` UTM slots retired, `hero_cta` and `footer_cta` added, four pre-existing keys untouched
+  - Built `tools/build-web-images.py`, `tools/vendor-fonts.py`, `tools/check.py`, `tools/svg-bounds.py`
+- Files created/modified:
+  - `index.html` (rewritten, 844 to 1013 lines), `PRD.md` (v2.7), `GATES-BRAND.md` (new, 16 gates), `GATES.md`, `GATES-SEO.md`, `GATES-CASTADOO.md`, `progress.md`
+  - `favicon.svg`, `site.webmanifest`, `assets/zaleavelle-mark.svg`
+  - `assets/fonts/` (3 woff2), `assets/web/` (8 new exports)
+- **Three pre-existing defects found and fixed, none of them design opinions:**
+  1. `site.webmanifest` was invalid JSON (a corrupt byte in `name`). PWA install was dead and no browser had complained.
+  2. `assets/zaleavelle-mark.svg` declared `width`/`height` in **millimetres** against a square Inkscape canvas, so its intrinsic ratio stayed 1:1 and the nav rendered it at roughly a third of its intended size. viewBox re-cut to the measured ink bounds via `tools/svg-bounds.py`.
+  3. Figure images rendered portrait despite `aspect-ratio`, because `width`/`height` attributes on `<img>` become UA presentational hints and an unset CSS `height` let the literal attribute win. Fixed with explicit `height: auto`.
+- **Two more found by rendering rather than by reading:** the mobile drawer element had been moved outside `<header>` while its `.nav.open .drawer` selector stayed, so it never opened; and the drawer was missing `list-style: none`, showing bullets.
+- Validation: `python tools/check.py` reports **41 of 41 checks passed**, covering storefront counts, JSON-LD integrity, FAQ/schema verbatim match, anchors, contrast (11 measured pairs), the tell sweep, CTA-label uniqueness, Indonesian residue, asset existence and manifest validity. Rendered and reviewed at 1440px and at a true 390px viewport (Chrome clamps `--window-size` to ~496px, so the phone check ran through an iframe harness)
+- Gate-Check Ledger: **41 of 41** harness checks PASS (`GATES-BRAND.md`, 16 gates) · 12 of 12 `GATES-CASTADOO.md` (G12 retired with cause) · 8 of 8 `GATES-SEO.md` (S5 3 blocks to 2) · 10 of 10 `GATES.md` (G5 pattern rewritten)
+- Gate expectations relaxed, each with the reason recorded inline: CASTADOO G4 (13 to >=1, the English JSON-LD prose no longer names the storefront), G9 (four Indonesian strings no longer exist), G10 (`Version 2.6` literal dropped), GATES.md G5 (accent hexes replaced)
+- Open debt carried forward: social proof (L2) still absent; store catalog parity for the four showcase scents unverified by the owner (Q10); field Lighthouse not yet run
+- Note on the source photography: every raw file in `assets/` is AI-generated marketing creative with Indonesian copy and product-name callouts printed into the frame. Two of the eight crops in `build-web-images.py` exist specifically to crop that text out. A proper product shoot removes the workaround.
+
 ## Session: 2026-10-05 (Storefront → beli.zaleavelle.com)
 
 ### Phase 15: Custom-domain storefront migration + CASTADOO rebrand

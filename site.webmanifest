@@ -1,11 +1,12 @@
 {
-  "name": "zaleavelle — Naturally Confident",
+  "name": "zaleavelle. Glow in every touch.",
   "short_name": "zaleavelle",
-  "description": "Rutinitas kulit sederhana, autentik, dan penuh perhatian.",
+  "description": "Body wash, body lotion and body serum for a simple daily glow routine.",
+  "lang": "en",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#FBF8F5",
-  "theme_color": "#FBF8F5",
+  "background_color": "#F2EEE6",
+  "theme_color": "#F2EEE6",
   "icons": [
     {
       "src": "favicon.svg",

@@ -5,9 +5,9 @@ Durable knowledge base for discoveries, evidence, and decisions during zaleavell
 ## Requirements
 
 - Cover 4 tracks: e-commerce conversion, landing optimization, brand/content, tech split
-- Success metrics: (1) increase clicks to Shopee/WA, (2) strengthen brand recall, (3) SEO + mobile perf
-- Target audience: Gen-Z Indonesian skincare buyers, mobile-first
-- Keep existing design language: Didone wordmark, single rose accent, playful Awwwards aesthetic
+- Success metrics: (1) increase clicks to the official store / WhatsApp, (2) strengthen brand recall, (3) SEO + mobile perf
+- Target audience: Indonesian body-care buyers aged 20–40, mobile-first
+- ~~Keep existing design language: Didone wordmark, single rose accent, playful Awwwards aesthetic~~ — **superseded in Phase 16.** The owner supplied brand documents describing an elegant, graceful, serene, minimalist personality on a petal/apricot/sage/champagne palette. The rose sticker system was retired rather than preserved. Current direction: soft-luxury botanical, Cormorant Garamond + Geist, alabaster ground, apricot accent, light theme only.
 
 ## Research Findings
 
@@ -141,3 +141,48 @@ Durable knowledge base for discoveries, evidence, and decisions during zaleavell
 - Naming note: doc canonical is `Feminine Blush Pink`; page previously used `Feminine Blush` — Phase 13 follows the doc.
 
 *Updated during Phase 1 discovery sweep.*
+
+---
+
+## Phase 16: Brand overhaul findings (2026-10-12)
+
+### Two documented colours fail WCAG and were rejected, not assumed
+
+The owner's colour document specifies Golden Apricot `#F6B78E` for CTAs and Soft Taupe `#8A786E` for secondary text. Both were measured against the alabaster ground rather than trusted:
+
+| Pair | Ratio | Verdict |
+|---|---|---|
+| `#FFFFFF` on `#F6B78E` | **1.74:1** | Rejected. Apricot stays the CTA fill, but takes espresso `#5E4B43` text at **4.71:1** |
+| `#8A786E` on `#F2EEE6` | **3.64:1** | Rejected for body text. Darkened to `#6B5C53` at **5.53:1** |
+| `#6B5C53` on `#F7D6DA` | 4.75:1 | Passes AA |
+| `#F6B78E` on `#F2EEE6` | **1.50:1** | Apricot is therefore banned as a border or icon stroke. `#B4601F` used instead at 3.92:1 |
+
+Lesson worth keeping: a documented palette is a starting point, not a specification. Two of the eight swatches are unusable as literally described, and neither failure is visible by eye until it is measured.
+
+### Three pre-existing defects, none of them design opinions
+
+1. **`site.webmanifest` was invalid JSON.** A corrupt byte in the `name` field. PWA install was dead and no browser had reported it, because nothing in the project ever parsed the file.
+2. **`assets/zaleavelle-mark.svg` declared `width`/`height` in millimetres** against a square Inkscape canvas, so its intrinsic aspect ratio stayed 1:1 and the nav rendered the wordmark at roughly a third of its intended size. `tools/svg-bounds.py` was written to re-cut the viewBox from measured ink bounds.
+3. **Figure images ignored their `aspect-ratio`.** `width`/`height` attributes on `<img>` become UA presentational hints; because the CSS set `width` but left `height` unset, the literal attribute value won and the images rendered portrait. `aspect-ratio` only applies when one dimension is `auto`.
+
+### The font stack was fiction on most devices
+
+The display stack named `Bodoni MT`, `Didot`, `Cormorant Garamond`, `EB Garamond`, `Georgia`. The first two exist on Windows only. On iOS and Android the list fell through to Georgia, so the majority of visitors never saw the intended face. No webfont was loaded at all. Now self-hosted: Cormorant Garamond (named in the brand docs) plus Geist, latin subset, 89 KB total, preloaded.
+
+### The source photography is AI marketing creative, not product photography
+
+Every raw file under `assets/` is an AI-generated marketing card with Indonesian copy and product-name callouts printed into the frame: badge grids, "CARA PAKAI:" panels, ingredient labels, price stamps. They cannot be dropped into a restrained editorial layout as-is.
+
+Findings that follow:
+- Crop boxes in `tools/build-web-images.py` exist specifically to exclude that baked text. Two of the eight crops do nothing else.
+- The Ritual and Manifesto images were changed source entirely after every candidate crop for the Emerald Sweet flat-lay still contained a callout.
+- The owner's own collection photograph is the only genuinely clean, on-brand asset in the repo.
+- **Recommendation:** a real product shoot removes this workaround permanently and would also close PRD Q10 visually.
+
+### Chrome clamps its minimum window width
+
+`--window-size=390,800` renders at `innerWidth=496`. A screenshot taken at "390px" is a crop of a 496px layout, which reads convincingly as horizontal overflow. Any responsive check below ~500px must go through an iframe harness or CDP device emulation. This produced one false alarm before it was caught.
+
+### Measurement over assertion
+
+`tools/check.py` runs 41 mechanical checks in one command. Its own first run failed twice, both times because the *check* was wrong rather than the page: a tilt regex matched the FAQ chevron's functional 45° rotation, and the Indonesian-copy scan spanned the entire JSON-LD block because `[^<]*` crosses a tag boundary. Both are now tightened, and `<script>`/`<style>` bodies are stripped before scanning rendered text.

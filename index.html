@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>zaleavelle — Body Lotion & Body Wash Whitening Niacinamide</title>
-<meta name="description" content="Body wash, body lotion & body serum zaleavelle: Niacinamide, sarang walet, calendula. 7 varian terdaftar BPOM — belanja di Toko Resmi.">
+<title>zaleavelle | Body Care for a Naturally Confident Glow</title>
+<meta name="description" content="Body wash, body lotion and body serum with niacinamide, swiftlet nest and calendula. Seven BPOM-registered variants, gentle enough for every morning.">
 <link rel="canonical" href="https://zaleavelle.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="site.webmanifest">
-<meta name="theme-color" content="#FBF8F5">
+<meta name="theme-color" content="#F2EEE6">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="zaleavelle">
 <link rel="apple-touch-icon" href="favicon.svg">
-<meta property="og:title" content="zaleavelle — Naturally Confident">
-<meta property="og:description" content="Rutinitas kulit sederhana, autentik, dan penuh perhatian.">
+<meta property="og:title" content="zaleavelle. Glow in every touch.">
+<meta property="og:description" content="Nourish. Renew. Radiate. A three-step body care routine built for the skin you actually live in.">
 <meta property="og:image" content="https://zaleavelle.com/og-image.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="zaleavelle — Naturally Confident">
-<meta name="twitter:description" content="Rutinitas kulit sederhana, autentik, dan penuh perhatian.">
+<meta name="twitter:title" content="zaleavelle. Glow in every touch.">
+<meta name="twitter:description" content="Nourish. Renew. Radiate. A three-step body care routine built for the skin you actually live in.">
 <meta name="twitter:image" content="https://zaleavelle.com/og-image.jpg">
+
+<!-- Preload the LCP face and the hero image so the first paint is not font-blocked. -->
+<link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/web/hero-collection.webp" as="image" type="image/webp" fetchpriority="high">
+
 <script>
   // Analytics stub (PRD E4): queues events in dataLayer; loads GA4 only when an ID is set.
   window.dataLayer = window.dataLayer || [];
@@ -44,7 +50,8 @@
       "@type": "Organization",
       "@id": "https://zaleavelle.com/#org",
       "name": "zaleavelle",
-      "slogan": "Naturally Confident",
+      "slogan": "Glow in every touch",
+      "description": "Body care built around a simple, daily ritual.",
       "sameAs": [
         "https://instagram.com/zaleavelle",
         "https://tiktok.com/@zaleavelle.official",
@@ -57,22 +64,23 @@
       "name": "Flavia Floral",
       "category": "Body Wash",
       "brand": { "@type": "Brand", "name": "zaleavelle" },
-      "description": "Body wash whitening 260 mL dengan Niacinamide 2% dan Kojic Dipalmitate, aroma floral lembut dan tahan lama.",
+      "image": "https://zaleavelle.com/assets/web/wash-flavia.jpg",
+      "description": "260 mL body wash with niacinamide and kojic dipalmitate, a warm floral scent that lingers without shouting.",
       "additionalProperty": [
-        { "@type": "PropertyValue", "name": "No. BPOM", "value": "NA 18260700236" },
-        { "@type": "PropertyValue", "name": "Kemasan", "value": "260 mL" }
+        { "@type": "PropertyValue", "name": "BPOM", "value": "NA 18260700236" },
+        { "@type": "PropertyValue", "name": "Size", "value": "260 mL" }
       ],
       "offers": { "@type": "Offer", "url": "https://beli.zaleavelle.com/shop", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
     },
     {
       "@type": "Product",
-      "name": "Fresh Tickled Pink",
+      "name": "Fresh Tickled",
       "category": "Body Wash",
       "brand": { "@type": "Brand", "name": "zaleavelle" },
-      "description": "Body wash whitening 260 mL dengan Niacinamide dan ekstrak licorice (Cybright), aroma pink floral yang ceria.",
+      "description": "260 mL body wash with niacinamide and licorice extract, a bright pink floral scent.",
       "additionalProperty": [
-        { "@type": "PropertyValue", "name": "No. BPOM", "value": "NA 18260700237" },
-        { "@type": "PropertyValue", "name": "Kemasan", "value": "260 mL" }
+        { "@type": "PropertyValue", "name": "BPOM", "value": "NA 18260700237" },
+        { "@type": "PropertyValue", "name": "Size", "value": "260 mL" }
       ],
       "offers": { "@type": "Offer", "url": "https://beli.zaleavelle.com/shop", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
     },
@@ -81,11 +89,10 @@
       "name": "Emerald Sweet",
       "category": "Body Wash",
       "brand": { "@type": "Brand", "name": "zaleavelle" },
-      "image": "https://zaleavelle.com/assets/web/emerald-sweet-wash.jpg",
-      "description": "Body wash nourishing 260 mL dengan Niacinamide dan Vita 8 Complex, formula lembut untuk kulit sensitif.",
+      "description": "260 mL nourishing body wash with niacinamide and Vita 8 Complex, the gentlest formula in the range.",
       "additionalProperty": [
-        { "@type": "PropertyValue", "name": "No. BPOM", "value": "NA 18260700238" },
-        { "@type": "PropertyValue", "name": "Kemasan", "value": "260 mL" }
+        { "@type": "PropertyValue", "name": "BPOM", "value": "NA 18260700238" },
+        { "@type": "PropertyValue", "name": "Size", "value": "260 mL" }
       ],
       "offers": { "@type": "Offer", "url": "https://beli.zaleavelle.com/shop", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
     },
@@ -94,11 +101,10 @@
       "name": "Blaine Floral",
       "category": "Body Lotion",
       "brand": { "@type": "Brand", "name": "zaleavelle" },
-      "image": "https://zaleavelle.com/assets/web/blaine-floral-lotion.jpg",
-      "description": "Body lotion whitening 190 mL dengan Niacinamide 10%, GenoWhite, dan ekstrak sarang walet. Produk hero zaleavelle.",
+      "description": "190 mL body lotion with 10% niacinamide, GenoWhite and swiftlet nest extract. The flagship of the range.",
       "additionalProperty": [
-        { "@type": "PropertyValue", "name": "No. BPOM", "value": "NA 18260102605" },
-        { "@type": "PropertyValue", "name": "Kemasan", "value": "190 mL" }
+        { "@type": "PropertyValue", "name": "BPOM", "value": "NA 18260102605" },
+        { "@type": "PropertyValue", "name": "Size", "value": "190 mL" }
       ],
       "offers": { "@type": "Offer", "url": "https://beli.zaleavelle.com/shop", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
     },
@@ -107,11 +113,11 @@
       "name": "Feminine Blush Pink",
       "category": "Body Lotion",
       "brand": { "@type": "Brand", "name": "zaleavelle" },
-      "image": "https://zaleavelle.com/assets/web/feminine-blush-lotion.jpg",
-      "description": "Body lotion whitening 190 mL dengan Niacinamide 5%, Chromabright, dan ekstrak sarang walet, aroma sakura feminin.",
+      "image": "https://zaleavelle.com/assets/web/lotion-blush.jpg",
+      "description": "190 mL body lotion with 5% niacinamide, Chromabright and swiftlet nest extract, in a soft cherry blossom scent.",
       "additionalProperty": [
-        { "@type": "PropertyValue", "name": "No. BPOM", "value": "NA 18260101627" },
-        { "@type": "PropertyValue", "name": "Kemasan", "value": "190 mL" }
+        { "@type": "PropertyValue", "name": "BPOM", "value": "NA 18260101627" },
+        { "@type": "PropertyValue", "name": "Size", "value": "190 mL" }
       ],
       "offers": { "@type": "Offer", "url": "https://beli.zaleavelle.com/shop", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
     },
@@ -120,11 +126,11 @@
       "name": "Bright Petal",
       "category": "Body Serum",
       "brand": { "@type": "Brand", "name": "zaleavelle" },
-      "image": "https://zaleavelle.com/assets/web/bright-petal-serum.jpg",
-      "description": "Body serum calendula 110 mL yang menenangkan dan melembapkan, diperkaya Sea Water dan Niacinamide.",
+      "image": "https://zaleavelle.com/assets/web/serum-bright-petal.jpg",
+      "description": "110 mL calendula body serum that calms and hydrates, with sea water and niacinamide.",
       "additionalProperty": [
-        { "@type": "PropertyValue", "name": "No. BPOM", "value": "NA 18260101637" },
-        { "@type": "PropertyValue", "name": "Kemasan", "value": "110 mL" }
+        { "@type": "PropertyValue", "name": "BPOM", "value": "NA 18260101637" },
+        { "@type": "PropertyValue", "name": "Size", "value": "110 mL" }
       ],
       "offers": { "@type": "Offer", "url": "https://beli.zaleavelle.com/shop", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
     },
@@ -133,10 +139,11 @@
       "name": "Classic Pink",
       "category": "Body Serum",
       "brand": { "@type": "Brand", "name": "zaleavelle" },
-      "description": "Body serum sakura 110 mL yang menenangkan dan melembapkan, diperkaya Sea Water dan Niacinamide.",
+      "image": "https://zaleavelle.com/assets/web/serum-classic-pink.jpg",
+      "description": "110 mL cherry blossom body serum that calms and hydrates, with sea water and niacinamide.",
       "additionalProperty": [
-        { "@type": "PropertyValue", "name": "No. BPOM", "value": "NA 18260101638" },
-        { "@type": "PropertyValue", "name": "Kemasan", "value": "110 mL" }
+        { "@type": "PropertyValue", "name": "BPOM", "value": "NA 18260101638" },
+        { "@type": "PropertyValue", "name": "Size", "value": "110 mL" }
       ],
       "offers": { "@type": "Offer", "url": "https://beli.zaleavelle.com/shop", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
     },
@@ -145,700 +152,862 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Varian apa saja yang tersedia?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Tujuh varian: Flavia Floral, Fresh Tickled Pink, dan Emerald Sweet (body wash 260 mL); Blaine Floral dan Feminine Blush Pink (body lotion 190 mL); Bright Petal dan Classic Pink (body serum 110 mL)." }
+          "name": "Which variants are available?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Seven variants: Flavia Floral, Fresh Tickled and Emerald Sweet (body wash, 260 mL); Blaine Floral and Feminine Blush Pink (body lotion, 190 mL); Bright Petal and Classic Pink (body serum, 110 mL)." }
         },
         {
           "@type": "Question",
-          "name": "Apakah aman untuk kulit sensitif?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Ya. Seluruh rangkaian zaleavelle terdaftar BPOM dan diformulasikan lembut untuk pemakaian harian. Untuk kulit sensitif, Emerald Sweet body wash dengan formula nourishing tanpa fokus whitening agresif adalah pilihan yang paling lembut." }
+          "name": "Is it safe for sensitive skin?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every zaleavelle variant is registered with BPOM and formulated for daily use. For sensitive skin, Emerald Sweet body wash uses a nourishing formula without an intensive brightening focus, which makes it the gentlest option in the range." }
         },
         {
           "@type": "Question",
-          "name": "Bagaimana cara pesan?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Klik tombol Belanja di halaman ini untuk checkout di Toko Resmi kami (CASTADOO Shop). Untuk konsultasi sebelum membeli, chat kami via WhatsApp." }
+          "name": "How do I order?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Tap Shop now on this page to check out on our official store. If you would rather talk it through first, message us on WhatsApp." }
         },
         {
           "@type": "Question",
-          "name": "Bagaimana rutinitas pakainya?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Tiga langkah pagi dan malam: bersihkan dengan body wash, rawat dengan body serum saat kulit masih lembap, lalu kunci dengan body lotion. Produk bilas dipakai 2 kali sehari; lotion dan serum leave-on setelah mandi." }
+          "name": "How does the routine work?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Three steps, morning and night: cleanse with body wash, treat with body serum while the skin is still damp, then seal with body lotion. The rinse-off wash is used twice daily; lotion and serum go on after showering." }
         },
         {
           "@type": "Question",
-          "name": "Apakah produk zaleavelle terdaftar BPOM?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Ya, ketujuh varian terdaftar BPOM: Flavia Floral NA 18260700236, Fresh Tickled Pink NA 18260700237, Emerald Sweet NA 18260700238, Blaine Floral NA 18260102605, Feminine Blush Pink NA 18260101627, Bright Petal NA 18260101637, Classic Pink NA 18260101638." }
+          "name": "Are the products registered with BPOM?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, all seven variants are registered with BPOM: Flavia Floral NA 18260700236, Fresh Tickled NA 18260700237, Emerald Sweet NA 18260700238, Blaine Floral NA 18260102605, Feminine Blush Pink NA 18260101627, Bright Petal NA 18260101637, Classic Pink NA 18260101638." }
         },
         {
           "@type": "Question",
-          "name": "Apakah ada program reseller?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Hubungi kami via WhatsApp untuk info kerja sama dan reseller." }
+          "name": "Do you offer a reseller program?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Message us on WhatsApp for reseller and partnership inquiries." }
         }
       ]
     }
   ]
 }
 </script>
-<!--
-  DESIGN READ: DTC skincare landing pushed playful Awwwards-experimental for Gen-Z —
-  oversized kinetic type, stickers, ONE scroll-hijack (sticky-stack products), living mesh.
-  Anchors kept: zaleavelle Didone wordmark + single rose accent.
-  DIALS: DESIGN_VARIANCE 9 / MOTION_INTENSITY 8 / VISUAL_DENSITY 3
-  - Stack: single file, native CSS. No build step. Storefront is static; checkout lives on CASTADOO Shop.
-  - Serif justified (§4.1): brand wordmark is thin Didone; display = matching serif stack,
-    emphasis = same-family italic only. No Fraunces / Instrument / Playfair defaults.
-  - Palette locked: ONE rose accent (#9E3E4D light / #E3A7AC dark). No second accent,
-    no neon glows, no AI-purple. Shadows tinted to bg hue.
-  - Shape rule (documented playful exception): tilt + hard offset shadow IS the system,
-    applied consistently; buttons stay pill, cards 16px.
-  - z-scale: nav 40 / stack cards 1-4 / sticky CTA 45 / grain 60.
-    - Motion: transform/opacity only. Everything collapses under prefers-reduced-motion
-    and below 968px (single column, hamburger drawer, no tilt overflow). No window
-    scroll listeners (IO only). Promo carousel is swipeable on touch.
-  - Logo: official vector wordmark at assets/zaleavelle-mark.svg (transparent, light theme locked).
--->
 <style>
-  :root {
-    --surface: #FBF8F5;
-    --surface-2: #F4ECE7;
-    --ink: #1C1A19;
-    --ink-2: #57504C;
-    --muted: #8A817C;
-    --line: rgba(28,26,25,0.16);
-    --accent: #9E3E4D;
-    --accent-soft: #F3D7D2;
-    --rose-1: #F6CBD0;
-    --peach-1: #F5DFD2;
-    --radius-card: 16px;
-    --font-display: "Bodoni MT", Didot, "Cormorant Garamond", "EB Garamond", Georgia, serif;
-    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Inter Tight", sans-serif;
-    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
-    --spring: cubic-bezier(0.16, 1, 0.3, 1);
+  /* ---------------------------------------------------------------
+     DESIGN READ: DTC body-care landing for mobile-first Indonesian
+     adults 20-40. Soft-luxury botanical language, leaning on the
+     brand palette docs: alabaster ground, apricot accent, sage
+     anchor, espresso ink. Native CSS, single file, no build step.
+
+     DIALS: DESIGN_VARIANCE 7 / MOTION_INTENSITY 5 / VISUAL_DENSITY 3
+     Down from the previous 9/8/3. The personality in the brand docs
+     (elegant, graceful, serene, fresh) cannot coexist with tilt,
+     rotated stickers and hard offset shadows, so all three are gone.
+
+     - Serif justified (skill 4.1): the brand docs name a high-contrast
+       serif explicitly, and Cormorant Garamond is named, not guessed.
+       Emphasis is same-family italic only. Never a random serif word
+       inside a sans headline.
+     - Colour lock: apricot is the ONLY accent. Pink, sage, champagne
+       and nude are surfaces. Measured contrast, all AA or better:
+         #5E4B43 on #F6B78E  4.71:1  primary button
+         #5E4B43 on #F2EEE6  7.08:1  body copy
+         #6B5C53 on #F2EEE6  5.53:1  secondary copy
+         #6B5C53 on #F7D6DA  4.75:1  secondary on petal pink
+       Two rejections, both measured: white on apricot is 1.74:1 and
+       apricot on alabaster is 1.50:1, so buttons carry espresso text
+       and borders use --accent-deep at 3.92:1.
+     - Shape lock: buttons pill, cards and media 18px, no tilt.
+     - Theme lock: one light theme for the whole page. Surface tints
+       shift within the warm family, nothing inverts mid-scroll. Dark
+       mode is deliberately absent (PRD S1, lite-only decision).
+     - z-scale: nav 40 / drawer 41 / toggle 42 / grain 60 / skip 100.
+     - Motion: transform and opacity only, driven by IntersectionObserver.
+       No scroll listeners. Everything collapses under reduced motion.
+  --------------------------------------------------------------- */
+
+  @font-face {
+    font-family: "Cormorant Garamond";
+    src: url("assets/fonts/cormorant-garamond.woff2") format("woff2");
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
   }
+  @font-face {
+    font-family: "Cormorant Garamond";
+    src: url("assets/fonts/cormorant-garamond-italic.woff2") format("woff2");
+    font-weight: 300 700;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Geist";
+    src: url("assets/fonts/geist.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --surface: #F2EEE6;
+    --surface-petal: #F7D6DA;
+    --surface-nude: #FCE8D6;
+    --surface-sage: #D7E0D1;
+    --surface-gold: #E6C9A3;
+    --ink: #5E4B43;
+    --ink-2: #6B5C53;
+    --accent: #F6B78E;
+    --accent-deep: #B4601F;
+    --line: rgba(94, 75, 67, 0.16);
+    --line-soft: rgba(94, 75, 67, 0.10);
+    --radius-media: 18px;
+    --radius-card: 14px;
+    --font-display: "Cormorant Garamond", "Bodoni MT", Didot, Georgia, serif;
+    --font-body: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --nav-h: 68px;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: calc(80px + env(safe-area-inset-top)); }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--nav-h) + 1rem);
+  }
   body {
     font-family: var(--font-body);
     background: var(--surface);
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
-    line-height: 1.6;
+    line-height: 1.65;
     overflow-x: hidden;
-    transition: background 0.3s, color 0.3s;
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
   }
-  body.nav-lock { overflow: hidden; }
-  img, svg, video { max-width: 100%; }
-  a, button { -webkit-tap-highlight-color: color-mix(in srgb, var(--accent) 22%, transparent); touch-action: manipulation; }
+  img, svg { display: block; max-width: 100%; }
+  a, button { touch-action: manipulation; -webkit-tap-highlight-color: rgba(180, 96, 31, 0.18); }
   :focus { outline: none; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--accent-deep); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: var(--accent); color: var(--ink); }
+
   .skip-link {
-    position: absolute; left: 1rem; top: -4rem; z-index: 100;
-    background: var(--ink); color: var(--surface); padding: 0.7rem 1.2rem;
-    border-radius: 999px; text-decoration: none; font-size: 0.8rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
+    position: absolute; left: 1rem; top: -5rem; z-index: 100;
+    background: var(--ink); color: var(--surface);
+    padding: 0.75rem 1.25rem; border-radius: 999px;
+    text-decoration: none; font-size: 0.8rem; font-weight: 500;
   }
-  .skip-link:focus, .skip-link:focus-visible { top: calc(0.75rem + env(safe-area-inset-top)); outline-color: var(--surface); }
-  ::selection { background: var(--accent); color: #fff; }
-  .wrap { max-width: 1400px; margin: 0 auto; padding-left: 4rem; padding-right: 4rem; }
+  .skip-link:focus-visible { top: 0.75rem; outline-color: var(--surface); }
 
-  /* Grain: fixed pseudo-element only (§6.E) */
+  .wrap { max-width: 1320px; margin: 0 auto; padding-left: 3.5rem; padding-right: 3.5rem; }
+  .band { padding-top: 6.5rem; padding-bottom: 6.5rem; }
+
+  /* Paper grain, fixed layer only so it never repaints on scroll. */
   body::after {
-    content: ""; position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    content: ""; position: fixed; inset: 0; z-index: 60; pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
   }
 
-  /* ---------- Nav ---------- */
-  header.nav {
+  /* ---------------- Type scale ---------------- */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .display em { font-style: italic; }
+  h2.display { font-size: clamp(2.1rem, 4.4vw, 3.4rem); }
+  .lede { font-size: 1.0625rem; color: var(--ink-2); max-width: 56ch; }
+  .eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+    margin-bottom: 1.5rem;
+  }
+
+  /* ---------------- Buttons ---------------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 48px; padding: 0.9rem 2rem;
+    font-family: var(--font-body); font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.06em;
+    border-radius: 999px; border: 1px solid transparent;
+    text-decoration: none; white-space: nowrap;
+    transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+                border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-solid { background: var(--accent); color: var(--ink); }
+  .btn-solid:hover { background: var(--accent-deep); color: #fff; }
+  .btn-quiet { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-quiet:hover { border-color: var(--ink); background: rgba(94, 75, 67, 0.05); }
+  .btn .arrow { transition: transform 0.25s var(--ease); }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  /* ---------------- Nav ---------------- */
+  .nav {
     position: sticky; top: 0; z-index: 40;
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s, background 0.3s;
     padding-top: env(safe-area-inset-top);
+    transition: border-color 0.3s;
+    border-bottom: 1px solid transparent;
   }
-  /* Blur lives on a pseudo-element, not the header box: backdrop-filter on an
-     ancestor makes it the containing block for position:fixed descendants, which
-     clipped the mobile drawer (inset:0) to the 68px header instead of the viewport. */
-  header.nav::before {
+  /* Blur sits on a pseudo-element, never on the header box: backdrop-filter
+     on an ancestor turns it into the containing block for fixed descendants,
+     which would clip the mobile drawer to the 68px header. */
+  .nav::before {
     content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: color-mix(in srgb, var(--surface) 82%, transparent);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    background: rgba(242, 238, 230, 0.86);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
   }
-  header.nav.scrolled { border-bottom-color: var(--line); }
-  .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 4rem; height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
-  /* z-index 43 keeps the wordmark above the drawer (41) and toggle (42) so the
-     brand stays visible while the menu is open. */
-  .wordmark { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; line-height: 1; display: inline-block; position: relative; z-index: 43; }
-  .wordmark:hover { animation: wiggle 0.45s var(--spring); }
-  .wordmark img { height: 1.7rem; width: auto; display: block; }
-  @keyframes wiggle { 0% { transform: rotate(0); } 30% { transform: rotate(-4deg); } 65% { transform: rotate(3deg); } 100% { transform: rotate(0); } }
-  .nav-links { display: flex; gap: 2.25rem; list-style: none; }
-  .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; position: relative; }
-  .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0; background: var(--accent); transition: width 0.3s var(--spring); }
+  .nav.stuck { border-bottom-color: var(--line); }
+  .nav-inner {
+    max-width: 1320px; margin: 0 auto; padding: 0 3.5rem;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  }
+  .wordmark { position: relative; z-index: 43; display: block; }
+  .wordmark img { height: 20px; width: auto; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    position: relative; font-size: 0.8rem; font-weight: 400;
+    letter-spacing: 0.04em; color: var(--ink-2); text-decoration: none;
+  }
+  .nav-links a::after {
+    content: ""; position: absolute; left: 0; bottom: -5px;
+    height: 1px; width: 0; background: var(--accent-deep);
+    transition: width 0.28s var(--ease);
+  }
   .nav-links a:hover { color: var(--ink); }
   .nav-links a:hover::after { width: 100%; }
+  .nav-cta { display: block; }
+  .drawer { display: none; list-style: none; }
   .nav-toggle {
-    display: none; width: 44px; height: 44px; border: 2px solid var(--ink); border-radius: 999px;
-    background: var(--surface); color: var(--ink); cursor: pointer; padding: 0; flex-shrink: 0;
-    align-items: center; justify-content: center; position: relative; z-index: 42;
+    display: none; width: 44px; height: 44px; flex-shrink: 0;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink);
+    cursor: pointer; padding: 0; position: relative; z-index: 42;
+    align-items: center; justify-content: center;
   }
   .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
-    display: block; width: 16px; height: 2px; background: currentColor; position: relative; transition: transform 0.3s var(--spring), opacity 0.2s;
+    content: ""; display: block; width: 15px; height: 1.5px;
+    background: currentColor; position: relative;
+    transition: transform 0.28s var(--ease), opacity 0.2s;
   }
-  .nav-toggle span::before, .nav-toggle span::after { content: ""; position: absolute; left: 0; }
-  .nav-toggle span::before { top: -5px; }
-  .nav-toggle span::after { top: 5px; }
+  .nav-toggle span::before { position: absolute; left: 0; top: -5px; }
+  .nav-toggle span::after { position: absolute; left: 0; top: 5px; }
   .nav-toggle[aria-expanded="true"] span { background: transparent; }
   .nav-toggle[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
   .nav-toggle[aria-expanded="true"] span::after { top: 0; transform: rotate(-45deg); }
-  .nav-cta { display: flex; gap: 0.75rem; align-items: center; }
-  .nav-drawer-cta { display: none; }
+  .drawer-cta { display: none; }
 
-  .btn { display: inline-block; text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 2.2rem; min-height: 44px; border-radius: 999px; border: 2px solid transparent; transition: transform 0.25s var(--spring), background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s; white-space: nowrap; }
-  .btn:active { transform: translateY(1px) scale(0.98); }
-  .btn-primary { background: var(--ink); color: var(--surface); }
-  .btn-primary:hover { background: var(--accent); color: #fff; box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 35%, transparent); }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
-  .btn-ghost:hover { background: var(--ink); color: var(--surface); }
-  .btn .arr { display: inline-block; transition: transform 0.25s var(--spring); }
-  .btn:hover .arr { transform: translateX(5px); }
-  .btn-sm { padding: 0.8rem 1.6rem; }
+  /* ---------------- Hero: asymmetric split ---------------- */
+  .hero {
+    max-width: 1320px; margin: 0 auto;
+    padding: 3.5rem 3.5rem 5rem;
+    display: grid;
+    /* Type column is deliberately a touch wider than the image so the
+       headline resolves to exactly two lines at desktop width. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr);
+    gap: 4rem; align-items: center;
+    /* Capped so a very tall window (large display, or a screenshot rig) does
+       not stretch the hero into a mostly empty column. */
+    min-height: min(calc(100dvh - var(--nav-h) - env(safe-area-inset-top)), 860px);
+  }
+  .hero h1 { font-size: clamp(2.75rem, 4.9vw, 4.15rem); margin-bottom: 1.5rem; }
+  .hero .lede { margin-bottom: 2.25rem; }
+  .hero-ctas { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+  .hero-figure { margin: 0; }
+  .hero-figure .frame {
+    border-radius: var(--radius-media); overflow: hidden;
+    background: var(--surface-nude);
+    aspect-ratio: 4 / 3;
+  }
+  .hero-figure img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-figure figcaption {
+    margin-top: 0.9rem; font-size: 0.75rem; color: var(--ink-2);
+    max-width: 44ch;
+  }
 
-  /* ---------- Hero: kinetic oversized ---------- */
-  .hero { max-width: 1400px; margin: 0 auto; padding: 4rem 4rem 5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; min-height: calc(100dvh - 68px - env(safe-area-inset-top)); position: relative; }
-  .eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: inline-block; }
-  .eyebrow.pill { border: 2px solid var(--accent); border-radius: 999px; padding: 0.4rem 1rem; transform: rotate(-2deg); }
-  .hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(3.2rem, 8.5vw, 7.5rem); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: 1.5rem; text-wrap: balance; }
-  .hero h1 .line { display: block; overflow: hidden; padding-bottom: 0.09em; margin-bottom: -0.09em; } /* descender clearance */
-  .hero h1 .line-inner { display: block; animation: rise 0.9s var(--spring) both; }
-  .hero h1 .line:nth-child(2) .line-inner { animation-delay: 0.1s; }
-  .hero h1 .line:nth-child(3) .line-inner { animation-delay: 0.2s; }
-  @keyframes rise { from { transform: translateY(110%); } to { transform: translateY(0); } }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero .sub { font-size: 1.05rem; color: var(--ink-2); max-width: 44ch; margin-bottom: 2.25rem; animation: fadeup 0.8s var(--spring) 0.35s both; }
-  @keyframes fadeup { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeup 0.8s var(--spring) 0.45s both; }
-  .hero-ctas .btn { display: inline-flex; align-items: center; justify-content: center; }
-  .hero-media { border-radius: var(--radius-card); overflow: hidden; position: relative; aspect-ratio: 4/5; max-height: 620px; width: 100%; border: 2px solid var(--ink); box-shadow: 10px 10px 0 var(--accent-soft); background: radial-gradient(120% 90% at 20% 10%, var(--rose-1), transparent 60%), radial-gradient(100% 100% at 85% 90%, var(--peach-1), transparent 55%), var(--surface-2); transform: rotate(1.5deg); animation: fadeup 0.9s var(--spring) 0.3s both; will-change: transform; }
-  .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.06); animation: meshdrift 22s ease-in-out infinite alternate; }
-  @keyframes meshdrift { from { transform: scale(1.06) translate(0, 0); } to { transform: scale(1.12) translate(-2%, 2%); } }
-  .hero-media figcaption { position: absolute; left: 1.25rem; bottom: 1.25rem; background: var(--ink); color: var(--surface); border-radius: 999px; padding: 0.55rem 1.1rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transform: rotate(-2deg); }
-  .sticker { position: absolute; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; border: 2px solid var(--ink); border-radius: 999px; padding: 0.55rem 1.1rem; background: var(--surface); color: var(--ink); box-shadow: 4px 4px 0 var(--accent-soft); animation: bob 5s ease-in-out infinite; z-index: 2; white-space: nowrap; }
-  .sticker.s1 { top: 6%; right: 38%; transform: rotate(-8deg); background: var(--accent); color: #fff; border-color: var(--ink); }
-  .sticker.s2 { bottom: 12%; left: 2%; transform: rotate(5deg); animation-delay: 1.4s; }
-  @keyframes bob { 0%, 100% { margin-top: 0; } 50% { margin-top: -12px; } }
-  .scroll-hint { position: absolute; bottom: 1.25rem; left: 4rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); animation: hintdrop 2s var(--spring) infinite; }
-  @keyframes hintdrop { 0%, 100% { transform: translateY(0); opacity: 0.7; } 50% { transform: translateY(8px); opacity: 1; } }
+  /* ---------------- Channel wall ---------------- */
+  .wall { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .wall-inner {
+    max-width: 1320px; margin: 0 auto; padding: 1.4rem 3.5rem;
+    display: flex; align-items: center; gap: 1.75rem; flex-wrap: wrap;
+  }
+  .wall-label { font-size: 0.78rem; color: var(--ink-2); }
+  .wall-logos { display: flex; gap: 1.4rem; align-items: center; }
+  .wall-logos img { height: 19px; opacity: 0.55; transition: opacity 0.25s var(--ease); }
+  .wall-logos img:hover { opacity: 1; }
 
-  /* ---------- Channel wall (compact, under hero) ---------- */
-  .wall-inner { max-width: 1400px; margin: 0 auto; padding: 1.75rem 4rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
-  .wall-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-  .wall-logos { display: flex; gap: 1.75rem; align-items: center; flex-wrap: wrap; }
-  .wall-logos img { height: 20px; opacity: 0.75; transition: transform 0.25s var(--spring), opacity 0.25s; }
-  .wall-logos img:hover { transform: translateY(-3px) rotate(-4deg); opacity: 1; }
+  /* ---------------- Section heading: stacked, never split ---------------- */
+  .head { max-width: 44rem; margin-bottom: 3.25rem; }
+  .head h2 { margin-bottom: 1rem; }
+  .head p { max-width: 58ch; }
 
-  /* ---------- Sections ---------- */
-  section.block { padding-top: 6rem; padding-bottom: 6rem; }
-  .sec-head { margin-bottom: 3rem; max-width: 760px; }
-  .sec-head h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -0.02em; line-height: 1.02; margin-bottom: 1rem; text-wrap: balance; }
-  .sec-head h2 em { font-style: italic; color: var(--accent); }
-  .sec-head p { color: var(--ink-2); font-size: 1rem; max-width: 58ch; }
-  /* Eyebrows: hero + ritual only (≤1 per 3 sections). Products/manifesto/community: none. */
+  /* ---------------- Range: 4 tiles, asymmetric bento, no empty cells ---------------- */
+  .range-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+  .tile { display: flex; flex-direction: column; }
+  .tile:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
+  .tile:nth-child(2) { grid-column: 2; grid-row: 1; }
+  .tile:nth-child(3) { grid-column: 3; grid-row: 1; }
+  .tile:nth-child(4) { grid-column: 2 / span 2; grid-row: 2; }
+  .tile .shot {
+    border-radius: var(--radius-media); overflow: hidden;
+    background: var(--surface-nude);
+  }
+  .tile:nth-child(1) .shot { aspect-ratio: 4 / 5; }
+  .tile:nth-child(2) .shot,
+  .tile:nth-child(3) .shot { aspect-ratio: 16 / 11; }
+  .tile:nth-child(4) .shot { aspect-ratio: 32 / 11; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; }
+  .tile .meta { padding-top: 0.95rem; display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+  .tile h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.5rem; letter-spacing: -0.01em; }
+  .tile .kind { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
+  .tile p { margin-top: 0.35rem; font-size: 0.9rem; color: var(--ink-2); max-width: 40ch; }
 
-  /* ---------- Promo carousel ---------- */
-  .promo { max-width: 1400px; margin: 0 auto; padding: 2rem 4rem 0; }
-  .promo-view { position: relative; border: 2px solid var(--ink); border-radius: var(--radius-card); overflow: hidden; box-shadow: 8px 8px 0 var(--accent-soft); background: var(--surface-2); touch-action: pan-y; }
-  .promo-slide { display: none; position: relative; }
-  .promo-slide.on { display: block; animation: fadeup 0.6s var(--spring) both; }
-  .promo-slide img { width: 100%; height: clamp(220px, 30vw, 420px); object-fit: cover; display: block; }
-  .promo-slide.brand { background: var(--accent); color: #fff; padding: 3rem 2rem; text-align: center; }
-  .promo-slide.brand h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.02; margin-bottom: 1.25rem; }
-  .promo-slide.brand h2 em { font-style: italic; }
-  .promo-slide.brand .btn-ghost { color: #fff; border-color: #fff; }
-  .promo-slide.brand .btn-ghost:hover { background: #fff; color: var(--accent); }
-  .promo-cap { position: absolute; left: 1.25rem; bottom: 1.25rem; background: var(--ink); color: var(--surface); border-radius: 999px; padding: 0.55rem 1.1rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
-  .promo-dots { display: flex; gap: 0.4rem; justify-content: center; margin-top: 1rem; }
-  .promo-dots button { width: 44px; height: 44px; border: 0; background: transparent; cursor: pointer; padding: 0; display: grid; place-items: center; }
-  .promo-dots button::after { content: ""; width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--ink); background: transparent; display: block; }
-  .promo-dots button.on::after { background: var(--accent); border-color: var(--accent); }
+  /* ---------------- Shop: where the transaction lives ---------------- */
+  .shop-panel {
+    background: var(--surface-nude);
+    border-radius: 26px;
+    padding: 3.5rem 3.5rem;
+    display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 3rem; align-items: center;
+  }
+  .shop-panel h2 { margin-bottom: 1rem; }
+  .shop-panel .lede { margin-bottom: 2rem; }
+  .shop-ctas { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+  .shop-facts { list-style: none; display: grid; gap: 1.1rem; }
+  .shop-facts li { border-top: 1px solid var(--line); padding-top: 0.9rem; font-size: 0.9rem; color: var(--ink-2); }
+  .shop-facts b { display: block; color: var(--ink); font-weight: 500; }
 
-  /* ---------- Shop banner (CASTADOO storefront) ---------- */
-  .shop-banner { border: 2px solid var(--ink); border-radius: 24px; background: var(--ink); color: var(--surface); padding: 4rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; transform: rotate(-0.5deg); box-shadow: 12px 12px 0 var(--accent-soft); }
-  .shop-banner h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.02; margin-bottom: 1rem; }
-  .shop-banner h3 em { font-style: italic; color: var(--rose-1); }
-  .shop-banner p { opacity: 0.75; margin-bottom: 2rem; max-width: 46ch; }
-  .shop-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .shop-banner .btn-primary { background: var(--surface); color: var(--ink); }
-  .shop-banner .btn-primary:hover { background: var(--accent); color: #fff; }
-  .shop-banner .btn-ghost { color: var(--surface); border-color: var(--surface); }
-  .shop-banner .btn-ghost:hover { background: var(--surface); color: var(--ink); }
-  .shop-points { list-style: none; display: grid; gap: 0.9rem; }
-  .shop-points li { border: 2px solid currentColor; border-radius: var(--radius-card); padding: 0.9rem 1.2rem; font-size: 0.8rem; }
-  .shop-points li b { display: block; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rose-1); margin-bottom: 0.25rem; }
+  /* ---------------- Ritual: vertical timeline ---------------- */
+  .ritual { background: var(--surface-sage); }
+  .ritual-split {
+    display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 4rem; align-items: center;
+  }
+  .ritual-figure { margin: 0; border-radius: var(--radius-media); overflow: hidden; }
+  /* height:auto is required. The width/height attributes on these <img>
+     elements become presentational hints in the UA sheet, and a definite
+     height would win over the aspect-ratio declared here. */
+  .ritual-figure img { width: 100%; height: auto; aspect-ratio: 16 / 11; object-fit: cover; }
+  .steps { list-style: none; display: grid; gap: 0; margin-top: 2.5rem; }
+  .steps li { position: relative; padding: 0 0 2.25rem 3.25rem; }
+  .steps li::before {
+    content: ""; position: absolute; left: 0; top: 0.55rem;
+    width: 13px; height: 13px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--accent-deep);
+  }
+  .steps li::after {
+    content: ""; position: absolute; left: 6px; top: 1.6rem; bottom: 0.35rem;
+    width: 1px; background: rgba(94, 75, 67, 0.28);
+  }
+  .steps li:last-child::after { display: none; }
+  .steps h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.6rem; margin-bottom: 0.35rem; }
+  .steps p { color: var(--ink-2); font-size: 0.95rem; max-width: 46ch; }
 
-  /* ---------- Ritual ---------- */
-  .ritual { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--surface-2); }
-  .ritual figure { border-radius: var(--radius-card); overflow: hidden; border: 2px solid var(--ink); box-shadow: 8px 8px 0 var(--accent-soft); margin-top: 2.5rem; transform: rotate(-1deg); }
-  .ritual figure img { width: 100%; height: clamp(280px, 42vw, 520px); object-fit: cover; display: block; }
-  .progress { height: 4px; background: var(--line); border-radius: 999px; margin-top: 2.5rem; overflow: hidden; }
-  .progress i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 1.2s var(--spring); }
-  .steps.in .progress i, .progress.in i { width: 100%; }
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
-  .step { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); padding: 1.5rem; box-shadow: 6px 6px 0 var(--accent-soft); transition: transform 0.3s var(--spring); }
-  .step:nth-child(2) { transform: rotate(1deg); }
-  .step:nth-child(3) { transform: rotate(-1deg); }
-  .step:hover { transform: translateY(-6px) rotate(0); }
-  .step b { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); display: block; margin-bottom: 0.5rem; letter-spacing: 0.12em; }
+  /* ---------------- Ingredients: grouped columns on nude ---------------- */
+  .ingredients { background: var(--surface-nude); }
+  .ingredient-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+  .ingredient-groups h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.45rem; margin-bottom: 0.6rem; }
+  .ingredient-groups p { font-size: 0.92rem; color: var(--ink-2); }
+  .ingredient-groups .dose { font-size: 1.9rem; font-family: var(--font-display); color: var(--accent-deep); line-height: 1.1; margin-bottom: 0.4rem; font-variant-numeric: lining-nums; }
+  .bpom-note {
+    margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    font-size: 0.85rem; color: var(--ink-2); max-width: 70ch;
+  }
 
-  /* ---------- Manifesto ---------- */
-  .manifesto { max-width: 1000px; }
-  .manifesto blockquote { font-family: var(--font-display); font-style: italic; font-size: clamp(2rem, 5vw, 3.8rem); line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 1.5rem; text-wrap: balance; }
-  .manifesto blockquote em { color: var(--accent); }
-  .manifesto cite { font-style: normal; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
-  .manifesto .body { color: var(--ink-2); max-width: 60ch; margin-top: 1.25rem; }
-  .brand-card { margin-top: 2.5rem; max-width: 340px; border: 2px solid var(--ink); border-radius: var(--radius-card); overflow: hidden; background: var(--surface); box-shadow: 8px 8px 0 var(--accent-soft); transform: rotate(-1deg); }
-  .brand-card img { width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; display: block; }
-  .brand-card figcaption { padding: 0.9rem 1.25rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); border-top: 2px solid var(--ink); }
+  /* ---------------- Manifesto: quote + image ---------------- */
+  .manifesto-split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
+  .manifesto blockquote {
+    font-family: var(--font-display); font-style: italic; font-weight: 400;
+    font-size: clamp(1.85rem, 3.6vw, 2.85rem); line-height: 1.22; letter-spacing: -0.01em;
+  }
+  .manifesto blockquote em { font-style: italic; color: var(--accent-deep); }
+  .manifesto .origin { margin-top: 1.5rem; font-size: 0.95rem; color: var(--ink-2); max-width: 52ch; }
+  .manifesto .attrib { margin-top: 1.25rem; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+  .manifesto-figure { margin: 0; border-radius: var(--radius-media); overflow: hidden; }
+  .manifesto-figure img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
 
-  /* ---------- Community ---------- */
-  .community { border: 2px solid var(--ink); border-radius: 24px; background: var(--ink); color: var(--surface); padding: 4rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; transform: rotate(0.5deg); box-shadow: 12px 12px 0 var(--accent-soft); }
-  .community h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.02; margin-bottom: 1rem; }
-  .community h3 em { font-style: italic; color: var(--rose-1); }
-  .community p { opacity: 0.75; margin-bottom: 2rem; max-width: 46ch; }
-  .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
-  .social-grid a { border: 2px solid currentColor; color: inherit; text-decoration: none; border-radius: 999px; padding: 0.9rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; transition: transform 0.25s var(--spring), background 0.25s, color 0.25s; }
-  .social-grid a:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-3px) rotate(-1deg); }
-  .community .btn-primary { background: var(--surface); color: var(--ink); }
-  .community .btn-primary:hover { background: var(--accent); color: #fff; }
+  /* ---------------- FAQ ---------------- */
+  .faq { border-top: 1px solid var(--line); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    min-height: 60px; padding: 1.1rem 0;
+    font-family: var(--font-display); font-weight: 500; font-size: 1.25rem;
+    cursor: pointer; list-style: none;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: ""; flex-shrink: 0; width: 11px; height: 11px;
+    border-right: 1px solid var(--ink-2); border-bottom: 1px solid var(--ink-2);
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform 0.25s var(--ease);
+  }
+  .faq details[open] summary::after { transform: rotate(225deg) translateY(-2px); }
+  .faq details p { padding: 0 3rem 1.5rem 0; font-size: 0.95rem; color: var(--ink-2); max-width: 68ch; }
 
-  footer { border-top: 2px solid var(--ink); margin-top: 2rem; }
-  .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 2rem; padding-bottom: calc(3rem + env(safe-area-inset-bottom)); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  /* ---------------- Community ---------------- */
+  .community-panel {
+    border-radius: 26px; padding: 3.5rem;
+    background: var(--surface-petal);
+    display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center;
+  }
+  .community-panel h2 { margin-bottom: 1rem; }
+  .community-panel .lede { margin-bottom: 2rem; }
+  .social { display: grid; gap: 0.6rem; }
+  .social a {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    min-height: 48px; padding: 0.75rem 1.1rem;
+    border: 1px solid var(--line); border-radius: 999px;
+    text-decoration: none; color: var(--ink); font-size: 0.85rem;
+    transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+  .social a:hover { background: rgba(255, 255, 255, 0.5); border-color: var(--ink); }
+  .social .arrow { color: var(--ink-2); }
 
-  /* ---------- FAQ + trust (SEO) ---------- */
-  .faq-list { display: grid; gap: 1rem; margin-top: 2.5rem; }
-  .faq-list details { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface); box-shadow: 6px 6px 0 var(--accent-soft); padding: 1.25rem 1.5rem; }
-  .faq-list details:nth-child(odd) { transform: rotate(-0.5deg); }
-  .faq-list details:nth-child(even) { transform: rotate(0.5deg); }
-  .faq-list summary { font-family: var(--font-display); font-size: 1.15rem; cursor: pointer; list-style: none; min-height: 44px; display: flex; align-items: center; }
-  .faq-list summary::-webkit-details-marker { display: none; }
-  .faq-list summary::before { content: "+ "; color: var(--accent); font-family: var(--font-mono); }
-  .faq-list details[open] summary::before { content: "\2013  "; }
-  .faq-list details p { color: var(--ink-2); margin-top: 0.75rem; font-size: 0.95rem; }
-  .trust-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2.5rem; list-style: none; }
-  .trust-list li { border: 2px solid var(--ink); border-radius: var(--radius-card); background: var(--surface-2); padding: 1.25rem; font-size: 0.85rem; color: var(--ink-2); }
-  .trust-list li b { display: block; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+  /* ---------------- Footer ---------------- */
+  footer { margin-top: 6.5rem; background: var(--ink); color: var(--surface); }
+  .foot-inner {
+    max-width: 1320px; margin: 0 auto;
+    padding: 3.5rem 3.5rem calc(3rem + env(safe-area-inset-bottom));
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap;
+  }
+  .foot-tag { font-family: var(--font-display); font-size: 1.9rem; letter-spacing: -0.01em; }
+  .foot-tag em { font-style: italic; color: var(--accent); }
+  .foot-meta { display: grid; gap: 0.35rem; font-size: 0.8rem; color: #D8C9C1; text-align: right; }
+  .foot-meta a { color: #D8C9C1; }
 
-  /* ---------- Reveal (IO-based) ---------- */
-  .reveal { opacity: 0; transform: translateY(28px) rotate(0.5deg); transition: opacity 0.7s var(--spring), transform 0.7s var(--spring); }
-  .reveal.in { opacity: 1; transform: none; }
-  .reveal[data-d="1"] { transition-delay: 0.08s; } .reveal[data-d="2"] { transition-delay: 0.16s; }
-  .reveal[data-d="3"] { transition-delay: 0.24s; }
+  /* ---------------- Reveal ---------------- */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+  .reveal.shown { opacity: 1; transform: none; }
+  .reveal[data-delay="1"] { transition-delay: 0.08s; }
+  .reveal[data-delay="2"] { transition-delay: 0.16s; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; }
-    .hero h1 .line-inner { animation: none; }
-    .promo-slide.on { animation: none; }
   }
 
-  @media (max-width: 968px) {
-    .wrap, .nav-inner, .wall-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+  @media (max-width: 1080px) {
+    .wrap, .nav-inner, .wall-inner { padding-left: 2.25rem; padding-right: 2.25rem; }
+    .hero { grid-template-columns: 1fr; gap: 2.75rem; padding: 2.75rem 2.25rem 4rem; min-height: auto; }
+    .hero-figure .frame { aspect-ratio: 16 / 10; }
+    .hero h1 { font-size: clamp(2.6rem, 7vw, 3.9rem); }
+    .shop-panel, .community-panel, .ritual-split, .manifesto-split { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ingredient-groups { grid-template-columns: 1fr; gap: 2rem; }
+    .nav-links { display: none; }
     .nav-toggle { display: inline-flex; }
     .nav-cta { display: none; }
-    .nav-links {
+    .drawer-cta { display: block; }
+    .drawer {
       display: flex; flex-direction: column; gap: 0;
       position: fixed; inset: 0; z-index: 41;
       background: var(--surface);
-      padding: calc(5.5rem + env(safe-area-inset-top)) 1.75rem calc(2rem + env(safe-area-inset-bottom));
+      padding: calc(5.5rem + env(safe-area-inset-top)) 2.25rem calc(2rem + env(safe-area-inset-bottom));
       transform: translateX(100%);
-      transition: transform 0.35s var(--spring);
+      transition: transform 0.35s var(--ease);
       overflow-y: auto;
     }
-    header.nav.open .nav-links { transform: none; }
-    .nav-drawer-cta { display: block; }
-    .nav-links a:not(.btn) { font-size: 1.35rem; letter-spacing: 0.08em; padding: 1rem 0; min-height: 48px; display: flex; align-items: center; color: var(--ink); }
-    .nav-links a::after { display: none; }
-    .nav-drawer-cta .btn {
-      width: 100%; text-align: center; font-size: 0.8rem; letter-spacing: 0.1em;
-      padding: 0.95rem 1.4rem; min-height: 48px; display: inline-flex;
-      align-items: center; justify-content: center; color: var(--surface); background: var(--ink);
+    /* The hidden attribute must win over the flex above once the drawer closes. */
+    .drawer[hidden] { display: none; }
+    .nav.open .drawer { transform: none; }
+    .drawer a:not(.btn) {
+      font-family: var(--font-display); font-size: 1.7rem;
+      padding: 0.75rem 0; min-height: 56px;
+      display: flex; align-items: center; color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--line-soft);
     }
-    .nav-links li:last-child { margin-top: 1.25rem; }
-    .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 2.5rem 1.5rem 3.5rem; min-height: auto; }
-    .hero h1 { font-size: clamp(2.4rem, 11vw, 4.2rem); }
-    .hero-media { aspect-ratio: 4/5; max-height: 72vw; transform: none; }
-    .sticker.s1 { right: 6%; } .sticker.s2 { left: 4%; }
-    .scroll-hint { display: none; }
-    .promo { padding: 1.5rem 1.5rem 0; }
-    .promo-slide.brand { padding: 2.5rem 1.5rem; }
-    .promo-cap { left: 0.85rem; right: 0.85rem; bottom: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .shop-banner, .community { transform: none; }
-    .ritual figure { transform: none; }
-    .step:nth-child(2), .step:nth-child(3) { transform: none; }
-    .faq-list details { transform: none; }
-    .brand-card { transform: none; }
-    .steps { grid-template-columns: 1fr; }
-    .trust-list { grid-template-columns: 1fr; }
-    .community, .shop-banner { grid-template-columns: 1fr; padding: 2.5rem 1.5rem; }
-    .shop-ctas .btn, .hero-ctas .btn { flex: 1 1 100%; text-align: center; }
-    section.block { padding-top: 4rem; padding-bottom: 4rem; }
+    .drawer .btn { width: 100%; margin-top: 1.75rem; }
+    .band { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   }
-  @media (max-width: 600px) {
-    .wrap, .nav-inner, .wall-inner { padding-left: 1.1rem; padding-right: 1.1rem; }
-    .hero { padding: 2rem 1.1rem 2.75rem; gap: 2rem; }
-    .promo { padding: 1.1rem 1.1rem 0; }
-    .promo-slide img { height: clamp(180px, 48vw, 280px); }
-    .promo-slide.brand { padding: 2rem 1.15rem; }
-    .hero-media { aspect-ratio: 3/4; max-height: none; box-shadow: 6px 6px 0 var(--accent-soft); }
-    .hero-media figcaption { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; font-size: 0.65rem; text-align: center; transform: none; }
-    .eyebrow.pill { transform: none; }
-    .sticker { display: none; }
-    .social-grid { grid-template-columns: 1fr; }
-    .social-grid a { min-height: 48px; display: flex; align-items: center; justify-content: center; }
-    .community, .shop-banner { padding: 2rem 1.15rem; border-radius: 18px; box-shadow: 8px 8px 0 var(--accent-soft); }
-    .shop-ctas { flex-direction: column; }
-    .hero-ctas { flex-direction: column; }
-    .btn { width: 100%; text-align: center; padding: 0.95rem 1.4rem; }
-    .faq-list details { padding: 1rem 1.15rem; box-shadow: 4px 4px 0 var(--accent-soft); }
-    .faq-list summary { font-size: 1.05rem; }
-    .sec-head h2 { font-size: clamp(1.9rem, 9vw, 2.8rem); }
-    .manifesto blockquote { font-size: clamp(1.6rem, 8vw, 2.4rem); }
-    .brand-card { max-width: 100%; transform: none; }
-    section.block { padding-top: 3.25rem; padding-bottom: 3.25rem; }
-    .foot { flex-direction: column; gap: 0.4rem; }
-    .wall-inner { gap: 1rem; }
+
+  @media (max-width: 780px) {
+    .wrap, .nav-inner, .wall-inner { padding-left: 1.35rem; padding-right: 1.35rem; }
+    .hero { padding: 2.25rem 1.35rem 3rem; }
+    .hero-ctas .btn, .shop-ctas .btn { flex: 1 1 100%; }
+    .range-grid { grid-template-columns: 1fr 1fr; }
+    .tile:nth-child(1) { grid-column: 1 / span 2; grid-row: auto; }
+    .tile:nth-child(1) .shot { aspect-ratio: 16 / 10; }
+    .tile:nth-child(2), .tile:nth-child(3) { grid-column: auto; grid-row: auto; }
+    .tile:nth-child(2) .shot, .tile:nth-child(3) .shot { aspect-ratio: 4 / 5; }
+    .tile:nth-child(4) { grid-column: 1 / span 2; grid-row: auto; }
+    .tile:nth-child(4) .shot { aspect-ratio: 16 / 9; }
+    .shop-panel, .community-panel { padding: 2.25rem 1.5rem; border-radius: 20px; }
+    .faq details p { padding-right: 0; }
+    .foot-inner { padding: 2.5rem 1.35rem calc(2.5rem + env(safe-area-inset-bottom)); }
+    .foot-meta { text-align: left; }
+    .band { padding-top: 3.5rem; padding-bottom: 3.5rem; }
   }
-  @media (max-width: 380px) {
-    .hero h1 { font-size: clamp(2rem, 12vw, 2.6rem); }
-    .eyebrow.pill { font-size: 0.62rem; padding: 0.3rem 0.75rem; }
-    .wordmark img { height: 1.4rem; }
+
+  @media (max-width: 480px) {
+    .range-grid { grid-template-columns: 1fr; }
+    .tile:nth-child(n) { grid-column: 1; grid-row: auto; }
+    .tile:nth-child(n) .shot { aspect-ratio: 4 / 3; }
+    .tile:nth-child(4) .shot { aspect-ratio: 16 / 10; }
+    .hero h1 { font-size: clamp(2.35rem, 11vw, 3rem); }
+    .eyebrow { margin-bottom: 1rem; }
+    .wall-inner { gap: 1rem; padding-top: 1.1rem; padding-bottom: 1.1rem; }
+    .steps li { padding-left: 2.5rem; }
   }
+
   @media (hover: none) {
-    .btn:hover .arr { transform: none; }
-    .btn-primary:hover { box-shadow: none; }
-    .step:hover { transform: none; }
-    .social-grid a:hover { transform: none; }
-    .wall-logos img:hover { transform: none; }
+    .btn:hover .arrow { transform: none; }
+    .nav-links a::after { display: none; }
   }
 </style>
 </head>
 <body>
 
-<a class="skip-link" href="#top">Lewati ke konten</a>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav" id="siteNav">
   <div class="nav-inner">
-    <a class="wordmark" href="#top" aria-label="zaleavelle beranda"><img src="assets/zaleavelle-mark.svg" alt="" width="320" height="320"></a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="nav_link">Belanja</a></li>
-      <li><a href="#ritual">Ritual</a></li>
+    <a class="wordmark" href="#main" aria-label="zaleavelle home"><img src="assets/zaleavelle-mark.svg" alt="zaleavelle" width="117" height="20"></a>
+    <ul class="nav-links">
+      <li><a href="#range">The range</a></li>
+      <li><a href="#ritual">Routine</a></li>
+      <li><a href="#ingredients">Ingredients</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#tentang">Tentang</a></li>
-      <li><a href="#kontak">Kontak</a></li>
-      <li class="nav-drawer-cta"><a href="https://beli.zaleavelle.com/shop" class="btn btn-primary" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="nav_cta">Beli</a></li>
+      <li><a href="#tentang">About</a></li>
     </ul>
-    <div class="nav-cta">
-      <a href="https://beli.zaleavelle.com/shop" class="btn btn-primary btn-sm" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="nav_cta">Beli</a>
-    </div>
-    <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Buka menu">
-      <span></span>
-    </button>
+    <a class="btn btn-solid nav-cta" href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="nav_cta">Shop now</a>
+    <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navDrawer" aria-label="Open menu"><span></span></button>
   </div>
+  <!-- The drawer lives inside the header on purpose: it is selected with
+       .nav.open .drawer and sits in the same stacking context as the toggle
+       and wordmark, so the close button stays reachable above it. -->
+  <ul class="drawer" id="navDrawer" hidden>
+    <li><a href="#range">The range</a></li>
+    <li><a href="#ritual">Routine</a></li>
+    <li><a href="#ingredients">Ingredients</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#tentang">About</a></li>
+    <li><a href="#kontak">Contact</a></li>
+    <li class="drawer-cta"><a class="btn btn-solid" href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="nav_cta">Shop now</a></li>
+  </ul>
 </header>
 <div id="navSentinel" aria-hidden="true"></div>
 
-<main id="top">
-  <section class="hero" id="hero">
-    <span class="sticker s1">100% lembut ✓</span>
+<main id="main">
+
+  <!-- 1. Hero. Four text elements total: tagline, headline, lede, CTAs. -->
+  <section class="hero">
     <div>
-      <span class="eyebrow pill">Perawatan kulit harian · ID</span>
-      <h1>
-        <span class="line"><span class="line-inner">Kulit sehat,</span></span>
-        <span class="line"><span class="line-inner"><em>percaya diri</em></span></span>
-        <span class="line"><span class="line-inner">yang alami.</span></span>
-      </h1>
-      <p class="sub">Rutinitas tiga langkah yang lembut untuk kulit lembap dan tenang setiap hari.</p>
+      <span class="eyebrow">Glow in every touch</span>
+      <h1 class="display">Healthy skin,<br><em>naturally</em> confident.</h1>
+      <p class="lede">A three-step body care routine with niacinamide, botanicals and swiftlet nest. Gentle enough for every morning.</p>
       <div class="hero-ctas">
-        <a href="#shop" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
-        <a href="#ritual" class="btn btn-ghost">Lihat Ritual</a>
+        <a class="btn btn-solid" href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="hero_cta">Shop now <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <a class="btn btn-quiet" href="#ritual">See the routine</a>
       </div>
     </div>
-    <figure class="hero-media" id="heroMedia">
-      <picture><source srcset="assets/web/fresh-tickled-hero.webp" type="image/webp"><img src="assets/web/fresh-tickled-hero.jpg" alt="Fresh Tickled Pink Body Wash zaleavelle di antara kelopak bunga" fetchpriority="high"></picture>
-      <figcaption>Lembut · Autentik · Konsisten</figcaption>
+    <figure class="hero-figure">
+      <div class="frame">
+        <picture>
+          <source srcset="assets/web/hero-collection.webp" type="image/webp">
+          <img src="assets/web/hero-collection.jpg" alt="The seven zaleavelle body care variants arranged with cherry blossom branches" width="1240" height="930" fetchpriority="high" decoding="async">
+        </picture>
+      </div>
+      <figcaption>Three washes, two lotions and two serums. Seven BPOM-registered formulas.</figcaption>
     </figure>
-    <span class="sticker s2">baru: confidence set ✳</span>
-    <span class="scroll-hint">gulir ↓</span>
   </section>
 
-  <div class="wall" aria-label="Kanal resmi">
+  <!-- 2. Channel wall. Logos only, no category labels. -->
+  <div class="wall">
     <div class="wall-inner">
-      <span class="wall-label">Temukan kami di</span>
+      <span class="wall-label">Find us on</span>
       <div class="wall-logos">
-        <img src="https://cdn.simpleicons.org/instagram/1C1A19" alt="Instagram" loading="lazy">
-        <img src="https://cdn.simpleicons.org/tiktok/1C1A19" alt="TikTok" loading="lazy">
-        <img src="https://cdn.simpleicons.org/whatsapp/1C1A19" alt="WhatsApp" loading="lazy">
+        <a href="https://instagram.com/zaleavelle" target="_blank" rel="noopener" aria-label="zaleavelle on Instagram"><img src="https://cdn.simpleicons.org/instagram/5E4B43" alt="Instagram" loading="lazy" width="19" height="19"></a>
+        <a href="https://tiktok.com/@zaleavelle.official" target="_blank" rel="noopener" aria-label="zaleavelle on TikTok"><img src="https://cdn.simpleicons.org/tiktok/5E4B43" alt="TikTok" loading="lazy" width="19" height="19"></a>
+        <a href="https://wa.me/6282121262593" target="_blank" rel="noopener" aria-label="Message zaleavelle on WhatsApp"><img src="https://cdn.simpleicons.org/whatsapp/5E4B43" alt="WhatsApp" loading="lazy" width="19" height="19"></a>
       </div>
     </div>
   </div>
 
-  <div class="promo" id="promo">
-    <div class="promo-view">
-      <div class="promo-slide on">
-        <picture><source srcset="assets/web/emerald-ritual.webp" type="image/webp"><img src="assets/web/emerald-ritual.jpg" alt="Kandungan Niacinamide dan Vita 8 Complex zaleavelle" loading="lazy"></picture>
-        <span class="promo-cap">Emerald Sweet — busa glitter lembut</span>
-      </div>
-      <div class="promo-slide">
-        <img src="assets/web/og-image.jpg" alt="Koleksi body care zaleavelle" loading="lazy">
-        <span class="promo-cap">Koleksi aroma favorit</span>
-      </div>
-      <div class="promo-slide brand">
-        <h2>Lembut · <em>Autentik</em> · Konsisten</h2>
-        <a href="https://beli.zaleavelle.com/shop" class="btn btn-ghost" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="promo_cta">Belanja Sekarang</a>
-      </div>
+  <!-- 3. The range. Four tiles, four cells, no holes. No prices on page. -->
+  <section class="band wrap" id="range">
+    <div class="head reveal">
+      <h2 class="display">Four ways to <em>start</em></h2>
+      <p class="lede">Pick a scent, not a routine. Every variant follows the same three-step order, so anything you choose works with what you already own.</p>
     </div>
-    <div class="promo-dots" role="tablist" aria-label="Promo">
-      <button type="button" class="on" data-slide="0" aria-label="Promo 1"></button>
-      <button type="button" data-slide="1" aria-label="Promo 2"></button>
-      <button type="button" data-slide="2" aria-label="Promo 3"></button>
+    <div class="range-grid">
+      <article class="tile reveal">
+        <div class="shot">
+          <picture><source srcset="assets/web/wash-flavia.webp" type="image/webp"><img src="assets/web/wash-flavia.jpg" alt="Flavia Floral body wash bottle" width="900" height="1125" loading="lazy" decoding="async"></picture>
+        </div>
+        <div class="meta"><h3>Flavia Floral</h3><span class="kind">Body wash</span></div>
+        <p>Niacinamide with kojic dipalmitate. Warm, floral, a little sweet.</p>
+      </article>
+      <article class="tile reveal" data-delay="1">
+        <div class="shot">
+          <picture><source srcset="assets/web/lotion-blush.webp" type="image/webp"><img src="assets/web/lotion-blush.jpg" alt="Feminine Blush Pink body lotion with gift box" width="900" height="1125" loading="lazy" decoding="async"></picture>
+        </div>
+        <div class="meta"><h3>Feminine Blush Pink</h3><span class="kind">Body lotion</span></div>
+        <p>5% niacinamide and swiftlet nest in a soft cherry blossom.</p>
+      </article>
+      <article class="tile reveal" data-delay="2">
+        <div class="shot">
+          <picture><source srcset="assets/web/serum-bright-petal.webp" type="image/webp"><img src="assets/web/serum-bright-petal.jpg" alt="Bright Petal body serum with calendula" width="900" height="1125" loading="lazy" decoding="async"></picture>
+        </div>
+        <div class="meta"><h3>Bright Petal</h3><span class="kind">Body serum</span></div>
+        <p>Calendula and sea water for skin that feels calm and cool.</p>
+      </article>
+      <article class="tile reveal">
+        <div class="shot">
+          <picture><source srcset="assets/web/serum-classic-pink.webp" type="image/webp"><img src="assets/web/serum-classic-pink.jpg" alt="Classic Pink body serum with real flower petals" width="900" height="1125" loading="lazy" decoding="async"></picture>
+        </div>
+        <div class="meta"><h3>Classic Pink</h3><span class="kind">Body serum</span></div>
+        <p>Lightweight, fast to absorb, scented with sakura petals.</p>
+      </article>
     </div>
-  </div>
+  </section>
 
-  <section class="block wrap" id="shop">
-    <div class="shop-banner reveal">
+  <!-- 4. Shop. The only place a transaction happens. -->
+  <section class="band wrap" id="shop">
+    <div class="shop-panel reveal">
       <div>
-        <h3>Belanja di <em>toko resmi</em> kami.</h3>
-        <p>Katalog lengkap Emerald Sweet, Blaine Floral, Feminine Blush Pink, dan Bright Petal — stok real-time dan checkout aman via CASTADOO Shop.</p>
+        <h2 class="display">Buy from the <em>official store</em></h2>
+        <p class="lede">Live stock, secure checkout and every variant in one place. Our shop is the only place zaleavelle is sold.</p>
         <div class="shop-ctas">
-          <a href="https://beli.zaleavelle.com/shop" class="btn btn-primary" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="shop_banner">Belanja Sekarang <span class="arr">→</span></a>
-          <a href="https://wa.me/6282121262593?text=Halo%20zaleavelle!" class="btn btn-ghost" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Support" data-utm-content="shop_support">Chat WhatsApp</a>
+          <a class="btn btn-solid" href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="shop_banner">Shop now <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="btn btn-quiet" href="https://wa.me/6282121262593?text=Hello%20zaleavelle" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Support" data-utm-content="shop_support">WhatsApp</a>
         </div>
       </div>
-      <ul class="shop-points">
-        <li><b>100% Original</b>Produk resmi langsung dari zaleavelle.</li>
-        <li><b>Pembayaran Aman</b>Checkout terproteksi via CASTADOO Shop.</li>
-        <li><b>Butuh Bantuan?</b>Tim kami siap membantu via WhatsApp.</li>
+      <ul class="shop-facts">
+        <li><b>Genuine stock only</b>Sold and shipped by us.</li>
+        <li><b>Secure checkout</b>Handled by our official store.</li>
+        <li><b>Questions first</b>We will help you choose on WhatsApp.</li>
       </ul>
     </div>
   </section>
 
-  <section class="block ritual" id="ritual">
+  <!-- 5. Ritual. Vertical timeline, verb-noun step names, no numbering. -->
+  <section class="band ritual" id="ritual">
     <div class="wrap">
+      <div class="ritual-split">
+        <div class="reveal">
+          <div class="head">
+            <h2 class="display">Fewer products,<br>used <em>consistently</em></h2>
+            <p class="lede">The same three steps, in the same order, every morning and every night.</p>
+          </div>
+          <ol class="steps">
+            <li>
+              <h3>Cleanse</h3>
+              <p>Any of the three washes. The lather is light and rinses clean without stripping.</p>
+            </li>
+            <li>
+              <h3>Treat</h3>
+              <p>A thin layer of serum while the skin is still damp, so it has something to hold on to.</p>
+            </li>
+            <li>
+              <h3>Seal</h3>
+              <p>Lotion goes on last, over the serum, to lock the hydration in before you leave the bathroom.</p>
+            </li>
+          </ol>
+        </div>
+        <figure class="ritual-figure reveal" data-delay="1">
+          <picture><source srcset="assets/web/ritual-cherry.webp" type="image/webp"><img src="assets/web/ritual-cherry.jpg" alt="Classic Pink body serum resting on a swing beneath cherry blossom" width="1600" height="900" loading="lazy" decoding="async"></picture>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Ingredients. Grouped columns, sage-adjacent. -->
+  <section class="band ingredients" id="ingredients">
+    <div class="wrap">
+      <div class="head reveal">
+        <h2 class="display">What is actually <em>in it</em></h2>
+        <p class="lede">Every active below is on the label, with the percentage printed. No claim you cannot check.</p>
+      </div>
+      <div class="ingredient-groups">
+        <div class="reveal">
+          <div class="dose">2 to 10%</div>
+          <h3>Niacinamide</h3>
+          <p>The brightening active across the range, from a gentle 2% in the washes up to 10% in Blaine Floral lotion.</p>
+        </div>
+        <div class="reveal" data-delay="1">
+          <h3>Botanical extracts</h3>
+          <p>Calendula and cherry blossom in the serums for calm, licorice in Fresh Tickled wash, and swiftlet nest in both lotions.</p>
+        </div>
+        <div class="reveal" data-delay="2">
+          <h3>Vita 8 Complex</h3>
+          <p>Eight amino acids that hydrate the skin barrier. It is the reason Emerald Sweet is the gentlest wash we make.</p>
+        </div>
+      </div>
+      <p class="bpom-note reveal">All seven variants are registered with BPOM: Flavia Floral NA 18260700236, Fresh Tickled NA 18260700237, Emerald Sweet NA 18260700238, Blaine Floral NA 18260102605, Feminine Blush Pink NA 18260101627, Bright Petal NA 18260101637, Classic Pink NA 18260101638.</p>
+    </div>
+  </section>
+
+  <!-- 7. Manifesto. -->
+  <section class="band wrap manifesto" id="tentang">
+    <div class="manifesto-split">
       <div class="reveal">
-        <span class="eyebrow pill">Ritual tiga langkah</span>
-        <h2 style="font-family:var(--font-display);font-weight:400;font-size:clamp(2.2rem,5vw,4rem);letter-spacing:-0.02em;line-height:1.02;margin:1rem 0">Sedikit produk, <em style="color:var(--accent)">dipakai konsisten.</em></h2>
-        <p style="color:var(--ink-2);max-width:58ch">Urutan yang selalu sama setiap pagi dan malam. Tidak perlu sepuluh lapis untuk hasil yang terlihat.</p>
+        <blockquote>Beauty was never about becoming someone else. It is about <em>being comfortable</em> in the skin you already have.</blockquote>
+        <p class="origin">zaleavelle started because we wanted a body care routine we would actually finish. Not ten steps, not a cabinet full of half-used bottles. Three products, used every day, with formulas we could point to on the label.</p>
+        <p class="attrib">The zaleavelle team</p>
       </div>
-      <figure class="reveal" data-d="1">
-        <picture><source srcset="assets/web/emerald-ritual.webp" type="image/webp"><img src="assets/web/emerald-ritual.jpg" alt="Kandungan Niacinamide dan Vita 8 Complex zaleavelle" loading="lazy"></picture>
+      <figure class="manifesto-figure reveal" data-delay="1">
+        <picture><source srcset="assets/web/manifesto-petal.webp" type="image/webp"><img src="assets/web/manifesto-petal.jpg" alt="Niacinamide, glycerin and calendula shown in glass dishes" width="1200" height="800" loading="lazy" decoding="async"></picture>
       </figure>
-      <div class="steps" id="steps">
-        <div class="progress" aria-hidden="true"><i></i></div>
-        <div class="step reveal"><b>01 · Bersihkan</b><p>Emerald Sweet body wash dengan busa lembut yang mudah dibilas.</p></div>
-        <div class="step reveal" data-d="1"><b>02 · Rawat</b><p>Bright Petal body serum tipis-tipis saat kulit masih lembap.</p></div>
-        <div class="step reveal" data-d="2"><b>03 · Kunci</b><p>Body lotion Blaine Floral atau Feminine Blush Pink untuk mengunci hidrasi.</p></div>
-      </div>
     </div>
   </section>
 
-  <section class="block wrap" id="faq">
-    <div class="sec-head reveal">
-      <h2>Pertanyaan <em>populer</em></h2>
-      <p>Semua yang perlu kamu tahu tentang rangkaian zaleavelle: varian, cara pakai, keamanan BPOM, dan cara pesan.</p>
+  <!-- 8. FAQ. Answers mirror the FAQPage schema verbatim (GATES-SEO S6). -->
+  <section class="band wrap" id="faq">
+    <div class="head reveal">
+      <h2 class="display">Questions, <em>answered</em></h2>
     </div>
-    <ul class="trust-list reveal" data-d="1">
-      <li><b>Niacinamide 2–10%</b>Brightening utama di body wash dan body lotion, dipadukan Kojic, licorice, dan Vita 8 Complex.</li>
-      <li><b>Sarang walet · Calendula · Sakura</b>Swiftlet Nest di kedua body lotion; calendula dan sakura menenangkan di body serum.</li>
-      <li><b>Terdaftar BPOM</b>7 varian: NA 18260700236–238 (wash), NA 18260102605 &amp; NA 18260101627 (lotion), NA 18260101637–638 (serum).</li>
-    </ul>
-    <div class="faq-list">
-      <details class="reveal"><summary>Varian apa saja yang tersedia?</summary><p>Tujuh varian: Flavia Floral, Fresh Tickled Pink, dan Emerald Sweet (body wash 260 mL); Blaine Floral dan Feminine Blush Pink (body lotion 190 mL); Bright Petal dan Classic Pink (body serum 110 mL).</p></details>
-      <details class="reveal" data-d="1"><summary>Apakah aman untuk kulit sensitif?</summary><p>Ya. Seluruh rangkaian zaleavelle terdaftar BPOM dan diformulasikan lembut untuk pemakaian harian. Untuk kulit sensitif, Emerald Sweet body wash dengan formula nourishing tanpa fokus whitening agresif adalah pilihan yang paling lembut.</p></details>
-      <details class="reveal" data-d="2"><summary>Bagaimana cara pesan?</summary><p>Klik tombol Belanja di halaman ini untuk checkout di Toko Resmi kami (CASTADOO Shop). Untuk konsultasi sebelum membeli, chat kami via WhatsApp.</p></details>
-      <details class="reveal"><summary>Bagaimana rutinitas pakainya?</summary><p>Tiga langkah pagi dan malam: bersihkan dengan body wash, rawat dengan body serum saat kulit masih lembap, lalu kunci dengan body lotion. Produk bilas dipakai 2 kali sehari; lotion dan serum leave-on setelah mandi.</p></details>
-      <details class="reveal" data-d="1"><summary>Apakah produk zaleavelle terdaftar BPOM?</summary><p>Ya, ketujuh varian terdaftar BPOM: Flavia Floral NA 18260700236, Fresh Tickled Pink NA 18260700237, Emerald Sweet NA 18260700238, Blaine Floral NA 18260102605, Feminine Blush Pink NA 18260101627, Bright Petal NA 18260101637, Classic Pink NA 18260101638.</p></details>
-      <details class="reveal" data-d="2"><summary>Apakah ada program reseller?</summary><p>Hubungi kami via WhatsApp untuk info kerja sama dan reseller.</p></details>
+    <div class="faq">
+      <details class="reveal">
+        <summary>Which variants are available?</summary>
+        <p>Seven variants: Flavia Floral, Fresh Tickled and Emerald Sweet (body wash, 260 mL); Blaine Floral and Feminine Blush Pink (body lotion, 190 mL); Bright Petal and Classic Pink (body serum, 110 mL).</p>
+      </details>
+      <details class="reveal">
+        <summary>Is it safe for sensitive skin?</summary>
+        <p>Yes. Every zaleavelle variant is registered with BPOM and formulated for daily use. For sensitive skin, Emerald Sweet body wash uses a nourishing formula without an intensive brightening focus, which makes it the gentlest option in the range.</p>
+      </details>
+      <details class="reveal">
+        <summary>How do I order?</summary>
+        <p>Tap Shop now on this page to check out on our official store. If you would rather talk it through first, message us on WhatsApp.</p>
+      </details>
+      <details class="reveal">
+        <summary>How does the routine work?</summary>
+        <p>Three steps, morning and night: cleanse with body wash, treat with body serum while the skin is still damp, then seal with body lotion. The rinse-off wash is used twice daily; lotion and serum go on after showering.</p>
+      </details>
+      <details class="reveal">
+        <summary>Are the products registered with BPOM?</summary>
+        <p>Yes, all seven variants are registered with BPOM: Flavia Floral NA 18260700236, Fresh Tickled NA 18260700237, Emerald Sweet NA 18260700238, Blaine Floral NA 18260102605, Feminine Blush Pink NA 18260101627, Bright Petal NA 18260101637, Classic Pink NA 18260101638.</p>
+      </details>
+      <details class="reveal">
+        <summary>Do you offer a reseller program?</summary>
+        <p>Message us on WhatsApp for reseller and partnership inquiries.</p>
+      </details>
     </div>
   </section>
 
-  <section class="block wrap manifesto" id="tentang">
-    <div class="reveal">
-      <blockquote>&ldquo;Kepercayaan diri berawal dari <em>merawat diri</em> sendiri.&rdquo;</blockquote>
-      <cite>— Tim zaleavelle</cite>
-      <p class="body">Kami percaya kecantikan bukan soal mengubah jati diri. Cukup rutinitas sederhana yang bisa dijalani setiap hari: autentik, menenangkan, dan jujur pada kulitmu.</p>
-    </div>
-    <figure class="brand-card reveal" data-d="1">
-      <img src="assets/zaleavelle-mark.svg" alt="Logo resmi zaleavelle" loading="lazy" width="320" height="320">
-      <figcaption>Logo resmi — zaleavelle</figcaption>
-    </figure>
-  </section>
-
-  <section class="block wrap" id="kontak">
-    <div class="community reveal">
+  <!-- 9. Community. -->
+  <section class="band wrap" id="kontak">
+    <div class="community-panel reveal">
       <div>
-        <h3>Bergabung dengan <em>komunitas</em> kami.</h3>
-        <p>Tips skincare, ulasan jujur, dan diskusi santai. Mulai dari katalog, lanjut mengobrol.</p>
-        <a href="#shop" class="btn btn-primary">Jelajahi Produk <span class="arr">→</span></a>
+        <h2 class="display">Come say <em>hello</em></h2>
+        <p class="lede">Routines, honest reviews and the occasional sunscreen argument. Follow along, or message us when you are deciding.</p>
+        <a class="btn btn-solid" href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="odoo_profile">Shop now <span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
-      <div class="social-grid">
-        <a href="https://instagram.com/zaleavelle" target="_blank" rel="noopener" data-cta="social" data-product="Instagram" data-utm-content="instagram_profile">Instagram</a>
-        <a href="https://tiktok.com/@zaleavelle.official" target="_blank" rel="noopener" data-cta="social" data-product="TikTok" data-utm-content="tiktok_profile">TikTok</a>
-        <a href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="odoo_profile">Toko Resmi</a>
-        <a href="https://wa.me/6282121262593" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="whatsapp_profile">WhatsApp</a>
+      <div class="social">
+        <a href="https://instagram.com/zaleavelle" target="_blank" rel="noopener" data-cta="social" data-product="Instagram" data-utm-content="instagram_profile">Instagram <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="https://tiktok.com/@zaleavelle.official" target="_blank" rel="noopener" data-cta="social" data-product="TikTok" data-utm-content="tiktok_profile">TikTok <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="https://wa.me/6282121262593" target="_blank" rel="noopener" data-cta="whatsapp" data-product="WhatsApp Chat" data-utm-content="whatsapp_profile">WhatsApp <span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap foot">
-    <span>© 2026 zaleavelle</span>
-    <span>Autentik · Percaya diri · Sederhana</span>
+  <div class="foot-inner">
+    <p class="foot-tag">Glow in every <em>touch</em>.</p>
+    <div class="foot-meta">
+      <span>&copy; 2026 zaleavelle</span>
+      <a href="https://beli.zaleavelle.com/shop" target="_blank" rel="noopener" data-cta="odoo" data-product="CASTADOO Shop" data-utm-content="footer_cta">Shop now</a>
+    </div>
   </div>
 </footer>
 
 <script>
+(function () {
+  "use strict";
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Reveal on scroll via IntersectionObserver (no scroll listeners, §5.D).
-  function zvInitReveals() {
-    var els = document.querySelectorAll(".reveal:not(.in)");
-    if (reduceMotion) { els.forEach(function (el) { el.classList.add("in"); }); return; }
+  // Scroll reveal via IntersectionObserver. No scroll listeners (skill 5.D).
+  var revealables = document.querySelectorAll(".reveal");
+  if (reduceMotion) {
+    revealables.forEach(function (el) { el.classList.add("shown"); });
+  } else {
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-    }, { threshold: 0.15 });
-    els.forEach(function (el) { io.observe(el); });
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("shown");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    revealables.forEach(function (el) { io.observe(el); });
   }
 
-  // Nav border via sentinel (IO, not scroll events).
-  (function () {
-    var nav = document.getElementById("siteNav");
-    new IntersectionObserver(function (en) {
-      nav.classList.toggle("scrolled", !en[0].isIntersecting);
-    }).observe(document.getElementById("navSentinel"));
-  })();
+  // Nav hairline driven by a sentinel, still an observer rather than a listener.
+  var nav = document.getElementById("siteNav");
+  new IntersectionObserver(function (entries) {
+    nav.classList.toggle("stuck", !entries[0].isIntersecting);
+  }).observe(document.getElementById("navSentinel"));
 
-  // Mobile drawer: toggle, ESC, in-page close, restore on desktop.
-  (function () {
-    var nav = document.getElementById("siteNav");
-    var toggle = document.getElementById("navToggle");
-    var links = document.getElementById("navLinks");
-    if (!nav || !toggle || !links) return;
-    function setOpen(open) {
-      nav.classList.toggle("open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      toggle.setAttribute("aria-label", open ? "Tutup menu" : "Buka menu");
-      document.body.classList.toggle("nav-lock", open);
+  // Drawer. Hidden from the accessibility tree until it is actually usable.
+  var toggle = document.getElementById("navToggle");
+  var drawer = document.getElementById("navDrawer");
+  var desktop = window.matchMedia("(min-width: 1081px)");
+
+  function setOpen(open) {
+    nav.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.body.style.overflow = open ? "hidden" : "";
+    if (open) {
+      drawer.hidden = false;
+    } else {
+      // Wait for the slide-out before removing it from the tree.
+      if (reduceMotion) {
+        drawer.hidden = true;
+      } else {
+        window.setTimeout(function () {
+          if (!nav.classList.contains("open")) drawer.hidden = true;
+        }, 350);
+      }
     }
-    toggle.addEventListener("click", function () {
-      setOpen(!nav.classList.contains("open"));
-    });
-    links.addEventListener("click", function (e) {
-      var a = e.target && e.target.closest ? e.target.closest("a") : null;
-      if (!a) return;
-      if (a.getAttribute("href") && a.getAttribute("href").charAt(0) === "#") setOpen(false);
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") setOpen(false);
-    });
-    var mq = window.matchMedia("(min-width: 969px)");
-    function onMq(en) { if (en.matches) setOpen(false); }
-    if (mq.addEventListener) mq.addEventListener("change", onMq);
-    else if (mq.addListener) mq.addListener(onMq);
-  })();
+  }
 
-  // Outbound click tracking (PRD E4): every [data-cta] link queues a
-  // select_item event. Works with real GA4 once window.ZV_GA_ID is set;
-  // until then events accumulate in window.dataLayer for later wiring.
-  (function () {
-    document.addEventListener("click", function (e) {
-      var a = e.target && e.target.closest ? e.target.closest("[data-cta]") : null;
-      if (!a) return;
-      var price = parseInt(a.getAttribute("data-price") || "0", 10) || 0;
-      var params = {
-        item_name: a.getAttribute("data-product") || a.textContent.trim(),
-        item_category: a.getAttribute("data-cta"),
-        price: price,
+  if (desktop.matches) drawer.hidden = true;
+  desktop.addEventListener("change", function (e) {
+    if (e.matches) {
+      setOpen(false);
+      drawer.hidden = true;
+    } else {
+      drawer.hidden = false;
+    }
+  });
+
+  toggle.addEventListener("click", function () {
+    setOpen(!nav.classList.contains("open"));
+  });
+  drawer.addEventListener("click", function (e) {
+    var link = e.target.closest ? e.target.closest("a") : null;
+    if (link && link.getAttribute("href").charAt(0) === "#") setOpen(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && nav.classList.contains("open")) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+
+  // Outbound click tracking (PRD E4). Keys stay byte-identical to the UTM
+  // taxonomy so GA4 history continues across the redesign.
+  document.addEventListener("click", function (e) {
+    var link = e.target && e.target.closest ? e.target.closest("[data-cta]") : null;
+    if (!link) return;
+    try {
+      gtag("event", "select_item", {
+        item_name: link.getAttribute("data-product") || link.textContent.trim(),
+        item_category: link.getAttribute("data-cta"),
+        price: 0,
         currency: "IDR",
-        utm_content: a.getAttribute("data-utm-content") || ""
-      };
-      try {
-        if (typeof gtag === "function") gtag("event", "select_item", params);
-        else window.dataLayer.push({ event: "select_item" });
-      } catch (err) { /* tracking must never break navigation */ }
-    });
-  })();
-
-  // Ritual progress hairline draws when steps enter.
-  (function () {
-    var steps = document.getElementById("steps");
-    var bar = steps.querySelector(".progress");
-    new IntersectionObserver(function (en, io) {
-      if (en[0].isIntersecting) { bar.classList.add("in"); io.disconnect(); }
-    }, { threshold: 0.3 }).observe(steps);
-  })();
-
-  // Hero pointer parallax: transform-only, rAF-throttled, pointer:fine + no-reduce only.
-  (function () {
-    if (reduceMotion || !window.matchMedia("(pointer: fine)").matches) return;
-    var hero = document.getElementById("hero"), media = document.getElementById("heroMedia"), raf = null;
-    hero.addEventListener("pointermove", function (e) {
-      if (raf) return;
-      raf = requestAnimationFrame(function () {
-        var r = hero.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-        media.style.translate = (x * 14) + "px " + (y * 14) + "px";
-        raf = null;
+        utm_content: link.getAttribute("data-utm-content") || ""
       });
-    });
-    hero.addEventListener("pointerleave", function () { media.style.translate = "0px 0px"; });
-  })();
-
-</script>
-<script>
-  // ---------- Page boot: fully static storefront (CASTADOO) ----------
-  // No backend: reveals init directly; promo carousel below.
-  zvInitReveals();
-
-  // Promo carousel: auto-rotate with dots, pause on hover, static when reduced.
-  (function zvPromo() {
-    var slides = document.querySelectorAll(".promo-slide");
-    var dots = document.querySelectorAll(".promo-dots button");
-    if (!slides.length) return;
-    var i = 0, timer = null;
-    function go(n) {
-      i = (n + slides.length) % slides.length;
-      slides.forEach(function (s, k) { s.classList.toggle("on", k === i); });
-      dots.forEach(function (d, k) { d.classList.toggle("on", k === i); });
-    }
-    function stop() { if (timer) { clearInterval(timer); timer = null; } }
-    function play() { if (reduceMotion) return; stop(); timer = setInterval(function () { go(i + 1); }, 6000); }
-    dots.forEach(function (d) {
-      d.addEventListener("click", function () { go(Number(d.getAttribute("data-slide"))); play(); });
-    });
-    var view = document.querySelector(".promo-view");
-    if (view) {
-      view.addEventListener("pointerenter", stop);
-      view.addEventListener("pointerleave", play);
-      var sx = 0;
-      view.addEventListener("touchstart", function (e) {
-        if (!e.changedTouches || !e.changedTouches[0]) return;
-        sx = e.changedTouches[0].clientX;
-        stop();
-      }, { passive: true });
-      view.addEventListener("touchend", function (e) {
-        if (!e.changedTouches || !e.changedTouches[0]) return;
-        var dx = e.changedTouches[0].clientX - sx;
-        if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
-        play();
-      }, { passive: true });
-    }
-    play();
-  })();
+    } catch (err) { /* tracking must never break navigation */ }
+  });
+})();
 </script>
 </body>
 </html>
