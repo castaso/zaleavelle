@@ -64,8 +64,10 @@ check("S5", "inline script blocks present", len(scripts) == 2, "%d blocks" % len
 
 manifest = json.load(open(os.path.join(ROOT, "site.webmanifest"), encoding="utf-8"))
 check("S7", "manifest parses as JSON", True, "name=%r" % manifest["name"])
-check("S7", "manifest theme matches page base", manifest["theme_color"] == "#F2EEE6", manifest["theme_color"])
-
+# The page base is the opening film's dark ground, not alabaster: the film is
+# the first paint (owner decision, 2026-10-13; darkened to pure black same
+# day so the vignette edges dissolve into the stage). The rest stays light.
+check("S7", "manifest theme matches page base", manifest["theme_color"] == "#000000", manifest["theme_color"])
 # ---------------------------------------------------------------- brand tells
 em = count("\u2014") + count("\u2013")
 check("B1", "zero em-dashes and en-dashes", em == 0, "%d found" % em)
@@ -126,6 +128,14 @@ for m in re.finditer(r'src="assets/web/([^"]+)\.jpg"', HTML):
         sizes.append(os.path.getsize(path))
 check("B8", "page weight stays under the PRD budget", sum(sizes) < 2 * 1024 * 1024,
       "%d KB of JPEG across %d images" % (sum(sizes) // 1024, len(sizes)))
+
+# The film's sprite sheets are referenced from JS strings, never from src or
+# href attributes, so the scan above cannot see them. Verify them here.
+scrub_paths = sorted(set(re.findall(r'"(assets/web/scrub/[^"]+)"', HTML)))
+missing_scrub = [p for p in scrub_paths if not os.path.exists(os.path.join(ROOT, p))]
+check("B8", "scrub sprite sheets referenced by JS exist",
+      len(scrub_paths) == 8 and not missing_scrub,
+      "%d sheets, missing: %s" % (len(scrub_paths), missing_scrub or "none"))
 
 # ---------------------------------------------------------------- contrast
 def luminance(hex_colour):

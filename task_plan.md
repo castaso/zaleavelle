@@ -153,7 +153,12 @@ Owner supplied two brand documents (identity + colour palette) and asked for the
 - [x] Slice 16g: tooling — `tools/check.py` (41 mechanical checks), `build-web-images.py`, `vendor-fonts.py`, `svg-bounds.py`
 - [x] Slice 16h verify: 41/41 harness checks; storefront integrity re-measured (13 shop URLs, 6 `data-cta="odoo"`, 7 lowercase odoo); rendered at 1440px and a true 390px viewport; PRD v2.7; `GATES-BRAND.md` added (16 gates)
 - [ ] Field Lighthouse on mobile (PRD T4/T5) — never run on any version of this page
-- **Status:** complete (harness-verified; field Lighthouse open)
+- [x] Slice 17a: opening film — scroll-scrubbed `luxury.mp4` as the first section above the hero. Hybrid engine: mp4 seek on desktop, 8 WebP sprite sheets on canvas for mobile / coarse-pointer / saveData (seeking a video on a phone stutters). IntersectionObserver-gated rAF loop keeps the B3 no-scroll-listener tell at 0. Contained 16:9 frame (the shot is a seven-bottle lineup; cover-crop cuts outer bottles on portrait). Alabaster heading card reuses a measured contrast pair. Poster is frame 0 exactly for a pop-free crossfade. Pin collapses under reduced motion and no-JS
+- [x] Slice 17b: tooling — `tools/build-scrub-assets.py` (poster, 12-frame-GOP mp4 at 2.2 MB, 4675 KB of sprite sheets; byte budgets asserted, non-zero exit over budget); `tools/check.py` B8 extended to verify the JS-referenced sprite paths that no `src=`/`href=` scan can see (41 → 42 checks)
+- [x] Slice 17c verify: 42/42 harness checks; headless CDP run with zero installs (node global WebSocket) showing seek position matching scroll math to the centisecond at three offsets and the mobile canvas advancing 89,788 px between two stops; R5 gate + evidence in `GATES-BRAND.md`
+- [x] Slice 17d: dark treatment on the film section. Stage background `--surface-film: #000000` (pure cinema black; film's vignette edges dissolve into it). All assets re-graded via ffmpeg `eq=brightness=-0.04:contrast=1.05:gamma=0.9:saturation=0.94` so the film sits in the dark stage without a hard brightness break. Alabaster card kept (existing measured 7.08:1 pair, no new contrast rows). `meta theme-color` and `site.webmanifest` theme/background flipped to `#000000` with a documented S7 gate amendment. CSS header theme-lock comment amended with owner override 2026-10-13. Dark is a section, not a mode — PRD "Not planned" and GATES-SC SC1 (0 theme-toggling matches) left intact; static dark CSS keeps SC1 at 0. Same-day amendment (2026-10-13): owner requested pure `#000000` over the original warm espresso `#3A2E29`; no regrade, no other token changes
+- [x] Slice 17d verify: `python tools/check.py` 42/42 with S7 asserting `#000000` (post-amendment run); B6 wordmark pure-black ban unaffected (stage ban is wordmark-only). Pre-amendment CDP run had confirmed espresso stage `rgb(58,46,41)` with card `rgb(242,238,230)`/`rgb(94,75,67)`, desktop `currentTime` 6.56 at scrollY 2000, mobile canvas opacity 1; dark stills at 0/4/7.9 s reviewed by owner
+- **Status:** complete (film harness-verified; field Lighthouse open)
 
 ## Key Questions
 
@@ -194,6 +199,17 @@ Owner supplied two brand documents (identity + colour palette) and asked for the
 | Product showcase is editorial, not commerce (Phase 16) | Owner confirmed purely marketing. Images and descriptions only, so the no-prices boundary holds |
 | Promo carousel deleted rather than restyled (Phase 16) | One slide reused the OG image as page content and another duplicated an existing CTA intent |
 | Verification harness over ad-hoc greps (Phase 16) | 41 mechanical checks make contrast, tell-sweep and schema integrity re-runnable after any future edit |
+| Hybrid film engine: mp4 seek desktop, sprite sheets mobile (Phase 17) | Seeking a `<video>` element on a phone visibly stutters and the persona is mobile-first; the sprite path costs 4.7 MB only for the visitors who need it |
+| rAF loop, not a scroll listener, for the film | The B3 tell bans scroll listeners; an observer-gated rAF loop reading the section rect keeps the tell at 0 with no dodge |
+| Contained 16:9 frame, not full-bleed cover | The footage is a seven-bottle lineup; cover-crop cuts the outermost bottles out of frame on portrait |
+| Film poster is frame 0 exactly | The first scrub frame then cannot pop when the engine takes over; same scale as the sprite cells |
+| Byte budgets asserted in `tools/build-scrub-assets.py` | Bloat cannot ship silently; the pipeline exits non-zero over budget |
+| Dark film stage, not a theme toggle (Phase 17) | Owner decision 2026-10-13. The dark treatment is a section, so PRD "Dark mode: Not planned" and GATES-SC SC1 (0 matches for `data-theme|themeBtn|zv-theme|prefers-color-scheme|theme-toggle`) both hold; a static CSS dark value keeps SC1 at zero matches |
+| `--surface-film: #000000` over the graded black | Graded footage alone left the sticky stage washing into the page on light backgrounds; a named dark surface token scopes the treatment to the film without a second theme; owner moved `#3A2E29` → `#000000` same day (2026-10-13) |
+| ffmpeg grade `eq=brightness=-0.04:contrast=1.05:gamma=0.9:saturation=0.94` | Applied to poster, mp4 and all 8 sprite sheets so the still, desktop path and mobile path never diverge in grade |
+| Alabaster card kept in the dark treatment | The `#F2EEE6` / `#5E4B43` pair is already measured at 7.08:1; a scrim over dark footage would have needed a fresh B9 row |
+| `meta theme-color` + webmanifest theme moved to `#000000` | Matches the first painted surface. Documented as an S7 amendment (owner override 2026-10-13, second same-day amendment `#3A2E29` → `#000000`) rather than a silent gate change |
+| CSS theme-lock comment amended, not removed | The Phase 16 light-only lock still governs the rest of the page; the override is scoped to the film section and dated |
 
 ## Errors Encountered
 
@@ -206,6 +222,8 @@ Owner supplied two brand documents (identity + colour palette) and asked for the
 | "390px" screenshots showed horizontal overflow | Screenshot appeared wrong | Not a page bug. Chrome clamps `--window-size` to ~496px minimum, so the capture was cropped rather than rendered narrow. Re-tested through an iframe harness giving a true 390px viewport |
 | Two false-positive failures in `tools/check.py` | First harness run reported a decorative tilt and Indonesian residue | Own bugs, not page bugs: the tilt regex matched the FAQ chevron's functional 45° rotation, and the Indonesian scan spanned the whole JSON-LD block via `[^<]*`. Both patterns tightened |
 | Heading ran to 3 lines on desktop | Hero screenshot | Column too narrow for the type scale. Widened the text column and eased the clamp so the headline resolves to exactly 2 lines |
+| Headless CDP run: "browser never exposed a target" | First film verification attempt | An unrelated stale Chromium install already held port 9222, so Edge never bound. Switched to a fresh port and kill the process tree with `taskkill /T` instead of the parent |
+| Film appeared letterboxed in rendered screenshots | Pixel check read (0,0,0) at the frame edges | Not a page bug: the source footage's own corners are a near-black vignette in every frame of source and encode. Compared an ffmpeg-extracted frame against the rendered pixels; both agree, nothing to fix |
 
 ## Notes
 

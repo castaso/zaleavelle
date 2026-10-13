@@ -2,6 +2,40 @@
 
 Chronological record of work performed, files changed, validation results, and errors.
 
+## Session: 2026-10-13 (Opening film: scroll-scrubbed luxury.mp4)
+
+### Phase 17: scroll-scrub film as the first section
+
+- **Status:** code complete, uncommitted; field Lighthouse still open (PRD T4/T5)
+- **Request:** owner asked for `~/Downloads/luxury.mp4` to become a scroll-scrub web experience, as the first section before `#hero`, video plus section heading only, with the hybrid engine chosen in planning (video on desktop, sprite frames on mobile). Heading copy, track length (360vh / 300vh) and the alabaster-card treatment taken on the plan's defaults.
+- Actions taken:
+  - **New section in `index.html`** above the hero: a 360vh track with a sticky 100dvh stage, a contained 16:9 media frame, and an alabaster heading card ("Made slowly, *worn* daily."). The frame is contained rather than cover-cropped because the footage is a seven-bottle lineup that portrait cropping would cut. The card reuses the already-measured `#5E4B43` on `#F2EEE6` pair instead of a scrim whose contrast depends on the footage
+  - **Hybrid engine, chosen once at init.** Desktop seeks a re-encoded mp4 (`-g 12 -keyint_min 12 -sc_threshold 0`, keyframe every 0.5s, 2.2 MB down from 3.5 MB). Mobile (<=1080px, coarse pointer, or `saveData`) draws 192 pre-rendered frames from 8 WebP sprite sheets onto a canvas, because seeking a `<video>` on a phone stutters and the persona is mobile-first
+  - **No scroll listener**, deliberately: an IntersectionObserver gates a `requestAnimationFrame` loop reading the section rect each frame, so the B3 tell still measures 0. The gate is kept, not dodged
+  - **Poster is frame 0 exactly** at sprite-cell scale, preloaded as the new LCP, so the still-to-film handoff is a crossfade with no pop. Reduced motion and no-JS both collapse the pin in CSS to the poster
+  - Built `tools/build-scrub-assets.py` (Pillow + ffmpeg, outputs committed) with byte budgets asserted by exit code: poster 111 KB, mp4 2.2 MB, sheets 4675 KB, all under budget
+  - Extended `tools/check.py` B8 with a second scan for the sprite-sheet paths, which are referenced from JS strings and therefore invisible to the existing `src=`/`href=` asset scan (41 to 42 checks)
+- Files created/modified:
+  - `index.html` (film section, CSS, rAF controller inside the existing IIFE, poster preload, `noscript` collapse), `tools/check.py`, `tools/build-scrub-assets.py`
+  - `assets/web/luxury-poster.{jpg,webp}`, `assets/web/luxury-scrub.mp4`, `assets/web/scrub/sheet-0..7.webp`
+  - `GATES-BRAND.md` (B3/B5/B8/R1 evidence refreshed, R5 added), `findings.md` (durable decisions + two traps), `task_plan.md` (slices 17a-c, decisions, errors), `progress.md`
+- Verification: `python tools/check.py` reports **42 of 42 checks passed**; inline scripts compile clean under the `vm.Script` check; all 8 sheets verified at 3840x1440; the progress/frame mapping unit-checked in node for clamping. The film itself was driven in a real headless Chromium over raw CDP with zero installs (node global WebSocket + fetch, since no puppeteer/playwright exists in this repo): desktop `currentTime` read 0 / 2.82 / 6.55 s at scrollY 0 / 900 / 2000, matching the scroll math exactly once measured against the actual 3240px (360vh at 900px) track, with the poster crossfaded out and the video in; the mobile 390px path drew on the canvas and two stops 500px apart produced 89,788 changed pixels inside the frame. One false alarm documented: the film briefly looked letterboxed, but the source footage's own corners are a near-black vignette in every frame, confirmed by comparing an ffmpeg-extracted frame against the rendered pixels
+- Gate-Check Ledger: **42 of 42** harness checks PASS (`GATES-BRAND.md`, 17 gates) + 12 of 12 `GATES-CASTADOO.md` + 8 of 8 `GATES-SEO.md` + 10 of 10 `GATES.md`
+
+### Phase 17b: dark treatment on the film section
+
+- **Status:** code complete, uncommitted; field Lighthouse still open (PRD T4/T5)
+- **Request:** owner decision 2026-10-13 — the film section gets a dark treatment. The treatment is a section, not a mode: PRD "Dark mode: Not planned" and GATES-SC SC1 (0 matches for `data-theme|themeBtn|zv-theme|prefers-color-scheme|theme-toggle`) both continue to hold.
+- Actions taken:
+  - `--surface-film: #3A2E29` added as a named dark surface token, scoped to the film section; a graded black alone left the sticky stage washing into the page
+  - `tools/build-scrub-assets.py` gained a shared `GRADE` filter (`eq=brightness=-0.04:contrast=1.05:gamma=0.9:saturation=0.94`) applied to the poster, the mp4, and all 8 sprite sheets, so the still, the desktop path and the mobile path never diverge in grade. Byte budgets re-asserted after the regrade: poster 113 KB, mp4 2263 KB, sheets 4856 KB, all pass
+  - Alabaster card kept as-is; the measured 7.08:1 pair is unchanged and a scrim over graded footage would have needed a fresh B9 row
+  - `meta theme-color` and `site.webmanifest` theme/background moved to `#3A2E29` to match the first painted surface
+  - `tools/check.py` S7 amended to assert `#3A2E29`; the CSS theme-lock comment amended with the dated owner override rather than deleted, so the Phase 16 light-only lock still governs the rest of the page
+- **Same-day amendment (2026-10-13):** owner requested pure black. `--surface-film`, `meta theme-color`, and `site.webmanifest` theme/background moved `#3A2E29` → `#000000`; S7 assertion and docs amended in the open. The footage's near-black vignette edges dissolve into the black stage; no regrade, no new contrast rows, SC1 still 0
+- Verification: `python tools/check.py` reports **42 of 42 checks passed**. Dark CDP run on a fresh port (9337; a stale Chromium squatted 9222 again): stageBg `rgb(58,46,41)`, card `rgb(242,238,230)` on `rgb(94,75,67)`, desktop `currentTime` 6.56 s at scrollY 2000, mobile canvas opacity 1 at 390px. Dark stills at 0 / 4 / 7.9 s and four screenshots (`dark-top-1440`, `dark-top-390`, `dark-scrub-1440`, `dark-scrub-390`) reviewed by the owner. Black-amendment run: `python tools/check.py` still **42 of 42** with S7 asserting `#000000`
+- Gate-Check Ledger: **42 of 42** harness checks PASS (`GATES-BRAND.md`, 17 gates; S7 evidence now `#000000`) + 12 of 12 `GATES-CASTADOO.md` + 8 of 8 `GATES-SEO.md` + 10 of 10 `GATES.md`. SC1 remains at 0 matches
+
 ## Session: 2026-10-12 (Brand overhaul: botanical palette, English, verified harness)
 
 ### Phase 16: Full brand rebuild to the owner's colour documentation

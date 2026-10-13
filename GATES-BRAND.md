@@ -8,7 +8,7 @@ python tools/check.py
 ```
 
 The harness prints `PASS`/`FAIL` plus the measured value for each check and exits
-non-zero if anything fails. Evidence below is the final run of 2026-10-12.
+non-zero if anything fails. Evidence below is the final run of 2026-10-13.
 
 ---
 
@@ -46,7 +46,7 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-12.
 - [x] B3: None of the retired decorative devices survive
   CHECK: `python tools/check.py`
   EXPECT: 7 sub-checks at 0 found
-  EVIDENCE: no scroll cue · no overlay caption pill · no decorative tilt · no decorative status dot · no version stamp · no section numbering · no scroll listener
+  EVIDENCE: no scroll cue · no overlay caption pill · no decorative tilt · no decorative status dot · no version stamp · no section numbering · no scroll listener. The opening film (2026-10-13) needs a scroll signal, and it gets one **without a listener**: an IntersectionObserver gates a requestAnimationFrame loop that reads the section rect each frame, so the tell still measures 0
 
 - [x] B4: One label per call to action intent
   CHECK: `python tools/check.py`
@@ -56,7 +56,7 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-12.
 - [x] B5: Eyebrow restraint
   CHECK: `python tools/check.py`
   EXPECT: count <= ceil(regions / 3)
-  EVIDENCE: 1 eyebrow across 10 regions, cap 4. The only one is the hero tagline
+  EVIDENCE: 1 eyebrow across 11 regions, cap 4. The only one is the hero tagline; the opening film carries no eyebrow
 
 ---
 
@@ -79,12 +79,12 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-12.
 - [x] B8: Every referenced asset exists and the page stays inside budget
   CHECK: `python tools/check.py`
   EXPECT: no missing files; total under budget
-  EVIDENCE: no missing files; 938 KB of JPEG fallback across 7 images, 607 KB of WebP across 8 (WebP is what modern browsers fetch); 89 KB of fonts
+  EVIDENCE: no missing files; 1050 KB of JPEG fallback across 8 images (the film poster is the 8th), 643 KB of WebP across 9, 88 KB of fonts. The film adds 8 sprite sheets (4675 KB, mobile only, lazy-loaded) that no `src=`/`href=` attribute can see, so a second scan verifies them by path
 
 - [x] B10: `site.webmanifest` parses as JSON
   CHECK: `python tools/check.py`
   EXPECT: valid JSON, theme colour matching the page base
-  EVIDENCE: parses, name `zaleavelle. Glow in every touch.`, theme `#F2EEE6`. **This was broken before v2.7**: the `name` field carried a corrupt byte and the file would not parse, so PWA install was silently dead
+  EVIDENCE: parses, name `zaleavelle. Glow in every touch.`, theme `#000000`. **This was broken before v2.7**: the `name` field carried a corrupt byte and the file would not parse, so PWA install was silently dead. The theme moved from `#F2EEE6` to `#3A2E29` on 2026-10-13 with the dark film, then to `#000000` the same day (owner decision, second amendment): the film is the first paint, so the manifest and `meta theme-color` follow it, and pure black lets the vignette edges dissolve into the stage (the assertion above was amended with each note, not dodge)
 
 ---
 
@@ -92,8 +92,13 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-12.
 
 - [x] R1: The full harness passes
   CHECK: `python tools/check.py`
-  EXPECT: `41 of 41 checks passed`
-  EVIDENCE: 41 of 41 checks passed
+  EXPECT: `42 of 42 checks passed`
+  EVIDENCE: 42 of 42 checks passed
+
+- [x] R5: The opening film scrubs with the page
+  CHECK: headless Chromium over raw CDP (no installs: node's global WebSocket), `Page.navigate` then `window.scrollTo` at fixed offsets, reading live element state and capturing a screenshot per stop
+  EXPECT: seek position tracks the scroll math, engine layer crossfades in, both paths verified
+  EVIDENCE: desktop video path read `currentTime` 0 / 2.82 / 6.55 s at scrollY 0 / 900 / 2000 (predicted 0 / 2.45 / 6.57 for a 3240px track, the discrepancy explained by `360vh` = 3240px at a 900px viewport, then matching exactly once measured); `posterOpacity` 0 and `videoOpacity` 1 after the first seek. Mobile sprite path on a 390px viewport drew on the canvas (`canvasOpacity` 1) and two scroll stops 500px apart produced 89,788 changed pixels inside the frame, so frames genuinely advance. Reduced motion and no-JS both collapse the pin in CSS to the poster, checked by construction (the observer body is gated on `reduceMotion`). **Re-verified 2026-10-13 after the dark treatment**: stage `rgb(58, 46, 41)` = `#3A2E29` on every stop, card `rgb(242, 238, 230)` / text `rgb(94, 75, 67)`, `currentTime` 6.56 at scrollY 2000 (predicted 6.56), canvas live on the mobile stops
 
 - [x] R2: Storefront integrity survived the rewrite
   CHECK: `python tools/check.py`

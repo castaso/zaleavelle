@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://zaleavelle.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="site.webmanifest">
-<meta name="theme-color" content="#F2EEE6">
+<meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -23,10 +23,12 @@
 <meta name="twitter:description" content="Nourish. Renew. Radiate. A three-step body care routine built for the skin you actually live in.">
 <meta name="twitter:image" content="https://zaleavelle.com/og-image.jpg">
 
-<!-- Preload the LCP face and the hero image so the first paint is not font-blocked. -->
+<!-- Preload the film poster, which is now the first paint on the page, and
+     the hero image that sits below it. -->
 <link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/web/hero-collection.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="assets/web/luxury-poster.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="assets/web/hero-collection.webp" as="image" type="image/webp">
 
 <script>
   // Analytics stub (PRD E4): queues events in dataLayer; loads GA4 only when an ID is set.
@@ -211,9 +213,11 @@
        apricot on alabaster is 1.50:1, so buttons carry espresso text
        and borders use --accent-deep at 3.92:1.
      - Shape lock: buttons pill, cards and media 18px, no tilt.
-     - Theme lock: one light theme for the whole page. Surface tints
-       shift within the warm family, nothing inverts mid-scroll. Dark
-       mode is deliberately absent (PRD S1, lite-only decision).
+      - Theme lock: one light theme for the whole page. Surface tints
+        shift within the warm family. Dark mode is deliberately absent
+        (PRD S1, lite-only decision); the single exception is the opening
+        film's --surface-film stage, an owner-requested dark ground for
+        that one section, decided 2026-10-13.
      - z-scale: nav 40 / drawer 41 / toggle 42 / grain 60 / skip 100.
      - Motion: transform and opacity only, driven by IntersectionObserver.
        No scroll listeners. Everything collapses under reduced motion.
@@ -247,6 +251,10 @@
     --surface-nude: #FCE8D6;
     --surface-sage: #D7E0D1;
     --surface-gold: #E6C9A3;
+    /* The single dark ground on the page: the opening film's stage, on the
+       owner's 2026-10-13 decision. Pure cinema black; the film's vignette
+       edges dissolve into it. Dark mode itself stays absent, everywhere else. */
+    --surface-film: #000000;
     --ink: #5E4B43;
     --ink-2: #6B5C53;
     --accent: #F6B78E;
@@ -398,6 +406,52 @@
   .nav-toggle[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
   .nav-toggle[aria-expanded="true"] span::after { top: 0; transform: rotate(-45deg); }
   .drawer-cta { display: none; }
+
+  /* ---------------- Opening film: scroll-scrubbed lineup ----------------
+     The section is the scroll distance the pin consumes, the stage is the
+     pinned viewport, and JS maps that scroll to a frame of the film. Without
+     JS the pin collapses (noscript style) and only the poster shows. The
+     frame stays contained 16:9 rather than cover-cropped because the shot is
+     a seven-bottle lineup and a portrait crop would cut bottles off. */
+  .scrub { height: 360vh; }
+  .scrub-stage {
+    position: sticky; top: 0;
+    height: 100vh; height: 100dvh;
+    display: grid; place-items: center;
+    background: var(--surface-film);
+  }
+  .scrub-media {
+    position: relative;
+    width: min(100%, calc((100dvh - 14rem) * 16 / 9));
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-media);
+    overflow: hidden;
+    background: var(--surface-film);
+  }
+  .scrub-media img,
+  .scrub-media video,
+  .scrub-media canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  /* The engine layer fades in over the poster once frames are ready, so the
+     handoff from still to film is a crossfade, never a pop. */
+  .scrub-media video,
+  .scrub-media canvas { opacity: 0; transition: opacity 0.45s var(--ease); }
+  .scrub.playing .scrub-media video,
+  .scrub.playing .scrub-media canvas { opacity: 1; }
+  .scrub.playing .scrub-media img { opacity: 0; transition: opacity 0.45s var(--ease); }
+  /* Alabaster card, not a scrim: the contrast is measured and does not depend
+     on what the footage happens to be doing underneath. */
+  .scrub-card {
+    position: absolute; left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
+    max-width: min(24rem, calc(100% - 2rem));
+    background: var(--surface); color: var(--ink);
+    border-radius: var(--radius-media);
+    padding: 1.4rem 1.75rem;
+  }
+  .scrub-card h2 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); line-height: 1.05; }
 
   /* ---------------- Hero: asymmetric split ---------------- */
   .hero {
@@ -591,6 +645,10 @@
     *, *::before, *::after { animation: none !important; transition: none !important; }
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; }
+    /* The film cannot scrub under reduced motion, so the pin collapses to a
+       still and the poster carries the section alone. */
+    .scrub { height: auto; padding: 4.5rem 1.35rem; }
+    .scrub-stage { position: static; height: auto; }
   }
 
   @media (max-width: 1080px) {
@@ -623,6 +681,7 @@
       border-bottom: 1px solid var(--line-soft);
     }
     .drawer .btn { width: 100%; margin-top: 1.75rem; }
+    .scrub { height: 300vh; }
     .band { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   }
 
@@ -660,6 +719,13 @@
     .nav-links a::after { display: none; }
   }
 </style>
+<noscript>
+  <style>
+    /* The film cannot scrub without JS, so the pin collapses to the poster. */
+    .scrub { height: auto; padding: 4.5rem 1.35rem; }
+    .scrub-stage { position: static; height: auto; }
+  </style>
+</noscript>
 </head>
 <body>
 
@@ -694,6 +760,25 @@
 <div id="navSentinel" aria-hidden="true"></div>
 
 <main id="main">
+
+  <!-- 0. Opening film. Scroll-scrubbed still life of the full range. -->
+  <section class="scrub" id="film">
+    <div class="scrub-stage">
+      <div class="scrub-media">
+        <picture>
+          <source srcset="assets/web/luxury-poster.webp" type="image/webp">
+          <img id="scrubPoster" src="assets/web/luxury-poster.jpg" alt="The seven zaleavelle body care variants arranged on a marble podium with cherry blossom" width="1280" height="720" fetchpriority="high" decoding="async">
+        </picture>
+        <video id="scrubVideo" playsinline muted preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true">
+          <source src="assets/web/luxury-scrub.mp4" type="video/mp4">
+        </video>
+        <canvas id="scrubCanvas" width="640" height="360" aria-hidden="true" hidden></canvas>
+        <div class="scrub-card">
+          <h2 class="display">Made slowly,<br><em>worn</em> daily.</h2>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- 1. Hero. Four text elements total: tagline, headline, lede, CTAs. -->
   <section class="hero">
@@ -991,6 +1076,108 @@
       toggle.focus();
     }
   });
+
+  // ------------------------- Opening film -------------------------
+  // Scroll drives the film, with no scroll listener anywhere: an observer
+  // gates a requestAnimationFrame loop, which reads the section rect each
+  // frame. Desktop seeks the mp4; small or coarse-pointer viewports, and
+  // anyone asking to save data, draw pre-rendered sprite sheets onto a canvas
+  // instead, because seeking a video element on a phone visibly stutters.
+  // Reduced motion and no-JS both collapse the pin in CSS, and the poster
+  // carries the section on its own.
+  var film = document.querySelector(".scrub");
+  var filmVideo = document.getElementById("scrubVideo");
+  var filmCanvas = document.getElementById("scrubCanvas");
+  var FILM_FRAMES = 192;
+  var FILM_CELLS = 24;
+  var FILM_COLS = 6;
+  var FILM_CELL_W = 640;
+  var FILM_CELL_H = 360;
+  var FILM_SHEETS = [
+    "assets/web/scrub/sheet-0.webp",
+    "assets/web/scrub/sheet-1.webp",
+    "assets/web/scrub/sheet-2.webp",
+    "assets/web/scrub/sheet-3.webp",
+    "assets/web/scrub/sheet-4.webp",
+    "assets/web/scrub/sheet-5.webp",
+    "assets/web/scrub/sheet-6.webp",
+    "assets/web/scrub/sheet-7.webp"
+  ];
+  var filmSheets = [];
+  var filmStarted = false;
+  var filmRaf = 0;
+  var filmSprites = window.matchMedia("(max-width: 1080px), (pointer: coarse)").matches ||
+    !!(navigator.connection && navigator.connection.saveData);
+
+  function filmProgress() {
+    var rect = film.getBoundingClientRect();
+    var travel = rect.height - window.innerHeight;
+    if (travel <= 0) return 1;
+    var passed = -rect.top;
+    return passed <= 0 ? 0 : passed >= travel ? 1 : passed / travel;
+  }
+
+  function filmDraw(idx) {
+    var sheet = filmSheets[Math.floor(idx / FILM_CELLS)];
+    if (!sheet || !sheet.complete) return false;
+    var cell = idx % FILM_CELLS;
+    filmCanvas.getContext("2d").drawImage(
+      sheet, (cell % FILM_COLS) * FILM_CELL_W, Math.floor(cell / FILM_COLS) * FILM_CELL_H,
+      FILM_CELL_W, FILM_CELL_H, 0, 0, FILM_CELL_W, FILM_CELL_H);
+    return true;
+  }
+
+  function filmApply(p) {
+    var frame = Math.floor(p * FILM_FRAMES);
+    if (frame >= FILM_FRAMES) frame = FILM_FRAMES - 1;
+    if (filmSprites) {
+      if (filmDraw(frame)) film.classList.add("playing");
+    } else if (filmVideo.readyState >= 2 && !isNaN(filmVideo.duration)) {
+      // Half-frame dead zone, so a few pixels of scroll never trigger a seek.
+      var t = p * (filmVideo.duration - 1 / 24);
+      if (Math.abs(filmVideo.currentTime - t) > 1 / 30) {
+        filmVideo.currentTime = t > 0 ? t : 0;
+      }
+      film.classList.add("playing");
+    }
+  }
+
+  function filmTick() {
+    filmApply(filmProgress());
+    filmRaf = window.requestAnimationFrame(filmTick);
+  }
+
+  function filmStart() {
+    if (filmStarted) return;
+    filmStarted = true;
+    if (filmSprites) {
+      FILM_SHEETS.forEach(function (src, n) {
+        var img = new Image();
+        img.onload = function () { filmApply(filmProgress()); };
+        img.src = src;
+        filmSheets[n] = img;
+      });
+    } else {
+      filmVideo.preload = "auto";
+      filmVideo.load();
+    }
+  }
+
+  if (film && filmVideo && filmCanvas && !reduceMotion) {
+    if (filmSprites) filmCanvas.hidden = false;
+    new IntersectionObserver(function (entries) {
+      var on = entries[0].isIntersecting;
+      if (on) filmStart();
+      if (filmRaf) {
+        window.cancelAnimationFrame(filmRaf);
+        filmRaf = 0;
+      }
+      if (on) {
+        filmApply(filmProgress());
+        filmRaf = window.requestAnimationFrame(filmTick);
+      }
+    }, { rootMargin: "40% 0px 40% 0px" }).observe(film);
+  }
 
   // Outbound click tracking (PRD E4). Keys stay byte-identical to the UTM
   // taxonomy so GA4 history continues across the redesign.
