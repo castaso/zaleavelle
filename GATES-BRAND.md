@@ -84,7 +84,7 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-13.
 - [x] B10: `site.webmanifest` parses as JSON
   CHECK: `python tools/check.py`
   EXPECT: valid JSON, theme colour matching the page base
-  EVIDENCE: parses, name `zaleavelle. Glow in every touch.`, theme `#000000`. **This was broken before v2.7**: the `name` field carried a corrupt byte and the file would not parse, so PWA install was silently dead. The theme moved from `#F2EEE6` to `#3A2E29` on 2026-10-13 with the dark film, then to `#000000` the same day (owner decision, second amendment): the film is the first paint, so the manifest and `meta theme-color` follow it, and pure black lets the vignette edges dissolve into the stage (the assertion above was amended with each note, not dodge)
+  EVIDENCE: parses, name `zaleavelle. Glow in every touch.`, theme `#000000`. **This was broken before v2.7**: the `name` field carried a corrupt byte and the file would not parse, so PWA install was silently dead. The theme moved from `#F2EEE6` to `#000000` on 2026-10-13 with the dark film (owner decision): the film is the first paint, so the manifest and `meta theme-color` follow it, and pure black lets the vignette edges dissolve into the stage
 
 ---
 
@@ -98,7 +98,7 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-13.
 - [x] R5: The opening film scrubs with the page
   CHECK: headless Chromium over raw CDP (no installs: node's global WebSocket), `Page.navigate` then `window.scrollTo` at fixed offsets, reading live element state and capturing a screenshot per stop
   EXPECT: seek position tracks the scroll math, engine layer crossfades in, both paths verified
-  EVIDENCE: desktop video path read `currentTime` 0 / 2.82 / 6.55 s at scrollY 0 / 900 / 2000 (predicted 0 / 2.45 / 6.57 for a 3240px track, the discrepancy explained by `360vh` = 3240px at a 900px viewport, then matching exactly once measured); `posterOpacity` 0 and `videoOpacity` 1 after the first seek. Mobile sprite path on a 390px viewport drew on the canvas (`canvasOpacity` 1) and two scroll stops 500px apart produced 89,788 changed pixels inside the frame, so frames genuinely advance. Reduced motion and no-JS both collapse the pin in CSS to the poster, checked by construction (the observer body is gated on `reduceMotion`). **Re-verified 2026-10-13 after the dark treatment**: stage `rgb(58, 46, 41)` = `#3A2E29` on every stop, card `rgb(242, 238, 230)` / text `rgb(94, 75, 67)`, `currentTime` 6.56 at scrollY 2000 (predicted 6.56), canvas live on the mobile stops
+  EVIDENCE: desktop video path read `currentTime` 0 / 2.82 / 6.55 s at scrollY 0 / 900 / 2000 (predicted 0 / 2.45 / 6.57 for a 3240px track, the discrepancy explained by `360vh` = 3240px at a 900px viewport, then matching exactly once measured); `posterOpacity` 0 and `videoOpacity` 1 after the first seek. Mobile sprite path on a 390px viewport drew on the canvas (`canvasOpacity` 1) and two scroll stops 500px apart produced 89,788 changed pixels inside the frame, so frames genuinely advance. Reduced motion and no-JS both collapse the pin in CSS to the poster, checked by construction (the observer body is gated on `reduceMotion`). **Re-verified 2026-10-13 after the dark treatment**: stage `rgb(0, 0, 0)` = `#000000` on every stop, card `rgb(242, 238, 230)` / text `rgb(94, 75, 67)`, `currentTime` 6.56 at scrollY 2000 (predicted 6.56), canvas live on the mobile stops
 
 - [x] R2: Storefront integrity survived the rewrite
   CHECK: `python tools/check.py`

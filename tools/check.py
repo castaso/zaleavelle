@@ -65,8 +65,7 @@ check("S5", "inline script blocks present", len(scripts) == 2, "%d blocks" % len
 manifest = json.load(open(os.path.join(ROOT, "site.webmanifest"), encoding="utf-8"))
 check("S7", "manifest parses as JSON", True, "name=%r" % manifest["name"])
 # The page base is the opening film's dark ground, not alabaster: the film is
-# the first paint (owner decision, 2026-10-13; darkened to pure black same
-# day so the vignette edges dissolve into the stage). The rest stays light.
+# the first paint (owner decision, 2026-10-13). The rest stays light.
 check("S7", "manifest theme matches page base", manifest["theme_color"] == "#000000", manifest["theme_color"])
 # ---------------------------------------------------------------- brand tells
 em = count("\u2014") + count("\u2013")
