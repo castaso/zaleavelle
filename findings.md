@@ -88,7 +88,7 @@ Durable knowledge base for discoveries, evidence, and decisions during zaleavell
 
 | Decision | Rationale |
 |----------|-----------|
-| CASTADOO Shop (`https://shop.zaleavelle.com/shop`) is the sole purchase channel (2026-09-24) | Owner interview: marketplace section removed altogether; `#shop` banner + nav/promo/kontak CTAs link out with `data-cta="odoo"` |
+| CASTADOO Shop (`https://shop.zaleavelle.com`) is the sole purchase channel (2026-09-24) | Owner interview: marketplace section removed altogether; `#shop` banner + nav/promo/kontak CTAs link out with `data-cta="odoo"` |
 | Static storefront, no backend | Supabase products fetch, maintenance panel, and `shopee-sync` edge function deleted; page is static HTML again (560 lines) |
 | JSON-LD Product nodes retained as known debt | `sameAs` Shopee URL + 4 Product offers kept per owner "leave SEO untouched"; mismatch vs no-catalog page flagged for follow-up |
 | Keep single-file for MVP | Simplicity; no build step required; GSAP CDN approach works |

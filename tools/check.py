@@ -16,7 +16,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HTML = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
-SHOP = "https://shop.zaleavelle.com/shop"
+SHOP = "https://shop.zaleavelle.com"
 
 results = []
 
