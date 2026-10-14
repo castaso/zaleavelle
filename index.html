@@ -442,16 +442,6 @@
   .scrub.playing .scrub-media video,
   .scrub.playing .scrub-media canvas { opacity: 1; }
   .scrub.playing .scrub-media img { opacity: 0; transition: opacity 0.45s var(--ease); }
-  /* Alabaster card, not a scrim: the contrast is measured and does not depend
-     on what the footage happens to be doing underneath. */
-  .scrub-card {
-    position: absolute; left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
-    max-width: min(24rem, calc(100% - 2rem));
-    background: var(--surface); color: var(--ink);
-    border-radius: var(--radius-media);
-    padding: 1.4rem 1.75rem;
-  }
-  .scrub-card h2 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); line-height: 1.05; }
 
   /* ---------------- Hero: asymmetric split ---------------- */
   .hero {
@@ -773,9 +763,6 @@
           <source src="assets/web/luxury-scrub.mp4" type="video/mp4">
         </video>
         <canvas id="scrubCanvas" width="640" height="360" aria-hidden="true" hidden></canvas>
-        <div class="scrub-card">
-          <h2 class="display">Made slowly,<br><em>worn</em> daily.</h2>
-        </div>
       </div>
     </div>
   </section>
