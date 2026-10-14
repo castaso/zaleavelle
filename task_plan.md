@@ -172,7 +172,7 @@ Owner supplied two brand documents (identity + colour palette) and asked for the
 
 | Decision | Rationale |
 |----------|-----------|
-| CASTADOO Shop as sole storefront (Phase 12) | Owner interview 2026-09-24: remove marketplace section altogether, replace with https://beli.zaleavelle.com/shop CTA banner |
+| CASTADOO Shop as sole storefront (Phase 12) | Owner interview 2026-09-24: remove marketplace section altogether, replace with https://shop.zaleavelle.com/shop CTA banner |
 | Sticky CTA deleted, not converted | Owner chose "Nav to CASTADOO, sticky removed" — no floating buy button in CASTADOO era |
 | JSON-LD Product schema kept (tech debt) | Owner chose "Leave SEO untouched" — 4 Product nodes still reference prices/images with no on-page catalog; follow-up: strip to Organization or point offers at CASTADOO |
 | Ritual/promo copy follows BPOM doc (Phase 13) | Owner chose "Follow the doc" — `Feminine Blush Pink` canonical everywhere; CASTADOO parity still owner-side (Q10) |

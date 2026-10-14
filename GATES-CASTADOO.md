@@ -12,12 +12,12 @@ Re-verified 2026-10-12 after the Phase 16 brand overhaul (v2.7). The rewrite rep
   EVIDENCE: CLEAN 0 stale hosts across 11 files
 
 - [x] G2: index.html carries exactly 13 new-host shop URLs (7 JSON-LD offers + 6 CTA hrefs)
-  CHECK: node -e "const s=require('fs').readFileSync('index.html','utf8');console.log('shopurls='+(s.split('https://beli.zaleavelle.com/shop').length-1))"
+  CHECK: node -e "const s=require('fs').readFileSync('index.html','utf8');console.log('shopurls='+(s.split('https://shop.zaleavelle.com/shop').length-1))"
   EXPECT: shopurls=13
   EVIDENCE: shopurls=13 (re-measured 2026-10-12, unchanged after the v2.7 rewrite)
 
 - [x] G3: The 13 URLs split correctly 7 offers.url / 6 anchor href, and no CTA points anywhere else
-  CHECK: node -e "const s=require('fs').readFileSync('index.html','utf8');const q=String.fromCharCode(34);const o=s.split('Offer'+q+', '+q+'url'+q+': '+q+'https://beli.zaleavelle.com/shop'+q).length-1;const h=s.split('href='+q+'https://beli.zaleavelle.com/shop'+q).length-1;const c=s.split('data-cta='+q+'odoo'+q).length-1;console.log('offers='+o+' hrefs='+h+' ctas='+c)"
+  CHECK: node -e "const s=require('fs').readFileSync('index.html','utf8');const q=String.fromCharCode(34);const o=s.split('Offer'+q+', '+q+'url'+q+': '+q+'https://shop.zaleavelle.com/shop'+q).length-1;const h=s.split('href='+q+'https://shop.zaleavelle.com/shop'+q).length-1;const c=s.split('data-cta='+q+'odoo'+q).length-1;console.log('offers='+o+' hrefs='+h+' ctas='+c)"
   EXPECT: offers=7 hrefs=6 ctas=6
   EVIDENCE: offers=7 hrefs=6 ctas=6
 

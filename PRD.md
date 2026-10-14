@@ -8,7 +8,7 @@
 
 ## 1. Problem Statement
 
-zaleavelle is an Indonesian DTC body care brand served by a single-file static landing page (`index.html`). Since v2.2 the on-page marketplace has been removed: no cart, no backend, no sticky CTA. Purchase happens exclusively on the official store (`https://beli.zaleavelle.com/shop`).
+zaleavelle is an Indonesian DTC body care brand served by a single-file static landing page (`index.html`). Since v2.2 the on-page marketplace has been removed: no cart, no backend, no sticky CTA. Purchase happens exclusively on the official store (`https://shop.zaleavelle.com/shop`).
 
 **Phase 16 (this version)** replaced the visual system rather than the commerce model. The page shipped a playful, sticker-and-tilt design built around a single deep-rose accent, which contradicted the owner's brand documentation: *elegant, graceful, empowering, fresh and minimalist*, with a palette of petal pink, warm nude, golden apricot, sage and champagne on an alabaster ground. Alongside the palette change the page moved from Indonesian to English (owner decision), and three real defects were fixed that predate this phase: an unparseable `site.webmanifest`, a wordmark whose SVG viewBox rendered it at roughly a third of its intended size, and figure images whose HTML `height` attribute silently defeated their `aspect-ratio`.
 
@@ -84,7 +84,7 @@ Ad / Social Post → zaleavelle landing page
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| E1 | Every buy CTA links out to the official store in a new tab | `href="https://beli.zaleavelle.com/shop"` with `target="_blank" rel="noopener"` and `data-cta="odoo"`; WhatsApp CTAs are support-only |
+| E1 | Every buy CTA links out to the official store in a new tab | `href="https://shop.zaleavelle.com/shop"` with `target="_blank" rel="noopener"` and `data-cta="odoo"`; WhatsApp CTAs are support-only |
 | E2 | Shopee fully removed from shopper UI | Zero `data-cta="shopee"`, zero `s.shopee.co.id` links outside JSON-LD `sameAs` (known SEO debt, owner-deferred) |
 | E3 | UTM taxonomy defined and documented | Table in PRD (§6.2) |
 | E4 | Event tracking on CTA clicks | `select_item` queued on every `[data-cta]` click with product name + `utm_content` |

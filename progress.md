@@ -72,7 +72,7 @@ Chronological record of work performed, files changed, validation results, and e
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
 - **Request:** owner asked to repoint the storefront from the vendor `odoo.com` subdomain to the first-party `beli.zaleavelle.com`; confirmed the `/shop` path is preserved and scoped the storefront-brand rebrand to CASTADOO across visible copy, `data-product` labels, and all planning docs.
 - Actions taken:
-  - Retargeted 13 shop URLs in `index.html` to `https://beli.zaleavelle.com/shop`: 6 CTA `href` (nav ×2, drawer, promo, `#shop` banner, kontak) + 7 JSON-LD `offers.url` (one per Product node)
+  - Retargeted 13 shop URLs in `index.html` to `https://shop.zaleavelle.com/shop`: 6 CTA `href` (nav ×2, drawer, promo, `#shop` banner, kontak) + 7 JSON-LD `offers.url` (one per Product node)
   - Rebranded 13 storefront-name mentions in `index.html` to CASTADOO: 7 prose sites (2 FAQ answers — JSON-LD + visible `<details>` kept verbatim in sync — plus `#shop` banner copy, trust row, and 3 code comments) + 6 `data-product` labels
   - **Analytics keys deliberately preserved:** `data-cta="odoo"` (×6) and `data-utm-content="odoo_profile"` (×1) left byte-identical so GA4 `item_category` history and the PRD §6.2 UTM taxonomy don't split. Owner was shown the trade-off before choosing; only destination + words changed
   - PRD → v2.6: new Technical Decisions row (first-party custom domain), new risk row (`beli.zaleavelle.com` live/TLS check must pass before deploy), status line rewritten, G1 target repointed
@@ -133,7 +133,7 @@ Chronological record of work performed, files changed, validation results, and e
 ### Phase 12: Remove marketplace → CASTADOO Shop
 
 - **Status:** in_progress (code complete, uncommitted; browser visual check + commit pending)
-- **Interview:** scope = full de-marketplace (grid, Shopee links, Supabase products, shopee-sync, maintenance panel); replacement = CTA banner linking out to `https://beli.zaleavelle.com/shop`; CASTADOO primary + WA support-only; backend deleted; SEO/analytics untouched
+- **Interview:** scope = full de-marketplace (grid, Shopee links, Supabase products, shopee-sync, maintenance panel); replacement = CTA banner linking out to `https://shop.zaleavelle.com/shop`; CASTADOO primary + WA support-only; backend deleted; SEO/analytics untouched
 - Actions taken:
   - Slice 12a: `#produk` grid + tabs → `#shop` banner; anchors retargeted; nav `Belanja` → CASTADOO; sticky CTA + tracker deleted; product-grid CSS → `.shop-banner` CSS
   - Slice 12b: Shopee purged (1 ref left: JSON-LD `sameAs`, intentional); 5 CASTADOO refs, 5 `data-cta="odoo"`; WA support-only
