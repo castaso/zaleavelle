@@ -79,12 +79,27 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-13.
 - [x] B8: Every referenced asset exists and the page stays inside budget
   CHECK: `python tools/check.py`
   EXPECT: no missing files; total under budget
-  EVIDENCE: no missing files; 1050 KB of JPEG fallback across 8 images (the film poster is the 8th), 643 KB of WebP across 9, 88 KB of fonts. The film adds 8 sprite sheets (4675 KB, mobile only, lazy-loaded) that no `src=`/`href=` attribute can see, so a second scan verifies them by path
+  EVIDENCE: no missing files; 1050 KB of JPEG fallback across 8 images (the film poster is the 8th), 643 KB of WebP across 9, 88 KB of fonts. **Phase A rewrote this gate.** The scan now also reads `srcset=`, which it could not see before, so the AVIF rung is verified rather than assumed. The film sheets are addressed by a JS template (`"sheet-" + n + "." + fmt`) so the old grep for literal quoted paths no longer finds them; the gate instead reads `FILM_SHEETS` out of the source and checks both rungs exist for every index. 8 sheets x avif+webp, none missing
+
+- [x] B8b: Each platform's real payload is inside budget
+  CHECK: `python tools/check.py`
+  EXPECT: desktop < 2048 KB, mobile < 2560 KB
+  EVIDENCE: desktop 1457 KB (html 57 + fonts 88 + poster 58 + page 264 + mp4 988); mobile 2250 KB (html 57 + fonts 88 + poster 58 + page 264 + sheets 1781). This gate exists because the previous "607 KB of images" figure in PRD 9.2 counted the eight photographs and silently omitted the scrub payload, so a phone was pulling ~5.5 MB against goal G3 while the PRD reported "Not field-measured". Measured from the files the page actually references, on the AVIF rung, not from everything sitting in `assets/`
+
+- [x] B8c: Image preloads name the format the `<picture>` will actually pick
+  CHECK: `python tools/check.py`
+  EXPECT: every preloaded image type is a first-choice `<source>` type
+  EVIDENCE: preloaded `['avif']`, first choice `['avif']`. **This gate was written after the bug it now prevents.** Adding the AVIF rung left the two `<link rel=preload>` hints pointing at `.webp`, so the browser downloaded the WebP that `<picture>` then ignored *and* the AVIF that actually became the LCP element, competing with itself for bandwidth. A real 390px run surfaced it as two console warnings, "preloaded using link preload but not used". Preloads were repointed at AVIF and the re-run produced zero console output
 
 - [x] B10: `site.webmanifest` parses as JSON
   CHECK: `python tools/check.py`
   EXPECT: valid JSON, theme colour matching the page base
   EVIDENCE: parses, name `zaleavelle. Glow in every touch.`, theme `#000000`. **This was broken before v2.7**: the `name` field carried a corrupt byte and the file would not parse, so PWA install was silently dead. The theme moved from `#F2EEE6` to `#000000` on 2026-10-13 with the dark film (owner decision): the film is the first paint, so the manifest and `meta theme-color` follow it, and pure black lets the vignette edges dissolve into the stage
+
+- [x] B11: The film reaches a real engine and the sprite rung is exercised
+  CHECK: REA browser scenario, headless Chromium at a 390x844 viewport (the branch where `max-width: 1080px` selects sprites over the mp4)
+  EXPECT: 8 sheets fetched and decoded, mp4 never requested, no page errors
+  EVIDENCE: all 8 `scrub/sheet-N.avif` returned 200 with `naturalWidth` non-zero, **zero** WebP fallback requests (so AVIF decoded natively and the one-failure-flip path was not needed), `luxury-scrub.mp4` absent from the request log entirely, and no `page-error` events. Cell geometry is now read from `naturalWidth/naturalHeight` rather than hardcoded, so the AVIF and WebP siblings may differ in resolution. A static check cannot establish any of this: the sheets are drawn to a canvas, which never appears in an HTML assertion
 
 ---
 
@@ -92,8 +107,8 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-13.
 
 - [x] R1: The full harness passes
   CHECK: `python tools/check.py`
-  EXPECT: `42 of 42 checks passed`
-  EVIDENCE: 42 of 42 checks passed
+  EXPECT: `45 of 45 checks passed`
+  EVIDENCE: 45 of 45 checks passed (was 42 of 42; Phase A added B8b, B8c and B11)
 
 - [x] R5: The opening film scrubs with the page
   CHECK: headless Chromium over raw CDP (no installs: node's global WebSocket), `Page.navigate` then `window.scrollTo` at fixed offsets, reading live element state and capturing a screenshot per stop

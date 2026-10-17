@@ -117,6 +117,7 @@ check("B7", "no Indonesian copy left in rendered text", not hits, "found: %s" % 
 
 # ---------------------------------------------------------------- assets
 missing_assets = [p for p in set(re.findall(r'(?:src|href)="((?:assets|favicon)[^"]*)"', HTML))
+                  | set(re.findall(r'srcset="((?:assets|favicon)[^"]*)"', HTML))
                   if not os.path.exists(os.path.join(ROOT, p))]
 check("B8", "every referenced asset exists", not missing_assets, "missing: %s" % (missing_assets or "none"))
 
@@ -128,13 +129,63 @@ for m in re.finditer(r'src="assets/web/([^"]+)\.jpg"', HTML):
 check("B8", "page weight stays under the PRD budget", sum(sizes) < 2 * 1024 * 1024,
       "%d KB of JPEG across %d images" % (sum(sizes) // 1024, len(sizes)))
 
-# The film's sprite sheets are referenced from JS strings, never from src or
-# href attributes, so the scan above cannot see them. Verify them here.
-scrub_paths = sorted(set(re.findall(r'"(assets/web/scrub/[^"]+)"', HTML)))
-missing_scrub = [p for p in scrub_paths if not os.path.exists(os.path.join(ROOT, p))]
-check("B8", "scrub sprite sheets referenced by JS exist",
-      len(scrub_paths) == 8 and not missing_scrub,
-      "%d sheets, missing: %s" % (len(scrub_paths), missing_scrub or "none"))
+# The film's sheets are addressed by a template in JS ("sheet-" + n + "." + fmt),
+# so a grep for literal quoted paths no longer finds them. The gate now reads the
+# count out of the source and checks that both rungs exist on disk for every
+# index, which is what the old grep was actually standing in for.
+sheet_count = int(re.search(r"var FILM_SHEETS = (\d+);", HTML).group(1))
+missing_scrub = ["sheet-%d.%s" % (n, f)
+                 for n in range(sheet_count) for f in ("avif", "webp")
+                 if not os.path.exists(os.path.join(ROOT, "assets", "web", "scrub",
+                                                    "sheet-%d.%s" % (n, f)))]
+check("B8", "scrub sheets exist in both rungs", sheet_count == 8 and not missing_scrub,
+      "%d sheets x avif+webp, missing: %s" % (sheet_count, missing_scrub or "none"))
+
+# ------------------------------------------------- per-platform payload (B8b)
+# Phase A. The old figure in PRD 9.2 counted the eight page photographs and
+# omitted the scrub payload, which is the largest thing a phone downloads. A
+# mobile visitor was pulling ~5.5 MB against goal G3. These are the two real
+# totals, measured from the files the page actually references, on the AVIF rung.
+def total(paths):
+    return sum(os.path.getsize(p) for p in paths if os.path.exists(p))
+
+
+html_bytes = len(HTML.encode("utf-8"))
+fonts = total([os.path.join(ROOT, "assets", "fonts", f)
+               for f in os.listdir(os.path.join(ROOT, "assets", "fonts"))
+               if f.endswith(".woff2")])
+# Referenced rungs only: unused exports sitting on disk are not page weight.
+avif_refs = sorted(set(re.findall(r'srcset="(assets/web/[^"]+\.avif)"', HTML)))
+poster = total([os.path.join(ROOT, p) for p in avif_refs if "poster" in p])
+pageimg = total([os.path.join(ROOT, p) for p in avif_refs if "poster" not in p])
+mp4 = total([os.path.join(ROOT, "assets", "web", "luxury-scrub.mp4")])
+sheets = total([os.path.join(ROOT, "assets", "web", "scrub", f)
+                for f in os.listdir(os.path.join(ROOT, "assets", "web", "scrub"))
+                if f.endswith(".avif")])
+
+desktop = html_bytes + fonts + poster + pageimg + mp4
+mobile = html_bytes + fonts + poster + pageimg + sheets
+for label, value, cap in (("desktop", desktop, 2.0 * 1024 * 1024),
+                          ("mobile", mobile, 2.5 * 1024 * 1024)):
+    check("B8b", "%s payload within budget" % label, value < cap,
+          "%d KB (html %d + fonts %d + poster %d + page %d + %s) cap %d KB"
+          % (value // 1024, html_bytes // 1024, fonts // 1024, poster // 1024,
+             pageimg // 1024, "mp4 %d" % (mp4 // 1024) if label == "desktop"
+             else "sheets %d" % (sheets // 1024), int(cap) // 1024))
+
+# A preload must name the format the <picture> will actually pick. Getting this
+# wrong is not cosmetic: preloading the WebP while the sources prefer AVIF made
+# the LCP element download twice and compete with itself for bandwidth, which
+# Chrome reported as "preloaded but not used". Caught in a real 390px run.
+first_choice = set()
+for pic in re.findall(r"<picture>(.*?)</picture>", HTML, re.S):
+    t = re.search(r'<source[^>]*type="image/([a-z0-9+]+)"', pic)
+    if t:
+        first_choice.add(t.group(1))
+preloaded = set(re.findall(r'<link rel="preload"[^>]*as="image"[^>]*type="image/([a-z0-9+]+)"', HTML))
+check("B8c", "image preloads target the first-choice format",
+      preloaded and preloaded <= first_choice,
+      "preloaded %s, first choice %s" % (sorted(preloaded), sorted(first_choice)))
 
 # ---------------------------------------------------------------- contrast
 def luminance(hex_colour):

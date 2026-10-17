@@ -220,3 +220,136 @@ The lesson worth keeping: "the site is light-only" and "this section is dark" ar
 
 - **A stale Chromium can squat port 9222.** The first CDP run failed with "browser never exposed a target" because an unrelated leftover Chrome process (a different install, `C:\Program Files\Chromium`) already held the port, so Edge silently failed to bind. Pick a fresh port, and kill the process tree (`taskkill /T`) rather than the parent, or children survive the run.
 - **Near-black corners are not letterbox bars.** The rendered film was debugged as a letterboxing bug on pixel evidence: the frame's edges read (0,0,0). It was not a bug. The source footage's own edges are a near-black vignette, in every frame of both the source and the encode. Comparing an ffmpeg-extracted frame against the rendered one settles this class of question in one step, and the fix for a non-bug would have been a worse page.
+
+## Phase A: asset inventory and payload audit (2026-10-17)
+
+The "elevate in place" brief needs new layouts to hang on. Before promising any asset
+in a plan, every unused frame was opened and judged rather than trusted from its filename.
+Six candidates existed. Five are unusable, and the reasons split into two distinct
+classes that matter for the rest of the build.
+
+### Rejected on palette, not on quality
+
+These are competent images. They are simply not this brand. Each bakes a saturated
+marketing ground and a wordmark into the frame, and each ground fights the locked
+alabaster/apricot/sage palette harder than any crop can fix:
+
+| Candidate | Ground | Baked into frame |
+|---|---|---|
+| `fresh-tickled-hero` | cyan water, magenta | wordmark + "Fresh Tickled" sticker |
+| `emerald-sweet-wash` | sky blue + cloud | wordmark + "Emerald Sweet" sticker |
+| `bright-petal-serum` | sky blue | wordmark + "Bright Petal" sticker |
+| `EMERALD SWEET GREEN/24.jpg` | sky blue + cloud | wordmark + "Emerald Sweet" sticker |
+| `FRESH TICKLED PINK/31.jpg` | hot pink | 3 dark-red Indonesian callout boxes |
+
+A saturated blue or magenta ground next to alabaster is a colour-continuity break, not a
+taste question, so these are out at any crop. `FRESH TICKLED PINK/31.jpg` is the awkward
+case worth recording: a tight crop on the bottle alone does clear all three callouts, but
+what remains is a hot pink field against the brand's soft petal `#F7D6DA`, which is a
+different pink entirely.
+
+### Salvaged, with the crop recorded
+
+- **Blaine Floral, from `BLAINE FLORAL/Generated image 1 (3).png`.** The left ~48% of the
+  frame is a standalone pump bottle on a warm cream ground with yellow flowers and no
+  baked text at all. The right side is a full Indonesian marketing panel, which the crop
+  discards. This ground sits on the champagne/nude tokens, so the tile is on-palette.
+  This is a real fifth variant shot and it is the only one recoverable from existing files.
+- **`emerald-ritual`, from `EMERALD SWEET GREEN/26.jpg`.** That raw frame is an ingredient
+  infographic ("Niacinamide", "Vita 8 Complex", "Glycerin", B1/B2/B3 bubble labels), and
+  the left region is a clean sage gel macro with no text. On-palette and genuinely
+  atmospheric, but it is a texture, not a product portrait, so it cannot become a
+  sixth tile. It is filed as a texture candidate instead.
+
+### The consequence for the range
+
+The page currently shows 4 of the 7 registered variants. With existing files the honest
+ceiling is **5**, not 7: Emerald Sweet and Fresh Tickled exist only as blue and pink
+marketing frames, so they cannot be cropped into palette without either recolouring the
+photography or inventing a product shot that does not exist.
+
+This is the concrete reason Phase F is load-bearing rather than decorative. Two of the
+seven variants are missing from the page because the repository has no on-palette
+photography of them. Phase D therefore ships the range at whatever count is provably
+clean (5), and Phase F is what makes 7 reachable. Recording it here so the gap is
+visible rather than quietly shipped as a 4.
+
+### The payload line that was wrong
+
+`PRD 9.2` recorded images as "607 KB of WebP across 8 files". That figure counted the
+eight page photographs and silently omitted the scrub payload, which is the largest
+thing a mobile visitor downloads:
+
+- 8 sprite sheets, 3840x1440 each, WebP q70 = **4.86 MB**
+- desktop mp4 = 2.21 MB
+
+So a phone was pulling ~5.5 MB before a single product tile, against goal G3 (mobile
+Lighthouse >= 90, LCP < 2.5s) which PRD itself marks "Not field-measured".
+`tools/build-scrub-assets.py` was not at fault: it asserts `SHEET_BUDGET = 6.5 MB`, so it
+was faithfully enforcing a budget that was itself far too generous for a mobile target.
+Both the budget and the PRD line move in Phase A.
+
+### AVIF was measured, and it was not the interesting finding
+
+The interesting finding was that a benchmark run on a single sheet understated the
+real total by 12%. Encoding sheet 0 alone predicted 1936 KB; the full eight-sheet
+run came in at 2171 KB, because the clip gets busier toward the end and the sheets
+grow monotonically from 242 KB to 309 KB. Sheet 0 was the cheapest sheet in the set.
+
+The lesson generalises past this pipeline: **a size benchmark must sample the worst
+case, not the first case.** One sheet was enough to rank formats against each other,
+which is all it was asked to do, and not enough to set a budget. The budget
+assertion in `build-scrub-assets.py` caught it immediately, which is the argument
+for asserting budgets in the pipeline rather than describing them in a document.
+
+Quality was measured too, by decoding each encode back and scoring it against the
+uncompressed sheet:
+
+| encode | KB/sheet | PSNR dB | SSIM |
+|---|---|---|---|
+| webp q62 | 318 | 38.28 | 0.9975 |
+| webp q55 | 291 | 37.65 | 0.9972 |
+| avif q50 | 288 | 38.95 | 0.9980 |
+| avif q44 | 242 | 37.75 | 0.9973 |
+| avif q40 | 198 | 36.44 | 0.9963 |
+
+AVIF q40 shipped. It sits within 0.001 SSIM of the WebP control while cutting the
+mobile film by 63%. The first SSIM implementation written here returned 0.0000 for
+every single encode, which was obviously a broken metric rather than a real result;
+it was rewritten properly before any number was quoted. A quality metric that reads
+as uniformly catastrophic is a broken metric, and the fix is to fix it, not to
+drop the column and hope.
+
+### A gate that only exists because something broke in a real browser
+
+Adding the AVIF rung left the two preload hints pointing at `.webp`. Nothing in the
+static harness could see this: the preloads resolve, the files exist, and every
+assertion passed. Only a live run exposed it, as two console warnings and a
+double-fetched LCP element:
+
+> The resource .../hero-collection.webp was preloaded using link preload but not
+> used within a few seconds from the window's load event.
+
+The browser was downloading the WebP that `<picture>` was about to ignore, and the
+AVIF that actually became the LCP element, at the same time, competing with itself
+for bandwidth on a page whose entire Phase A purpose was to stop competing for
+bandwidth.
+
+Gate B8c now asserts that every preloaded image type is a first-choice `<source>`
+type. It was written after the bug, from the bug, which is the only honest order:
+the gate name is a record of a specific mistake rather than a generic aspiration.
+
+The same run also retired a static check that could never have worked. The sprite
+gate used to grep the HTML for eight literal quoted paths. The new loader builds
+paths from a template, so the grep found one fragment and reported it missing. The
+gate now reads `FILM_SHEETS` out of the source and checks both format rungs on disk
+for every index, which is what the old grep was standing in for all along.
+
+### What a static harness still cannot tell you
+
+`check.py` can confirm the sheets exist, are the right size, and are referenced.
+It cannot confirm a single frame was ever painted. Gate B11 exists to cover that
+gap: at a 390px viewport all eight AVIF sheets returned 200 with a non-zero
+`naturalWidth`, no WebP fallback was requested, the mp4 was never fetched at all,
+and there were no page errors. That is the difference between assets that exist and
+a film that plays, and only one of those two is testable without a browser.

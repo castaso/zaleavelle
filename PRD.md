@@ -189,13 +189,44 @@ Replaces the v2.6 deep-rose system. Every pair below is asserted by `tools/check
 
 ### 9.2 Performance Budget
 
+Payload is stated per platform, because the two are not the same page. A desktop
+visitor seeks one mp4; a phone draws the same film from eight sprite sheets. Both
+rungs are measured on AVIF, the format every current engine prefers, from the files
+the page actually references rather than from everything sitting in `assets/`.
+
 | Metric | Target | Current |
 |--------|--------|---------|
-| HTML + CSS + JS | < 500 KB | ~35 KB, zero third-party JS |
-| Fonts | — | 89 KB, 3 woff2, preloaded |
-| Images | — | 607 KB of WebP across 8 files; hero 147 KB is the LCP element |
-| LCP | < 2.5s | Not field-measured |
+| HTML + CSS + JS | < 500 KB | 57 KB, zero third-party JS |
+| Fonts | — | 88 KB, 3 woff2, preloaded |
+| Images, desktop | — | 322 KB (poster 58 + 7 photographs 264) |
+| Film, desktop | — | 988 KB mp4, 960x540 |
+| **Desktop total** | **< 2.0 MB** | **1457 KB** |
+| Images, mobile | — | 322 KB (poster 58 + 7 photographs 264) |
+| Film, mobile | — | 1781 KB across 8 AVIF sprite sheets |
+| **Mobile total** | **< 2.5 MB** | **2250 KB** |
+| LCP | < 2.5s | Poster is 58 KB AVIF and preloaded; not field-measured in a lab |
 | CLS | < 0.1 | Every image carries explicit `width`/`height` |
+
+**Corrected in Phase A.** The previous line read "607 KB of WebP across 8 files"
+and that figure was wrong in a way that mattered: it counted the eight
+photographs and omitted the film entirely. A phone was pulling roughly 5.5 MB
+while this table reported the page as comfortably inside budget. The film alone
+was 4.86 MB. Both numbers are now asserted by gate B8b rather than described.
+
+| Phase A change | Before | After |
+|---|---|---|
+| Sprite cells | 640x360 | 480x270 |
+| Sprite format | WebP q70, 4856 KB | AVIF q40, 1781 KB |
+| Desktop film | mp4 1280x720 crf 26, 2213 KB | mp4 960x540 crf 30, 988 KB |
+| Page photographs | WebP 492 KB | AVIF 264 KB |
+| Film poster | WebP 78 KB | AVIF 58 KB |
+| Mobile total | ~5.5 MB | 2250 KB |
+| Desktop total | ~3.0 MB | 1457 KB |
+
+AVIF was chosen on measurement, not fashion. On this footage it encoded faster
+than WebP as well as smaller, because a graded, soft, bokeh-heavy clip is exactly
+what AVIF's transform handles well. A WebP sibling ships alongside every AVIF so
+engines without AVIF still get the film, at one failed request rather than eight.
 
 ### 9.3 SEO Meta
 
@@ -227,7 +258,7 @@ Replaces the v2.6 deep-rose system. Every pair below is asserted by `tools/check
 | Source photography (v2.7) | Every raw asset in `assets/` is AI-generated marketing creative with Indonesian copy printed into the frame. Two crops in `build-web-images.py` work around this. A proper shoot removes the workaround | Documented per-job in the script |
 | CNAME drift | OG and JSON-LD absolute URLs 404 if the domain detaches | Verify with a link checker post-deploy |
 | `beli.zaleavelle.com` TLS | All 6 buy CTAs and 7 schema offers depend on it | Verify HTTPS 200 before deploy |
-| Hero image weight | 147 KB WebP LCP | Preloaded; the square variant is unused and can be deleted if the hero ever becomes portrait |
+| Hero image weight | 108 KB AVIF LCP | Preloaded as AVIF, which is the format the `<picture>` picks, so preload and paint agree (gate B8c). The square variant is unused and can be deleted if the hero ever becomes portrait |
 
 ### Open Questions
 

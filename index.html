@@ -27,8 +27,8 @@
      the hero image that sits below it. -->
 <link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/web/luxury-poster.webp" as="image" type="image/webp" fetchpriority="high">
-<link rel="preload" href="assets/web/hero-collection.webp" as="image" type="image/webp">
+<link rel="preload" href="assets/web/luxury-poster.avif" as="image" type="image/avif" fetchpriority="high">
+<link rel="preload" href="assets/web/hero-collection.avif" as="image" type="image/avif">
 
 <script>
   // Analytics stub (PRD E4): queues events in dataLayer; loads GA4 only when an ID is set.
@@ -757,13 +757,13 @@
     <div class="scrub-stage">
       <div class="scrub-media">
         <picture>
-          <source srcset="assets/web/luxury-poster.webp" type="image/webp">
+          <source srcset="assets/web/luxury-poster.avif" type="image/avif"><source srcset="assets/web/luxury-poster.webp" type="image/webp">
           <img id="scrubPoster" src="assets/web/luxury-poster.jpg" alt="The seven zaleavelle body care variants arranged on a marble podium with cherry blossom" width="1280" height="720" fetchpriority="high" decoding="async">
         </picture>
         <video id="scrubVideo" playsinline muted preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true">
           <source src="assets/web/luxury-scrub.mp4" type="video/mp4">
         </video>
-        <canvas id="scrubCanvas" width="640" height="360" aria-hidden="true" hidden></canvas>
+        <canvas id="scrubCanvas" width="480" height="270" aria-hidden="true" hidden></canvas>
       </div>
     </div>
   </section>
@@ -782,7 +782,7 @@
     <figure class="hero-figure">
       <div class="frame">
         <picture>
-          <source srcset="assets/web/hero-collection.webp" type="image/webp">
+          <source srcset="assets/web/hero-collection.avif" type="image/avif"><source srcset="assets/web/hero-collection.webp" type="image/webp">
           <img src="assets/web/hero-collection.jpg" alt="The seven zaleavelle body care variants arranged with cherry blossom branches" width="1240" height="930" fetchpriority="high" decoding="async">
         </picture>
       </div>
@@ -812,28 +812,28 @@
     <div class="range-grid">
       <article class="tile reveal">
         <div class="shot">
-          <picture><source srcset="assets/web/wash-flavia.webp" type="image/webp"><img src="assets/web/wash-flavia.jpg" alt="Flavia Floral body wash bottle" width="900" height="1125" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="assets/web/wash-flavia.avif" type="image/avif"><source srcset="assets/web/wash-flavia.webp" type="image/webp"><img src="assets/web/wash-flavia.jpg" alt="Flavia Floral body wash bottle" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
         <div class="meta"><h3>Flavia Floral</h3><span class="kind">Body wash</span></div>
         <p>Niacinamide with kojic dipalmitate. Warm, floral, a little sweet.</p>
       </article>
       <article class="tile reveal" data-delay="1">
         <div class="shot">
-          <picture><source srcset="assets/web/lotion-blush.webp" type="image/webp"><img src="assets/web/lotion-blush.jpg" alt="Feminine Blush Pink body lotion with gift box" width="900" height="1125" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="assets/web/lotion-blush.avif" type="image/avif"><source srcset="assets/web/lotion-blush.webp" type="image/webp"><img src="assets/web/lotion-blush.jpg" alt="Feminine Blush Pink body lotion with gift box" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
         <div class="meta"><h3>Feminine Blush Pink</h3><span class="kind">Body lotion</span></div>
         <p>5% niacinamide and swiftlet nest in a soft cherry blossom.</p>
       </article>
       <article class="tile reveal" data-delay="2">
         <div class="shot">
-          <picture><source srcset="assets/web/serum-bright-petal.webp" type="image/webp"><img src="assets/web/serum-bright-petal.jpg" alt="Bright Petal body serum with calendula" width="900" height="1125" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="assets/web/serum-bright-petal.avif" type="image/avif"><source srcset="assets/web/serum-bright-petal.webp" type="image/webp"><img src="assets/web/serum-bright-petal.jpg" alt="Bright Petal body serum with calendula" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
         <div class="meta"><h3>Bright Petal</h3><span class="kind">Body serum</span></div>
         <p>Calendula and sea water for skin that feels calm and cool.</p>
       </article>
       <article class="tile reveal">
         <div class="shot">
-          <picture><source srcset="assets/web/serum-classic-pink.webp" type="image/webp"><img src="assets/web/serum-classic-pink.jpg" alt="Classic Pink body serum with real flower petals" width="900" height="1125" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="assets/web/serum-classic-pink.avif" type="image/avif"><source srcset="assets/web/serum-classic-pink.webp" type="image/webp"><img src="assets/web/serum-classic-pink.jpg" alt="Classic Pink body serum with real flower petals" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
         <div class="meta"><h3>Classic Pink</h3><span class="kind">Body serum</span></div>
         <p>Lightweight, fast to absorb, scented with sakura petals.</p>
@@ -885,7 +885,7 @@
           </ol>
         </div>
         <figure class="ritual-figure reveal" data-delay="1">
-          <picture><source srcset="assets/web/ritual-cherry.webp" type="image/webp"><img src="assets/web/ritual-cherry.jpg" alt="Classic Pink body serum resting on a swing beneath cherry blossom" width="1600" height="900" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="assets/web/ritual-cherry.avif" type="image/avif"><source srcset="assets/web/ritual-cherry.webp" type="image/webp"><img src="assets/web/ritual-cherry.jpg" alt="Classic Pink body serum resting on a swing beneath cherry blossom" width="1600" height="900" loading="lazy" decoding="async"></picture>
         </figure>
       </div>
     </div>
@@ -926,7 +926,7 @@
         <p class="attrib">The zaleavelle team</p>
       </div>
       <figure class="manifesto-figure reveal" data-delay="1">
-        <picture><source srcset="assets/web/manifesto-petal.webp" type="image/webp"><img src="assets/web/manifesto-petal.jpg" alt="Niacinamide, glycerin and calendula shown in glass dishes" width="1200" height="800" loading="lazy" decoding="async"></picture>
+        <picture><source srcset="assets/web/manifesto-petal.avif" type="image/avif"><source srcset="assets/web/manifesto-petal.webp" type="image/webp"><img src="assets/web/manifesto-petal.jpg" alt="Niacinamide, glycerin and calendula shown in glass dishes" width="1200" height="800" loading="lazy" decoding="async"></picture>
       </figure>
     </div>
   </section>
@@ -1079,25 +1079,33 @@
   var filmVideo = document.getElementById("scrubVideo");
   var filmCanvas = document.getElementById("scrubCanvas");
   var FILM_FRAMES = 192;
-  var FILM_CELLS = 24;
   var FILM_COLS = 6;
-  var FILM_CELL_W = 640;
-  var FILM_CELL_H = 360;
-  var FILM_SHEETS = [
-    "assets/web/scrub/sheet-0.webp",
-    "assets/web/scrub/sheet-1.webp",
-    "assets/web/scrub/sheet-2.webp",
-    "assets/web/scrub/sheet-3.webp",
-    "assets/web/scrub/sheet-4.webp",
-    "assets/web/scrub/sheet-5.webp",
-    "assets/web/scrub/sheet-6.webp",
-    "assets/web/scrub/sheet-7.webp"
-  ];
+  var FILM_ROWS = 4;
+  var FILM_CELLS = FILM_COLS * FILM_ROWS;
+  var FILM_SHEETS = 8;
   var filmSheets = [];
   var filmStarted = false;
   var filmRaf = 0;
   var filmSprites = window.matchMedia("(max-width: 1080px), (pointer: coarse)").matches ||
     !!(navigator.connection && navigator.connection.saveData);
+  // Sprite sheets ship as AVIF with a WebP sibling. The format is held in one
+  // place so an engine that cannot decode AVIF pays exactly one failed request
+  // rather than eight, and every later sheet goes straight to WebP.
+  var filmFmt = "avif";
+  var filmCtx = null;
+
+  function filmSrc(n, fmt) {
+    return "assets/web/scrub/sheet-" + n + "." + fmt;
+  }
+
+  // Cell geometry is read back from the decoded sheet rather than hardcoded, so
+  // the AVIF and WebP siblings are free to differ in resolution.
+  function filmCell(sheet) {
+    return {
+      w: sheet.naturalWidth / FILM_COLS,
+      h: sheet.naturalHeight / FILM_ROWS
+    };
+  }
 
   function filmProgress() {
     var rect = film.getBoundingClientRect();
@@ -1109,11 +1117,13 @@
 
   function filmDraw(idx) {
     var sheet = filmSheets[Math.floor(idx / FILM_CELLS)];
-    if (!sheet || !sheet.complete) return false;
+    if (!sheet || !sheet.complete || !sheet.naturalWidth) return false;
     var cell = idx % FILM_CELLS;
-    filmCanvas.getContext("2d").drawImage(
-      sheet, (cell % FILM_COLS) * FILM_CELL_W, Math.floor(cell / FILM_COLS) * FILM_CELL_H,
-      FILM_CELL_W, FILM_CELL_H, 0, 0, FILM_CELL_W, FILM_CELL_H);
+    var geom = filmCell(sheet);
+    if (!filmCtx) filmCtx = filmCanvas.getContext("2d");
+    filmCtx.drawImage(
+      sheet, (cell % FILM_COLS) * geom.w, Math.floor(cell / FILM_COLS) * geom.h,
+      geom.w, geom.h, 0, 0, geom.w, geom.h);
     return true;
   }
 
@@ -1137,16 +1147,26 @@
     filmRaf = window.requestAnimationFrame(filmTick);
   }
 
+  function filmLoad(n) {
+    var img = new Image();
+    img.onload = function () { filmApply(filmProgress()); };
+    img.onerror = function () {
+      if (filmFmt === "avif") {
+        filmFmt = "webp";
+        filmLoad(n);
+        return;
+      }
+      filmSheets[n] = null;
+    };
+    img.src = filmSrc(n, filmFmt);
+    filmSheets[n] = img;
+  }
+
   function filmStart() {
     if (filmStarted) return;
     filmStarted = true;
     if (filmSprites) {
-      FILM_SHEETS.forEach(function (src, n) {
-        var img = new Image();
-        img.onload = function () { filmApply(filmProgress()); };
-        img.src = src;
-        filmSheets[n] = img;
-      });
+      for (var n = 0; n < FILM_SHEETS; n++) filmLoad(n);
     } else {
       filmVideo.preload = "auto";
       filmVideo.load();

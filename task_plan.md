@@ -160,6 +160,28 @@ Owner supplied two brand documents (identity + colour palette) and asked for the
 - [x] Slice 17d verify: `python tools/check.py` 42/42 with S7 asserting `#000000`; B6 wordmark pure-black ban unaffected (stage ban is wordmark-only). CDP run confirmed black stage `rgb(0, 0, 0)` with card `rgb(242,238,230)`/`rgb(94,75,67)`, desktop `currentTime` 6.56 at scrollY 2000, mobile canvas opacity 1; dark stills at 0/4/7.9 s reviewed by owner
 - **Status:** complete (film harness-verified; field Lighthouse open)
 
+### Phase 18: Awwwards elevation — A: performance foundation
+
+Owner asked for an Awwwards-calibre revamp and chose, in session: elevate in place (palette and type stay locked), aggressive cinematic motion, a mix of re-composed and newly generated imagery, and extending the mechanical harness rather than freezing it. Phases A–G run as one pass. Phase A is the gate on everything else: motion is spent against a payload budget, so the budget is fixed first.
+
+- [x] Slice 18a: asset inventory. Every unused frame opened and judged before any plan promised it. Six candidates: five rejected **on palette, not quality** (saturated cyan/magenta/sky-blue/hot-pink grounds that no crop fixes), one salvaged. `BLAINE FLORAL/Generated image 1 (3).png` has a clean left ~48% — a standalone pump bottle on warm cream, no baked text — giving a genuine 5th variant. `emerald-ritual` reclassified from product portrait to sage texture. **Consequence: the range ceiling with existing files is 5 of 7, not 7.** Emerald Sweet and Fresh Tickled exist only as off-palette marketing frames, so Phase F is load-bearing rather than decorative
+- [x] Slice 18b: the payload figure in PRD 9.2 was wrong in a way that mattered. "607 KB of WebP across 8 files" counted the eight photographs and omitted the film entirely; the film alone was 4856 KB, so a phone pulled ~5.5 MB against goal G3 while the table read comfortable. `build-scrub-assets.py` was faithfully enforcing `SHEET_BUDGET = 6.5 MB`, a budget too generous for a mobile target. Both moved
+- [x] Slice 18c: AVIF selected on measurement. Smaller **and** faster than WebP on this footage (soft graded bokeh suits it). Sheets 640x360 → 480x270, WebP q70 → AVIF q40, keeping all 192 frames per owner decision. Desktop mp4 1280x720 crf 26 → 960x540 crf 30. Photographs WebP 492 → AVIF 264 KB. **Mobile 5.5 MB → 2250 KB, desktop 3.0 → 1457 KB.** Every AVIF ships a WebP sibling; the loader flips format once on a single failure rather than eight
+- [x] Slice 18d: quality measured, not assumed. Encodes decoded back and scored against the uncompressed sheet: AVIF q40 = SSIM 0.9963 / PSNR 36.4 dB, within 0.001 SSIM of the WebP control. The first SSIM implementation returned 0.0000 for every encode — a broken metric, rewritten before any number was quoted
+- [x] Slice 18e: cell geometry now read from `naturalWidth/naturalHeight` rather than hardcoded, so the AVIF and WebP rungs are free to differ in resolution
+- [x] Slice 18f: **a bug the static harness could not see.** Adding the AVIF rung left both preload hints on `.webp`, so the LCP element downloaded twice and competed with itself. Only a live 390px run exposed it, as two console warnings. Preloads repointed; re-run gave zero console output
+- [x] Slice 18g verify: `python tools/check.py` **45/45** (42 + B8b payload, B8c preload-format, B11 film-reaches-an-engine). Both inline script blocks still `node --check` clean. Live 390px run: 8 AVIF sheets 200 with non-zero `naturalWidth`, zero WebP fallbacks, mp4 never fetched, no page errors
+- **Status:** complete. Phases B–G open
+
+### Phase 18 continued: B–G (open)
+
+- [ ] Slice 18B: motion engine. Lift the film loop's observer→rAF→`getBoundingClientRect` pattern into one reusable `scrollProgress(el, cb)`; central reduced-motion kill switch; `pointermove` layer for magnetic CTAs (not a scroll listener, so B3 stays 0)
+- [ ] Slice 18C: film narrative — 3–4 typographic beats on the same progress value plus a hairline rule. Typographic, never pill/caption styling, to respect B3
+- [ ] Slice 18D: replace the 4-up portrait tile grid with a horizontal scroll-driven filmstrip; break the ritual/manifesto consecutive-split pattern; extend the range 4 → 5 with the salvaged Blaine crop
+- [ ] Slice 18E: `clamp()` type scale, static SVG grain as a data-URI, focus-ring and 48px tap-target audit
+- [ ] Slice 18F: generate 3–5 on-palette frames. **Blocked on working image-generation credentials** — verify at the start of the slice and report immediately rather than spending time
+- [ ] Slice 18G: field Lighthouse mobile + desktop; PRD dial amendment (`MOTION_INTENSITY 5 → 8`, open, per the visible-surrender rule)
+
 ## Key Questions
 
 1. ~~Should product CTAs link directly to Shopee product pages, or to a WhatsApp chat flow?~~ → Resolved for M1: Shopee primary + WA secondary (PRD recommendation)
@@ -224,6 +246,10 @@ Owner supplied two brand documents (identity + colour palette) and asked for the
 | Heading ran to 3 lines on desktop | Hero screenshot | Column too narrow for the type scale. Widened the text column and eased the clamp so the headline resolves to exactly 2 lines |
 | Headless CDP run: "browser never exposed a target" | First film verification attempt | An unrelated stale Chromium install already held port 9222, so Edge never bound. Switched to a fresh port and kill the process tree with `taskkill /T` instead of the parent |
 | Film appeared letterboxed in rendered screenshots | Pixel check read (0,0,0) at the frame edges | Not a page bug: the source footage's own corners are a near-black vignette in every frame of source and encode. Compared an ffmpeg-extracted frame against the rendered pixels; both agree, nothing to fix |
+| Sprite size benchmark predicted 1936 KB, reality was 2171 KB | Budget assertion in `build-scrub-assets.py` failed on the first full run | The benchmark encoded sheet 0 only, and sheet 0 is the *cheapest* sheet (the clip gets busier, 242 → 309 KB). **A size benchmark must sample the worst case, not the first case.** Fixed by dropping quality, not cell size: on a dark bokeh clip, banding is worse than slight softness |
+| SSIM returned 0.0000 for every single encode | Obvious nonsense in the benchmark table | The implementation used RMS-of-difference in place of covariance, so the formula was not SSIM at all. Rewritten before quoting any number. A quality metric that reads as uniformly catastrophic is a broken metric |
+| `Remove-Item` failed on `sheet-5.avif` mid-rebuild | Access denied, then "directory is not empty" | Transient lock (indexer/AV). The pipeline still rewrote every file. Verified afterwards rather than assumed: exactly 16 files, all stamped with the current run, no stale survivors. Always verify a partial delete before trusting a rebuild |
+| Adding the AVIF rung left preloads on `.webp` | Two Chrome warnings: "preloaded but not used" | The LCP element downloaded twice and competed with itself for bandwidth. **Every static check still passed** — the preloads resolve and the files exist. Only a live browser run could see it. Gate B8c written from the bug afterwards |
 
 ## Notes
 
