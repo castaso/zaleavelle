@@ -353,3 +353,527 @@ gap: at a 390px viewport all eight AVIF sheets returned 200 with a non-zero
 `naturalWidth`, no WebP fallback was requested, the mp4 was never fetched at all,
 and there were no page errors. That is the difference between assets that exist and
 a film that plays, and only one of those two is testable without a browser.
+
+## Phase B: one scroll engine, and the bug only a browser could see
+
+Phase A fixed the payload so the motion budget had something to spend. Phase B
+spent it: the film's bespoke observer became a shared engine, and the first new
+consumer (hero parallax) immediately found a bug that no static check could have
+found. Both halves of that sentence are the finding.
+
+### The engine
+
+`onScrollProgress(el, mode, cb)` is now the single scroll-driven primitive. One
+shared `requestAnimationFrame` loop reads each registered element's rect per
+frame; a per-element `IntersectionObserver` decides which are near enough to be
+worth reading. Three properties fall out, and all three are worth having:
+
+- **No scroll listener, ever.** B3 stays at 0 because progress is derived from a
+  rect read inside a rAF loop, not from an event. Pointer work uses `pointermove`,
+  which is not a scroll listener either.
+- **An idle page burns no frames.** The loop is torn down when nothing is live, so
+  a reader parked at the top of the page costs nothing.
+- **One preference switch.** Every effect registers through `whenMotion`, which
+  returns early under `prefers-reduced-motion` and only then adds `.motion` to
+  `<html>`. A new effect cannot forget the preference because it never touches
+  `reduceMotion` itself.
+
+`filmTick` and `filmRaf` are deleted rather than left as dead code, and the film's
+`filmProgress` became a stored `filmP` so the asynchronous sheet `onload` handlers
+can re-seek against the latest value between ticks.
+
+### The bug
+
+Hero parallax is one line: `writePy((p - 0.5) * 36)`. The first live run put
+`style="--py: -18.0px"` on the hero image, which is the **minimum** of the range:
+progress had saturated at 0.
+
+The cause was a sign error in the shared engine, in the "pass" branch:
+
+```js
+var travelled = pinned ? -rect.top : vh - rect.top;   // correct
+var travelled = pinned ? -rect.top : -rect.top - vh;  // shipped, wrong
+```
+
+For a passing element, progress must read 0 when the element's top reaches the
+*bottom* of the viewport. That is a viewport further along, so the offset gets
+**added**. It was subtracted, which made `p` clamp to 0 across a huge band: any
+position where the element's top sat anywhere between `-vh` and `+vh` reported 0.
+The parallax therefore rendered as a constant offset for most of its travel and
+only began to move once the element had scrolled a full viewport past the top.
+
+Every static signal was green throughout. B10 passed (transform-only), B10b passed
+(the declared custom property), B10c passed (the motion guard), the film worked,
+and the page threw **zero** errors. The effect ran, wrote a value, and the value
+was wrong. Fixed, the same run reports `--py: -10.5px` at the same scroll position:
+live and varying instead of clamped.
+
+The endpoint table is now asserted directly rather than reasoned about:
+
+| mode | position | expected | measured |
+|---|---|---|---|
+| pin | `top = 0` | 0 | 0 |
+| pin | `top = -(h - vh)` | 1 | 1 |
+| pass | `top = vh` | 0 | 0 |
+| pass | `top = -h` | 1 | 1 |
+| pass | below (`top > vh`) | 0 | 0 |
+| pass | gone (`top < -h`) | 1 | 1 |
+
+**A green harness is not the same as a correct page.** Phase A's lesson was that a
+static check cannot see a canvas; this one is that a static check cannot see a
+number either. The only instrument that caught it was reading the actual computed
+value out of a live DOM.
+
+### The false positive that was mine this time
+
+B14 failed on its first run reporting one image with no alt text. The image did not
+exist: a CSS comment names the tag in prose. That is the third instance of exactly
+this class of failure in this harness, after the tilt regex matching the FAQ
+chevron's functional 45-degree rotation and the Indonesian scan spanning the whole
+JSON-LD block. The fix is the one B7 already uses, strip `<style>` and `<script>`
+before scanning markup. Recorded because the pattern is now a known property of
+regex-over-HTML, not a one-off: the third occurrence is what turns it into a rule.
+
+### Reduced motion, observed rather than assumed
+
+B10c asserts the guard structurally. It was also confirmed live, which is the check
+that matters, because a guard can exist and still be bypassed by a second code path:
+
+| | motion allowed | `prefers-reduced-motion: reduce` |
+|---|---|---|
+| `<html>` class | `motion` | *(absent)* |
+| hero image `style` | `--py: -10.5px` | *(no style attribute)* |
+| `#film` class | `scrub playing` | `scrub` |
+| mp4 fetched | yes, seeks | **never requested** |
+| page errors | 0 | 0 |
+
+One scare worth recording honestly: the reduced-motion run appeared to request the
+mp4, which would have meant shipping 988 KB of video for a section that never
+plays. It had not. The single `mp4` string in the capture was the `<source src>`
+attribute in the DOM snapshot, not a network event. The check was measuring the
+wrong thing, and the reason it looked alarming is that the failure mode being
+checked for is exactly the kind of quiet waste Phase A existed to remove.
+
+### Every new gate was proven to fail
+
+B10, B12b, B14 and B3 were each mutated deliberately, observed flipping to FAIL,
+and the file restored and hash-compared. A gate that has never been seen failing
+cannot be distinguished from an assumption.
+
+## Phase C: the film finally says something
+
+The film had text removed from it on purpose in an earlier phase, which left the
+section as a video rather than a story. Phase C puts language back on it without
+putting the retired devices back with it: no caption pill, no status dot, no
+section numbering, no scroll cue. Type only.
+
+### The beats live in the markup, and that was the design decision
+
+The obvious implementation is to build the beats in script from a config array.
+That would have been wrong here, because this section has to survive three states
+and one of them has no script at all:
+
+- **motion allowed** — a scrubbed sequence, one beat legible at a time
+- **reduced motion** — the pin collapses to the poster
+- **no JS** — the pin collapses to the poster, via `<noscript>`
+
+So the four beats are real copy in the markup and script only ever fades them.
+Under motion they share grid cell `1/1` with the film frame, so they sit exactly
+on the footage and inherit its crop; without motion that rule does not apply and
+the same elements flow into the grid's second row as a plain centred list. Same
+words, three paths, and the fallback is not a degraded state.
+
+They are deliberately **not** `aria-hidden`. A reader using assistive technology
+gets the whole sequence in reading order, which is the same choice the `.reveal`
+sections already make. Marking them decorative would have been easier and would
+have thrown away the only copy in the section.
+
+### The beats do not consume the eyebrow budget, and that is deliberate
+
+B5 caps `.eyebrow` at roughly one per three sections. The four beats carry a small
+uppercase label each, which visually rhymes with an eyebrow, and it does not use
+the class. The gate counts **section** eyebrows and the four beats are one section
+rather than four, so counting them would measure the wrong thing. Recorded here
+because that is exactly the kind of choice that should be written down rather than
+left for the next reader to wonder about.
+
+### A measured near-miss, fixed rather than waived
+
+The beats sit on moving footage, so there is no honest single background colour to
+check them against. Rather than sample one, the two pairs are measured against a
+deliberate worst case: `#474747`, which is the scrim at 72% black over pure white,
+the brightest pixel the scrim can ever be compositing over.
+
+The first attempt used a 66% scrim and **failed**:
+
+| pair | 66% scrim | 72% scrim |
+|---|---|---|
+| `#F2EEE6` line | 6.24:1 | 8.03:1 |
+| `#D8C9C1` label | **4.49:1** | 5.77:1 |
+
+4.49 against a 4.5 minimum. There were two ways out: lighten the label, or darken
+the scrim. The label is 0.68rem, so no large-text allowance applies and it needs the
+full 4.5, so the value had to move either way. It went into the scrim, because
+`#D8C9C1` is already the footer meta tone and minting a near-identical colour for
+one label would be exactly the colour drift the lock in the CSS header exists to
+prevent. The graded footage is far darker than the worst case, so the real margin
+is comfortably larger than the measured one.
+
+### Sequencing verified against the prediction, not against itself
+
+The capture at 1440x900 read `--film-p: 0.581` with one beat lit. Checking that
+the right beat was lit would have been weak evidence, because the windows are
+mine and so is the observation. Instead the observed value was checked against the
+function that produced it:
+
+```
+beat 1  window 0.06-0.28  opacity 0     predicted 0     past its window
+beat 2  window 0.32-0.54  opacity 0     predicted 0     past its window
+beat 3  window 0.58-0.78  opacity 0.02  predicted 0.0227  just entering
+beat 4  window 0.82-0.97  opacity 0     predicted 0     not yet
+```
+
+with `translate3d(0px, 9.8px, 0px)` against the predicted `(1 - 0.02) x 10 = 9.8`.
+Three independent numbers agreeing to two decimal places is worth more than one
+number merely being non-zero, which is the standard that let the Phase B sign error
+through.
+
+### A cleanup failure that was real
+
+The last browser run returned `cleanup_incomplete`, with the capture retained as a
+partial observation. Worth checking rather than assuming: there were **25 stray
+Chromium processes** still running. The harness had produced its evidence and
+dropped its browser, and treating that as noise would have left a real leak behind.
+Killed and confirmed.
+
+### Scope note for Phase E
+
+The grain overlay Phase E was going to add already exists: `body::after` carries a
+140x140 `feTurbulence` SVG data-URI at `opacity: 0.035`, fixed, z-index 60. It was
+built in Phase 16 and is already on the page. Phase E should measure it rather than
+add a second one.
+
+## Phase D: the filmstrip, and two defects the range had been hiding
+
+Replacing the tile grid was the visible work. Both real findings in this phase
+were in assets and behaviour that the grid had been small enough to disguise.
+
+### The plan was wrong about the layout repetition
+
+Phase 18's plan said the ritual and manifesto sections were consecutive
+image+text splits and that one of them needed rebuilding. **That was wrong.** The
+ingredients band sits between them and carries no figure, so the longest
+consecutive run is 1. There was never a run of two to break, and rebuilding a
+section would have been churn against a remembered problem.
+
+The useful move was to stop arguing from memory and write gate B17, which measures
+it. It reports 3 split sections (`hero`, `ritual`, `tentang`) and a longest run of
+1. The gate also had to be corrected before it could be trusted: the first version
+classified a split as *figure plus heading* and under-counted, because the
+manifesto opens on a `<blockquote>` and has no `h2` at all. It now counts figure
+plus any prose, which is the definition that actually matches how the page reads.
+Mutation-tested by adding a figure to the ingredients band, which produced a run of
+3 and failed.
+
+The honest note on this: three sections sharing an image+text skeleton is still
+three, and the range grid was the *fourth* grid-family section before it became a
+filmstrip. That is the real variety win, not a split that was broken.
+
+### Why native scroll-snap rather than a scroll-jacked strip
+
+The Awwwards move is usually a vertical-scroll-driven horizontal translate. This
+one is deliberately not that, because it would have cost four things the page
+currently has: scroll-snap needs no script, arrow keys and trackpads drive it
+natively, `prefers-reduced-motion` cannot break it because snapping is positioning
+rather than animation, and it needs no listener (B3 stays at 0).
+
+The one place I nearly added complexity was a progress hairline. Hiding the native
+scrollbar and faking progress via `animation-timeline: scroll()` needs
+`timeline-scope` plus a scroll timeline, and there is no reliable way to detect
+support for it in CSS, so unsupported engines would have shown a full or empty bar
+and lied either way. **The scrollbar is styled thin and left visible instead.** A
+small honest scrollbar beats an elegant broken one.
+
+The last strip item carries `.reveal` without `.shown` when first painted, because
+it sits off-screen to the right and the reveal observer has not fired. That is
+correct rather than broken: items 4 and 5 reveal as the reader scrolls to them.
+
+### A shipping defect on the live site since Phase 16
+
+Looking at the re-laid tiles at a size worth looking at exposed that
+`serum-bright-petal.jpg` had **baked marketing type in it**: a fragment of
+display text at the top left ("...n Real / ver / ls") and a clipped banner along the
+bottom edge. The crop box recorded in `build-web-images.py` was `(0.20, 0.16, 0.96,
+0.90)`, chosen specifically to exclude baked copy, and it had failed.
+
+No gate can catch this. B8 checks that the file exists and B15 checks it is sized;
+neither can look at pixels, and there is no OCR in the toolchain. It shipped
+through a full brand overhaul and two later phases because every review looked at
+the page, not at the crops. Re-cropped to `(0.30, 0.26, 0.96, 0.82)` after
+comparing four candidates side by side; the re-crop is also 6 KB lighter.
+
+### The page was blank without JavaScript
+
+The Phase D verification prompted a check that should have happened much earlier.
+Every `.reveal` element ships at `opacity: 0` and only becomes visible when script
+adds `.shown`. The `<noscript>` block reset `.scrub` and `.scrub-stage` but **never
+reset `.reveal`**, so with scripting off the entire body rendered as empty
+alabaster. Only the sticky header, which carries no `.reveal`, was visible.
+
+Measured rather than asserted, by stripping every script from a copy and
+screenshotting at 1440x900:
+
+| | background pixels | ink pixels |
+|---|---|---|
+| before | 99.2% | 0.1% |
+| after | 74.0% | 0.8% |
+
+The `prefers-reduced-motion` query already forced `.reveal` visible, which is
+exactly why this survived from Phase 16: the one audience most likely to be tested
+by hand was already covered, and the failure mode only appears for visitors nobody
+simulates. Progressive enhancement means content is the default and animation is
+the enhancement; here the animation had quietly become the content.
+
+Gate B18 now asserts the override, and was mutation-tested by emptying the noscript
+block.
+
+### The probe lied to me first
+
+The first no-JS capture came back at exactly the same byte count as the pre-fix one,
+which should have been impossible. The probe **deleted** the `<noscript>` block,
+but a browser with scripting off *applies* its contents. So it was testing something
+harsher than reality, the fix could not take effect, and the unchanged output was
+reporting my error back at me rather than a real regression. Rewritten to unwrap
+the block instead.
+
+Worth stating plainly: a test that silently simulates the wrong thing is worse than
+no test, because it produces confident evidence for a claim that was never tested.
+The identical byte count is what gave it away.
+
+### Still open, recorded rather than half-fixed
+
+Without JavaScript, the mobile drawer cannot open (the toggle is JS-driven and the
+drawer ships `hidden`), so a scriptless phone visitor has no in-page navigation
+despite having all the content. The fix is real but non-trivial: it needs the drawer
+restyled as an inline wrapping row via noscript CSS. Not attempted here because a
+half-verified nav is worse than a recorded limitation. B18 covers the content
+failure, which is the severe one.
+
+## Phase E: measure the craft instead of guessing at it
+
+This phase was supposed to add a grain overlay and tune a type scale. It turned
+out to be three real defects and one correction to my own analysis.
+
+### The audit was built as a measurement, not a read
+
+Reading the CSS would have produced a list of declarations that look correct.
+What matters is what a finger meets, so the audit is a probe page: the real
+`index.html` with a script appended that measures every interactive element's
+rendered box, every heading's rendered line count, and every body paragraph's
+computed `max-width` against its rendered width, then replaces the document with
+the report. Run at 1440x900 and again at 390x844.
+
+### Three tap targets were failing PRD T12
+
+Measured at 390px before any change:
+
+| control | measured | verdict |
+|---|---|---|
+| channel wall social icons (x4) | **19 x 19** | fails WCAG 2.5.8 and T12 |
+| footer purchase link | **21.1px** tall | fails, and it is a conversion control |
+| wordmark | **20px** tall | fails |
+| nav toggle | 44 x 44 | passes |
+| buttons | 52.4px | passes |
+| community links | 48.4px | passes |
+| skip link | 45.1px | passes |
+
+All three fixed to 44px. The icons stayed 19px: the hit area is grown with flex
+centring and spacing, so the channel band reads exactly as before and only the
+target changed. After: wall icons 44x44, footer link 44px, wordmark 44px.
+
+### I was wrong about the measure, and the estimator was the problem
+
+The first pass concluded the lede ran to 77 characters per line and the FAQ
+answers to 90, both far past the 45-75 comfortable range, which would have meant
+reworking the copy blocks. The CSS says `max-width: 56ch` and `68ch`.
+
+The number came from the measurement script, not the page: it divided width by
+`font-size * 0.5`, which assumes every glyph is half an em. Re-run comparing
+rendered width against **computed** `max-width`, every paragraph reported
+`overflowsDeclared: false`. The CSS was correct the whole time and the estimator
+was wrong.
+
+Worth stating because the failure mode is expensive: an audit that manufactures a
+finding from its own approximation sends you to edit correct code. The gate that
+replaced the estimate asserts the **declaration** (`max-width` in `ch` present on
+each body-copy selector), which is checkable, and the browser numbers are kept as
+evidence rather than as the check.
+
+That change also surfaced the one genuine gap: `.ingredient-groups p` was the only
+paragraph with no declared measure, left to its grid column. Now 44ch.
+
+### The strip was ragged because one name wrapped
+
+At 39.2px, "Feminine Blush Pink" wrapped to a second line in the 296px strip
+column while the other four names did not, so that one item was taller than its
+neighbours and the bottom edge of the filmstrip was uneven. The ceiling dropped
+from 2.45rem to 2.05rem, which brings all five onto one line at desktop, and the
+heading got a two-line `min-height` so the `kind`, the note and the baseline stay
+aligned across every item regardless of how a name wraps at a narrower width.
+
+Still display-scale: 32.8px at desktop against 23.2px for the ingredient
+sub-headings and 25.6px for the step names.
+
+### The grain overlay was already there
+
+Phase E was going to add one. It has existed since Phase 16: `body::after`, a
+fixed 140x140 SVG `feTurbulence` data-URI, `opacity: 0.035`, `z-index: 60`,
+confirmed by reading the computed style in the live probe. Measured and kept.
+Gate B21 now asserts there is exactly one `feTurbulence` in the stylesheet, so the
+duplicate this phase nearly created cannot be created twice.
+
+### The gate failed all thirteen of its own checks first
+
+The first version of B19, B20 and B21 ran against `MARKUP`, the string B14/B15
+use because it strips `<style>` and `<script>` so the image scan cannot match
+prose in a comment. `MARKUP` therefore contains no CSS at all, and all thirteen
+reported "none found" - including `min-height: 48px` on `.btn`, which has been
+there since Phase 16.
+
+Two lessons, both about input rather than logic. The right input for a CSS gate is
+the stylesheet, and a variable named `MARKUP` that silently means "markup without
+its CSS" is a trap for whoever writes the next gate. The thirteen failures were
+loud and instant, which is the only reason this cost a minute instead of a
+review cycle.
+
+The one remaining failure was also the gate's fault rather than the CSS's: it
+demanded `min-height` from the nav toggle, which correctly declares a fixed
+`height: 44px`. Editing correct CSS to satisfy a badly specified test is worse
+than loosening the test, so the pattern now accepts either property.
+
+### Focus rings audited, unchanged
+
+One global `:focus-visible` at 2px solid `--accent-deep` with 3px offset, two
+deliberate overrides (the skip link inverts to `--surface` because it sits on the
+ink fill; the filmstrip uses a 6px offset and 6px radius because it reads as a
+container, not a control). The ring colour measures 3.92:1 on alabaster against a
+3.0 floor, and the film stage carries no focusable element, so no new B9 row was
+added for a case that cannot occur.
+
+## Phase G: the first field Lighthouse run, and what it actually said
+
+Every version of this page carried "Not field-measured" against goal G3. This is
+the run. The headline is not the score, it is what the score was made of.
+
+### Baseline: desktop was already perfect, mobile was not
+
+Lighthouse 13.5.0, local HTTP server, mobile emulation and the desktop preset:
+
+| run | perf | LCP | TBT | CLS | Speed Index |
+|---|---|---|---|---|---|
+| mobile | 76 | 3.18s | 679ms | 0.000 | 2.4s |
+| desktop | 100 | 0.68s | 0ms | 0.000 | 0.5s |
+
+Seventeen points of gap between the two branches, and the two branches differ in
+exactly one thing: desktop seeks a 988 KB mp4, mobile decodes eight sprite sheets.
+That asymmetry was the clue, and the main-thread breakdown confirmed it:
+
+| bucket | mobile | desktop |
+|---|---|---|
+| Other | **1595ms** | 164ms |
+| Style & Layout | 861ms | 120ms |
+| Script Evaluation | 256ms | 49ms |
+
+Script evaluation was never the problem. "Other" at 1595ms is image decode, and
+eight sheets at 2880x1080 is 24.9 megapixels of AVIF. AVIF is compact to decode
+slowly; Phase A bought 63% of the bytes and paid for it in CPU. That trade was
+correct at the time and invisible until it was measured.
+
+### The fix was batching, not decoding
+
+Sheets now load one at a time, in the order the reader reaches them, starting from
+the sheet holding the current frame, scheduled into idle slots with a 400ms floor
+so the queue cannot stall behind a busy main thread. If the reader outruns the
+queue, the sheet they need jumps the line.
+
+| | before | after |
+|---|---|---|
+| mobile performance | 76 | **93** |
+| LCP | 3.18s | **2.54s** |
+| TBT | 679ms | **226ms** |
+| Speed Index | 2.4s | **1.7s** |
+| main-thread total | 2976ms | 2840ms |
+
+**The last row is the finding.** Total work barely moved, because the decoding is
+irreducible. Blocking time fell by two thirds. The defect was never that the page
+decodes 24.9 megapixels; it was that it decoded all of it in one burst while the
+reader was trying to interact. TBT measures contention, not work, so spreading
+the same work across idle slots is the whole fix.
+
+### G3 is met except LCP, which misses by 40ms
+
+Score target cleared with room, 93 against 90. CLS is exactly **0.000** on both
+branches, which is the `width`/`height` guard in B15 doing its job. LCP is **2.54s
+against a "< 2.5s" target**, and it is recorded as a miss rather than rounded into
+a pass, because 2.54 is not less than 2.5.
+
+The breakdown says the remainder is not really the page's: time to first byte is
+the largest single term at 411ms under emulated slow-4G, resource load is 55ms, and
+Lighthouse's own discovery checklist is all green (priority hint applied,
+discoverable in the initial document, not lazy-loaded). The LCP element is the film
+poster at 412x232, preloaded as 58 KB AVIF. Every page-side lever on that element
+is already pulled, so the last 40ms is TTFB in a synthetic network rather than
+something the markup can answer.
+
+### One reported number was the test rig, not the page
+
+`cache-insight` reported **2171 KiB** of cacheable savings, essentially all of it
+the sprite sheets, and it would have been easy to write that up as a finding. It is
+an artefact: `python -m http.server` sends no cache headers, so Lighthouse sees
+everything as uncacheable. On a host that sets a long `Cache-Control` for
+`assets/web/**` the number vanishes without a single byte changing on the page.
+
+The one genuine deployment requirement the phase does surface is the mirror of it:
+the sprite sheets need a long max-age. They are 74% of the mobile payload and they
+are immutable per build, so they are the one thing on the page that should never be
+revalidated.
+
+### A mutation test that lied by being broken
+
+The first attempt at mutation-testing B22b deleted the serialisation guard and
+reported the gate as **vacuous**. It was not vacuous; the deletion had never
+happened, because the Python replacement string did not match the file's
+indentation. Re-run with a whitespace-insensitive regex and an assertion on the
+substitution count, it failed exactly as intended.
+
+Worth recording as a rule: **"the gate did not catch it" almost always means the
+mutation did not land**, not that the gate is weak. The two failures look identical
+from the outside, and only checking the substitution count tells them apart.
+
+### Motion dial amended in the open, after the bill arrived
+
+`MOTION_INTENSITY 5 → 8`, on the owner's instruction. Amended in all three places
+that state it (PRD 8.2, the CSS header comment, the design-read block) with the
+reasoning attached rather than the number quietly changed.
+
+The amendment was accepted only after the cost it implies was bounded at both ends:
+the payload it spends was fixed in Phase A, and the CPU cost that fix produced was
+measured here and fixed. A motion dial of 8 on a page with no scroll listeners, no
+third-party JS, 2.28 MB mobile and a measured 93 is defensible. The same dial on
+the Phase 16 page, with a 5.5 MB mobile payload and an unmeasured score, would not
+have been.
+
+### Still carried forward
+
+- **Phase F** remains blocked on image-generation credentials, so the range is
+  5 of 7 rather than 7 of 7. Not attempted rather than attempted blindly.
+- **Without JS the mobile drawer cannot open.** All the content is there (B18),
+  but a scriptless phone visitor has no in-page navigation. Needs the drawer
+  restyled as an inline wrapping row via noscript CSS.
+- **`filmPromote` is untested.** All eight sheets landed inside the initial 3s wait
+  in the verification run, so the outrun path never executed. It is three lines and
+  it is guarded, but it is unproven.
+- The four social icons load from `cdn.simpleicons.org`, so there are four
+  third-party requests on mobile. Left alone deliberately: replacing them with
+  hand-drawn SVG would mean hand-rolling icons, which the design skill bans, and
+  they are 19px and lazy. Noted rather than changed.

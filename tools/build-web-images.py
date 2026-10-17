@@ -27,6 +27,15 @@ OUT = os.path.join(ROOT, "assets", "web")
 
 BL = sorted(glob.glob(os.path.join(ROOT, "assets/BODY LOTION/BLAINE FLORAL/*.png")))[4]
 FB = sorted(glob.glob(os.path.join(ROOT, "assets/BODY LOTION/FEMININE BLUSH/*.png")))[0]
+# Phase D. The right 56% of this frame is a full Indonesian marketing panel
+# (display type, benefit icons, a Main Ingredients strip, social row, BPOM
+# stamp). The left 44% is a standalone pump bottle on warm cream with yellow
+# flowers and no baked text at all, which puts it on the champagne/nude tokens.
+# This is the only fifth-variant shot recoverable from the existing files;
+# Emerald Sweet and Fresh Tickled exist solely as off-palette blue and pink
+# marketing frames. Verified at 0.47 (a dark object intrudes on the right edge)
+# and at 0.42 (needlessly tight), so 0.44.
+BLAINE_PRODUCT = os.path.join(ROOT, "assets/BODY LOTION/BLAINE FLORAL/Generated image 1 (3).png")
 
 # Full-range collection shot, hand-picked by the owner, dropped in Downloads.
 COLLECTION = os.path.expanduser("~/Downloads/Bodycare Collection with lighting.png")
@@ -41,9 +50,17 @@ JOBS = [
      (0.28, 0.10, 0.62, 0.95), (900, 1125), 82),
     ("lotion-blush", FB, (0.28, 0.00, 0.95, 0.95), (900, 1125), 82),
     ("serum-bright-petal", os.path.join(ROOT, "assets/BODY SERUM/BRIGHT PETAL/18.jpg"),
-     (0.20, 0.16, 0.96, 0.90), (900, 1125), 82),
+     # Re-cropped in Phase D. The original (0.20, 0.16, 0.96, 0.90) failed the
+     # job this file exists to do: it kept a fragment of baked marketing display
+     # type at the top left and a clipped banner along the bottom edge, on the
+     # live site since Phase 16. Found by looking at the tile, which no gate can
+     # do. These fractions clear both and keep the bottle, petals and gel.
+     (0.30, 0.26, 0.96, 0.82), (900, 1125), 82),
     ("serum-classic-pink", os.path.join(ROOT, "assets/BODY SERUM/CLASSIC PINK/21.jpg"),
      (0.12, 0.12, 0.94, 0.86), (900, 1125), 82),
+    # Phase D: fifth variant, cropped out of a marketing frame rather than a
+    # product frame. See BLAINE_PRODUCT above for why this one is different.
+    ("lotion-blaine", BLAINE_PRODUCT, (0.02, 0.02, 0.44, 0.98), (900, 1125), 82),
     # Ritual lifestyle. Every other candidate in assets/ is a marketing
     # infographic with Indonesian ingredient callouts printed into the frame,
     # which reads as noise next to a text column. This crop drops the baked

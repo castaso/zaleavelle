@@ -187,6 +187,187 @@ check("B8c", "image preloads target the first-choice format",
       preloaded and preloaded <= first_choice,
       "preloaded %s, first choice %s" % (sorted(preloaded), sorted(first_choice)))
 
+# ------------------------------------------------- motion and JS hygiene (B10, B12)
+JS = "\n".join(re.findall(
+    r"(?s)<script(?![^>]*application/ld\+json)(?![^>]*src=)[^>]*>(.*?)</script>", HTML))
+
+# Scroll- and pointer-driven effects must not write layout properties. A
+# transform-only effect is composited without a reflow; writing `top` or
+# `height` per frame is the single easiest way to turn an effect into jank, and
+# it is invisible to every other gate on this page.
+layout_writes = re.findall(
+    r"\.style\.(top|left|right|bottom|width|height|margin|marginTop|marginLeft|"
+    r"marginRight|marginBottom|padding|paddingTop)\s*=", JS)
+check("B10", "scroll and pointer effects write transform only",
+      not layout_writes, "%d layout writes: %s"
+      % (len(layout_writes), sorted(set(layout_writes)) or "none"))
+
+# The effects that do exist must funnel through custom properties, so the
+# compositor-friendly path is the only one available by construction. One of
+# them (--py) is written through pxWriter, so both spellings are collected.
+fx_props = set(re.findall(r'setProperty\("(--[a-z0-9-]+)"', JS))
+fx_props |= set(re.findall(r'pxWriter\([^,]+,\s*"(--[a-z0-9-]+)"', JS))
+fx_props |= set(re.findall(r'numWriter\([^,]+,\s*"(--[a-z0-9-]+)"', JS))
+check("B10b", "effects drive declared custom properties only",
+      fx_props and fx_props <= {"--mx", "--my", "--py", "--film-p"},
+      "%s" % sorted(fx_props))
+
+# A beat added to the markup without a matching timing window would sit at
+# opacity 0 for the whole film under motion, so the two counts are asserted
+# against each other rather than trusted to stay in step.
+beats = len(re.findall(r'<p class="film-beat">', HTML))
+windows = len(re.findall(r"\[\s*0?\.\d+\s*,\s*0?\.\d+\s*\]", JS))
+check("B16", "every film beat has a timing window", beats and beats == windows,
+      "%d beats, %d windows" % (beats, windows))
+
+# Reduced motion has exactly one switch, and the script must add the .motion
+# class inside that guard rather than beside it.
+check("B10c", "motion class is gated on the reduced-motion switch",
+      'if (reduceMotion) return;' in JS
+      and re.search(r"function whenMotion\(fn\) \{\s*if \(reduceMotion\) return;\s*"
+                    r"document\.documentElement\.classList\.add\(\"motion\"\);\s*fn\(\);",
+                    JS) is not None,
+      "single whenMotion guard, .motion added inside it")
+
+# Zero third-party JS. No script tag may load a remote origin.
+remote_scripts = re.findall(r'<script[^>]+src="([^"]+)"', HTML)
+check("B12", "no script tag loads a remote origin", not remote_scripts,
+      "found: %s" % (remote_scripts or "none"))
+
+# The page carries one conditional third-party loader, GA4, and it ships
+# nothing while the ID is empty. This gate is the tripwire: if someone sets the
+# ID, "zero third-party JS" stops being true and the claim has to be revisited
+# against the performance budget rather than discovered in a field audit.
+ga = re.search(r'window\.ZV_GA_ID\s*=\s*"([^"]*)"', JS)
+check("B12b", "conditional GA4 loader is dormant",
+      ga is not None and ga.group(1) == "",
+      "ZV_GA_ID=%r" % (ga.group(1) if ga else "not found"))
+
+# ------------------------------------------------- image hygiene (B14, B15)
+# Scan rendered markup only. A CSS comment that names the tag in prose ("the
+# width/height attributes on these <img>") is not an element, and treating it as
+# one is the third instance of this exact false positive in this harness.
+MARKUP = re.sub(r"(?s)<(script|style)\b.*?</\1>", " ", HTML)
+imgs = re.findall(r"<img\b[^>]*>", MARKUP)
+bad_alt = [i for i in imgs if not re.search(r'alt="[^"]+"', i)]
+check("B14", "every image has non-empty alt text", not bad_alt,
+      "%d of %d images missing alt" % (len(bad_alt), len(imgs)))
+
+# Explicit intrinsic size on every image is the CLS guard (PRD G3).
+missing_dims = [i for i in imgs if not re.search(r'width="\d+', i)
+                or not re.search(r'height="\d+', i)]
+check("B15", "every image declares width and height", not missing_dims,
+      "%d of %d images missing a dimension" % (len(missing_dims), len(imgs)))
+
+# ------------------------------------------------- layout family (B17)
+# Measured rather than remembered. The Phase 18 plan asserted that the ritual
+# and manifesto sections were consecutive image+text splits and that one of them
+# had to be rebuilt. That was wrong: the ingredients band sits between them and
+# carries no figure, so there is no run of two to break.
+#
+# "Split" means a section carrying a figure alongside real text. The first
+# version of this gate also required a heading and under-counted, because the
+# manifesto opens with a blockquote and has no h2 at all. Counting figure plus
+# any prose is the definition that actually matches how the page reads.
+split_flags, labels = [], []
+for attrs, inner in re.findall(r"<section\b([^>]*)>(.*?)</section>", MARKUP, re.S):
+    sid = re.search(r'id="([^"]+)"', attrs)
+    labels.append(sid.group(1) if sid else "hero")
+    has_figure = "<figure" in inner
+    has_prose = re.search(r"<(h[1-3]|p|blockquote|ol|ul)\b", inner) is not None
+    split_flags.append(has_figure and has_prose)
+
+longest = run = 0
+for flag in split_flags:
+    run = run + 1 if flag else 0
+    longest = max(longest, run)
+splits = [labels[i] for i, f in enumerate(split_flags) if f]
+
+check("B17", "no more than two image+text splits in a row", longest <= 2,
+      "longest run %d; %d split sections at %s" % (longest, len(splits), splits))
+
+# The strip is a focusable scroll region, which only works if it can actually be
+# focused and labelled. Asserted rather than eyeballed.
+strip = re.search(r'<div class="filmstrip"[^>]*>', HTML)
+check("B17b", "filmstrip is a labelled focusable region",
+      strip is not None and 'tabindex="0"' in strip.group(0)
+      and "role=" in strip.group(0) and "aria-label=" in strip.group(0),
+      strip.group(0) if strip else "no .filmstrip found")
+
+# The noscript block is the only thing between a scriptless visitor and a blank
+# page. Every .reveal element ships at opacity 0 and only script makes it visible,
+# so a missing override here does not degrade the page, it empties it. Measured
+# before the Phase D fix: 99.2% background pixels, header only.
+noscript = re.search(r"(?s)<noscript>(.*?)</noscript>", HTML)
+check("B18", "noscript restores reveal visibility",
+      noscript is not None
+      and re.search(r"\.reveal\s*\{[^}]*opacity:\s*1", noscript.group(1)) is not None,
+      "reveal override present"
+      if noscript and ".reveal" in noscript.group(1)
+      else "MISSING: scriptless visitors see an empty page")
+
+# ------------------------------------------------- craft (B19, B20, B21)
+# The stylesheet on its own. MARKUP deliberately strips <style> so the image
+# scan cannot match prose in a comment, which makes it the wrong input for gates
+# that assert CSS declarations. Using MARKUP here made all thirteen of the first
+# draft of these checks report "none found", including min-height on .btn, which
+# has existed since Phase 16.
+CSS = "\n".join(re.findall(r"<style\b[^>]*>(.*?)</style>", HTML, re.S))
+
+# Tap targets. CSS declarations are not the same as rendered geometry, and only
+# one of the two is what a finger meets, so the declarations are asserted here
+# and the rendered numbers were measured in a browser at 390x844. Three
+# controls failed that measurement before this gate existed: the social icons in
+# the channel wall (19x19), the footer purchase link (21.1px tall) and the
+# wordmark (20px tall).
+# Either property is acceptable, because what matters is the rendered box. The
+# nav toggle declares a fixed `height: 44px` and measured 44x44; insisting on
+# `min-height` would have forced a pointless edit to correct CSS.
+TAP_TARGETS = [
+    ("channel wall icon", r"\.wall-logos a\s*\{[^}]*(?:min-)?height:\s*(\d+)px", 44),
+    ("footer purchase link", r"\.foot-meta a\s*\{[^}]*(?:min-)?height:\s*(\d+)px", 44),
+    ("wordmark", r"\.wordmark\s*\{[^}]*(?:min-)?height:\s*(\d+)px", 44),
+    ("nav toggle", r"\.nav-toggle\s*\{[^}]*(?:min-)?height:\s*(\d+)px", 44),
+    ("button", r"\.btn\s*\{[^}]*(?:min-)?height:\s*(\d+)px", 48),
+    ("community link", r"\.social a\s*\{[^}]*(?:min-)?height:\s*(\d+)px", 48),
+]
+for label, pat, floor in TAP_TARGETS:
+    m = re.search(pat, CSS)
+    ok = m is not None and int(m.group(1)) >= floor
+    check("B19", "%s declares a %dpx hit area" % (label, floor), ok,
+          "%s px declared" % (m.group(1) if m else "none"))
+
+# Body copy must declare its own measure. Left to the container, a paragraph
+# takes whatever width the grid gives it, and the comfortable reading range is
+# roughly 45-75 characters.
+BODY_COPY = [".lede", ".steps p", ".faq details p", ".ingredient-groups p",
+             ".strip-item p", ".manifesto .origin"]
+for sel in BODY_COPY:
+    m = re.search(re.escape(sel) + r"\s*\{[^}]*max-width:\s*(\d+)ch", CSS)
+    check("B20", "%s declares a measure" % sel, m is not None,
+          "%sch" % (m.group(1) if m else "none"))
+
+# The film-grain layer already exists from Phase 16 (a fixed 140x140
+# feTurbulence data-URI on body::after at 0.035). Phase E measured it and kept
+# it rather than adding a second, so this asserts there is exactly one.
+grain = len(re.findall(r"feTurbulence", CSS))
+check("B21", "exactly one film-grain layer", grain == 1, "%d found" % grain)
+
+# ------------------------------------------------- film loading (B22)
+# The sprite path used to request all eight sheets at once. Each is 2880x1080,
+# so that is 24.9 megapixels of decode and it cost 679ms of blocking time on a
+# throttled phone (mobile Lighthouse 76). These assert the loader is still
+# queued and serialised, which is the shape that fixes it.
+check("B22", "sprite sheets load through a queue",
+      "var filmQueued" in JS and "function filmPump" in JS,
+      "queue present" if "filmQueued" in JS else "MISSING: sheets will burst again")
+check("B22b", "only one sheet is in flight at a time",
+      "if (filmPending > 0 || !filmQueued.length) return;" in JS,
+      "filmPump is serialised")
+check("B22c", "the next pump waits for an idle slot",
+      "requestIdleCallback" in JS and "timeout: 400" in JS,
+      "idle-scheduled with a 400ms floor so the queue cannot stall")
+
 # ---------------------------------------------------------------- contrast
 def luminance(hex_colour):
     c = hex_colour.lstrip("#")
@@ -213,6 +394,15 @@ CONTRAST = [
     ("footer body", "#F2EEE6", "#5E4B43", 4.5),
     ("footer meta", "#D8C9C1", "#5E4B43", 4.5),
     ("focus ring", "#B4601F", "#F2EEE6", 3.0),
+    # Phase C film beats. These sit on moving footage, not a known colour, so
+    # they are measured against a deliberate worst case rather than a sampled
+    # one: #474747 is 72% black over pure white, which is the brightest
+    # background the beat scrim can possibly produce. The graded footage is far
+    # darker than this, so the real margin is larger than the measured one.
+    # The scrim started at 66%, where #D8C9C1 measured 4.49:1 and failed; the
+    # label is 0.68rem, so it needs the full 4.5 and the scrim moved instead.
+    ("film beat line on worst-case scrim", "#F2EEE6", "#474747", 4.5),
+    ("film beat label on worst-case scrim", "#D8C9C1", "#474747", 4.5),
 ]
 for label, fg, bg, minimum in CONTRAST:
     r = ratio(fg, bg)

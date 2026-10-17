@@ -195,10 +195,17 @@
      brand palette docs: alabaster ground, apricot accent, sage
      anchor, espresso ink. Native CSS, single file, no build step.
 
-     DIALS: DESIGN_VARIANCE 7 / MOTION_INTENSITY 5 / VISUAL_DENSITY 3
-     Down from the previous 9/8/3. The personality in the brand docs
-     (elegant, graceful, serene, fresh) cannot coexist with tilt,
-     rotated stickers and hard offset shadows, so all three are gone.
+     DIALS: DESIGN_VARIANCE 7 / MOTION_INTENSITY 8 / VISUAL_DENSITY 3
+     Motion was 5 through Phase 18 Phase C and moved to 8 in Phase G on the
+     owner's instruction to push for an Awwwards-calibre revamp. Variance and
+     density are unchanged. The increase is carried by the opening film (four
+     typographic beats plus a progress rule on the film's own scroll value), hero
+     parallax and magnetic CTAs. It was accepted only after the payload it
+     spends was fixed (Phase A) and the CPU cost that produced was measured and
+     fixed (Phase G, mobile Lighthouse 76 -> 93).
+     (Separately, and earlier: v2.7 dropped the dials from 9/8/3 to 7/5/3 because
+     the personality in the brand docs (elegant, graceful, serene, fresh)
+     cannot coexist with tilt, rotated stickers and hard offset shadows.)
 
      - Serif justified (skill 4.1): the brand docs name a high-contrast
        serif explicitly, and Cormorant Garamond is named, not guessed.
@@ -340,10 +347,15 @@
     letter-spacing: 0.06em;
     border-radius: 999px; border: 1px solid transparent;
     text-decoration: none; white-space: nowrap;
+    /* Phase B. The magnet writes these two properties; the button's own
+       transform is composed from them so the :active press still reads as a
+       physical push rather than fighting the magnet. */
+    --mx: 0px; --my: 0px;
+    transform: translate3d(var(--mx), var(--my), 0);
     transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
                 border-color 0.25s var(--ease), transform 0.25s var(--ease);
   }
-  .btn:active { transform: translateY(1px); }
+  .btn:active { transform: translate3d(var(--mx), calc(var(--my) + 1px), 0); }
   .btn-solid { background: var(--accent); color: var(--ink); }
   .btn-solid:hover { background: var(--accent-deep); color: #fff; }
   .btn-quiet { background: transparent; color: var(--ink); border-color: var(--line); }
@@ -373,7 +385,7 @@
     height: var(--nav-h);
     display: flex; align-items: center; justify-content: space-between; gap: 2rem;
   }
-  .wordmark { position: relative; z-index: 43; display: block; }
+  .wordmark { position: relative; z-index: 43; display: flex; align-items: center; min-height: 44px; }
   .wordmark img { height: 20px; width: auto; }
   .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a {
@@ -444,6 +456,74 @@
   .scrub.playing .scrub-media canvas { opacity: 1; }
   .scrub.playing .scrub-media img { opacity: 0; transition: opacity 0.45s var(--ease); }
 
+  /* ---------------- Film narrative ---------------- */
+  /* Phase C. The beats are real copy in the markup, not markup produced by
+     script, so they survive three ways: as a scrubbed sequence under motion, as
+     a short list under reduced motion, and as the same list with no JS at all.
+     Only the timing is scripted. */
+  .film-beats {
+    grid-area: auto;
+    display: grid; gap: 1.4rem; justify-items: center; text-align: center;
+    max-width: 40rem; margin: 1.75rem auto 0; padding: 0 1.35rem;
+    color: var(--surface);
+  }
+  .film-beat-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #D8C9C1; margin-bottom: 0.5rem;
+  }
+  .film-beat-line {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 4.4vw, 2.85rem);
+    line-height: 1.12; letter-spacing: -0.015em;
+    color: var(--surface);
+    text-wrap: balance;
+  }
+  .film-beat-line em { font-style: italic; }
+
+  /* The progress rule is meaningless without motion, so it is off by default
+     and never needs to be switched back off. */
+  .film-rule { display: none; }
+
+  /* Under motion the beats share grid cell 1/1 with the film frame, so they sit
+     exactly on the footage and inherit its crop, and only the scripted beat is
+     legible at a time. */
+  .motion .film-beats {
+    grid-area: 1 / 1;
+    display: block; margin: 0; padding: 0;
+    width: min(100%, calc((100dvh - 14rem) * 16 / 9));
+    aspect-ratio: 16 / 9;
+    position: relative; overflow: hidden;
+    pointer-events: none; z-index: 1;
+  }
+  /* A scrim, because the beats sit on moving footage rather than on a known
+     colour. It is 72% black at its foot rather than the 66% first written,
+     because #D8C9C1 measured 4.49:1 against a 66% scrim over pure white and
+     the label is small enough that it needs the full 4.5. Its floor is what
+     the B9 rows for these two pairs are measured against. */
+  .motion .film-beats::before {
+    content: ""; position: absolute; inset: 34% 0 0 0; z-index: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.72));
+  }
+  .motion .film-beat {
+    position: absolute; inset: auto 0 0 0; z-index: 1;
+    padding: 0 1.5rem clamp(1.25rem, 5vh, 3.25rem);
+    opacity: 0;
+  }
+  .motion .film-rule {
+    display: block; position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    height: 2px; background: rgba(242, 238, 230, 0.14);
+  }
+  .motion .film-rule::after {
+    content: ""; position: absolute; inset: 0;
+    background: var(--accent);
+    transform: scaleX(var(--film-p, 0));
+    transform-origin: left center;
+  }
+
   /* ---------------- Hero: asymmetric split ---------------- */
   .hero {
     max-width: 1320px; margin: 0 auto;
@@ -467,6 +547,11 @@
     aspect-ratio: 4 / 3;
   }
   .hero-figure img { width: 100%; height: 100%; object-fit: cover; }
+  /* Phase B parallax. The image is scaled very slightly past the frame so the
+     drift never exposes an edge, and the whole rule sits behind .motion, which
+     the script only adds when motion is permitted. Under reduced motion the
+     class is never added and the image is left completely alone. */
+  .motion .hero-figure img { transform: translate3d(0, var(--py, 0px), 0) scale(1.07); }
   .hero-figure figcaption {
     margin-top: 0.9rem; font-size: 0.75rem; color: var(--ink-2);
     max-width: 44ch;
@@ -479,40 +564,85 @@
     display: flex; align-items: center; gap: 1.75rem; flex-wrap: wrap;
   }
   .wall-label { font-size: 0.78rem; color: var(--ink-2); }
-  .wall-logos { display: flex; gap: 1.4rem; align-items: center; }
-  .wall-logos img { height: 19px; opacity: 0.55; transition: opacity 0.25s var(--ease); }
-  .wall-logos img:hover { opacity: 1; }
+  .wall-logos { display: flex; gap: 0.5rem; align-items: center; }
+  /* Phase E. The icons stay 19px, but the link around each one was measured at
+     19x19 at a 390px viewport, which fails WCAG 2.5.8 (24px) and PRD T12 (44px).
+     The hit area is grown with flex centring and spacing rather than by
+     enlarging the artwork, so the band reads the same and the target does not. */
+  .wall-logos a {
+    display: flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px;
+    border-radius: 999px;
+  }
+  .wall-logos img { height: 19px; width: auto; opacity: 0.55; transition: opacity 0.25s var(--ease); }
+  .wall-logos a:hover img { opacity: 1; }
 
   /* ---------------- Section heading: stacked, never split ---------------- */
   .head { max-width: 44rem; margin-bottom: 3.25rem; }
   .head h2 { margin-bottom: 1rem; }
   .head p { max-width: 58ch; }
 
-  /* ---------------- Range: 4 tiles, asymmetric bento, no empty cells ---------------- */
-  .range-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: minmax(0, 1fr);
-    gap: 1.25rem;
+  /* ---------------- Range: horizontal filmstrip ---------------- */
+  /* Phase D. The bento tile grid was four identical portrait cards, which is
+     the most templated thing on the page. This is a native horizontal
+     scroller instead, which matters for more than looks: scroll-snap needs no
+     script, arrows and trackpads drive it natively, it survives reduced motion
+     because snapping is positioning rather than animation, and a focusable
+     region makes it reachable from the keyboard. The scrollbar is styled thin
+     and left visible rather than hidden behind a faked progress fill, because a
+     hidden scrollbar with no honest indicator is worse than a small one. */
+  .filmstrip {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1.25rem;
+    /* Trailing room so the last item can reach the snap position. */
+    padding-inline-end: 3.5rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(94, 75, 67, 0.28) transparent;
   }
-  .tile { display: flex; flex-direction: column; }
-  .tile:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
-  .tile:nth-child(2) { grid-column: 2; grid-row: 1; }
-  .tile:nth-child(3) { grid-column: 3; grid-row: 1; }
-  .tile:nth-child(4) { grid-column: 2 / span 2; grid-row: 2; }
-  .tile .shot {
+  .filmstrip::-webkit-scrollbar { height: 6px; }
+  .filmstrip::-webkit-scrollbar-track { background: transparent; }
+  .filmstrip::-webkit-scrollbar-thumb {
+    background: rgba(94, 75, 67, 0.28); border-radius: 999px;
+  }
+  .strip-item {
+    flex: 0 0 clamp(15rem, 23vw, 18.5rem);
+    scroll-snap-align: start;
+    display: flex; flex-direction: column;
+  }
+  .strip-item .shot {
     border-radius: var(--radius-media); overflow: hidden;
     background: var(--surface-nude);
+    aspect-ratio: 4 / 5;
   }
-  .tile:nth-child(1) .shot { aspect-ratio: 4 / 5; }
-  .tile:nth-child(2) .shot,
-  .tile:nth-child(3) .shot { aspect-ratio: 16 / 11; }
-  .tile:nth-child(4) .shot { aspect-ratio: 32 / 11; }
-  .tile img { width: 100%; height: 100%; object-fit: cover; }
-  .tile .meta { padding-top: 0.95rem; display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
-  .tile h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.5rem; letter-spacing: -0.01em; }
-  .tile .kind { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
-  .tile p { margin-top: 0.35rem; font-size: 0.9rem; color: var(--ink-2); max-width: 40ch; }
+  .strip-item img { width: 100%; height: 100%; object-fit: cover; }
+  /* Oversized display type is the point of the filmstrip: the scent names
+     become the graphic, not the captions. Same family, same palette, no new
+     type or colour introduced. Phase E lowered the ceiling from 2.45rem to
+     2.05rem because 39.2px pushed "Feminine Blush Pink" onto a second line in a
+     296px column, which left that one item taller than its four neighbours and
+     ragged along the bottom of the strip. The two-line min-height keeps the
+     kind, the note and the baseline aligned across all five either way. */
+  .strip-item h3 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(1.7rem, 2.6vw, 2.05rem);
+    line-height: 1.06; letter-spacing: -0.02em;
+    margin-top: 1.15rem;
+    min-height: 2.12em;
+    text-wrap: balance;
+  }
+  .strip-item .kind {
+    display: block; margin-top: 0.5rem;
+    font-size: 0.68rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-2);
+  }
+  .strip-item p { margin-top: 0.6rem; font-size: 0.88rem; color: var(--ink-2); max-width: 34ch; }
+  /* The scroller is focusable for keyboard travel, so its ring is the one
+     thing on the page that needs to read as a container, not a control. */
+  .filmstrip:focus-visible { outline: 2px solid var(--accent-deep); outline-offset: 6px; border-radius: 6px; }
 
   /* ---------------- Shop: where the transaction lives ---------------- */
   .shop-panel {
@@ -557,7 +687,7 @@
   .ingredients { background: var(--surface-nude); }
   .ingredient-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
   .ingredient-groups h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.45rem; margin-bottom: 0.6rem; }
-  .ingredient-groups p { font-size: 0.92rem; color: var(--ink-2); }
+  .ingredient-groups p { font-size: 0.92rem; color: var(--ink-2); max-width: 44ch; }
   .ingredient-groups .dose { font-size: 1.9rem; font-family: var(--font-display); color: var(--accent-deep); line-height: 1.1; margin-bottom: 0.4rem; font-variant-numeric: lining-nums; }
   .bpom-note {
     margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
@@ -624,7 +754,9 @@
   .foot-tag { font-family: var(--font-display); font-size: 1.9rem; letter-spacing: -0.01em; }
   .foot-tag em { font-style: italic; color: var(--accent); }
   .foot-meta { display: grid; gap: 0.35rem; font-size: 0.8rem; color: #D8C9C1; text-align: right; }
-  .foot-meta a { color: #D8C9C1; }
+  /* Phase E: the footer purchase link measured 21.1px tall at 390px. It is a
+     conversion control, so it gets the full 44px rather than a token fix. */
+  .foot-meta a { color: #D8C9C1; display: inline-flex; align-items: center; min-height: 44px; }
 
   /* ---------------- Reveal ---------------- */
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
@@ -680,13 +812,6 @@
     .wrap, .nav-inner, .wall-inner { padding-left: 1.35rem; padding-right: 1.35rem; }
     .hero { padding: 2.25rem 1.35rem 3rem; }
     .hero-ctas .btn, .shop-ctas .btn { flex: 1 1 100%; }
-    .range-grid { grid-template-columns: 1fr 1fr; }
-    .tile:nth-child(1) { grid-column: 1 / span 2; grid-row: auto; }
-    .tile:nth-child(1) .shot { aspect-ratio: 16 / 10; }
-    .tile:nth-child(2), .tile:nth-child(3) { grid-column: auto; grid-row: auto; }
-    .tile:nth-child(2) .shot, .tile:nth-child(3) .shot { aspect-ratio: 4 / 5; }
-    .tile:nth-child(4) { grid-column: 1 / span 2; grid-row: auto; }
-    .tile:nth-child(4) .shot { aspect-ratio: 16 / 9; }
     .shop-panel, .community-panel { padding: 2.25rem 1.5rem; border-radius: 20px; }
     .faq details p { padding-right: 0; }
     .foot-inner { padding: 2.5rem 1.35rem calc(2.5rem + env(safe-area-inset-bottom)); }
@@ -695,10 +820,6 @@
   }
 
   @media (max-width: 480px) {
-    .range-grid { grid-template-columns: 1fr; }
-    .tile:nth-child(n) { grid-column: 1; grid-row: auto; }
-    .tile:nth-child(n) .shot { aspect-ratio: 4 / 3; }
-    .tile:nth-child(4) .shot { aspect-ratio: 16 / 10; }
     .hero h1 { font-size: clamp(2.35rem, 11vw, 3rem); }
     .eyebrow { margin-bottom: 1rem; }
     .wall-inner { gap: 1rem; padding-top: 1.1rem; padding-bottom: 1.1rem; }
@@ -715,6 +836,14 @@
     /* The film cannot scrub without JS, so the pin collapses to the poster. */
     .scrub { height: auto; padding: 4.5rem 1.35rem; }
     .scrub-stage { position: static; height: auto; }
+    /* This one was missing until Phase D and it made the page blank. Every
+       .reveal element ships at opacity 0 and only becomes visible when script
+       adds .shown, so with scripting off the entire body rendered as empty
+       alabaster: measured at 99.2% background pixels, header only. The reduced
+       motion query already rescued those visitors, which is exactly why the
+       gap survived so long. Progressive enhancement means the content is the
+       default state and the animation is the enhancement, not the reverse. */
+    .reveal { opacity: 1; transform: none; }
   </style>
 </noscript>
 </head>
@@ -765,6 +894,29 @@
         </video>
         <canvas id="scrubCanvas" width="480" height="270" aria-hidden="true" hidden></canvas>
       </div>
+      <!-- Phase C. Four beats, real copy, no script required to read them. The
+           timing that fades them is script; the words are not. They are not
+           aria-hidden: a reader using assistive tech gets the whole sequence in
+           order, the same way the .reveal sections work. -->
+      <div class="film-beats">
+        <p class="film-beat">
+          <span class="film-beat-label">The range</span>
+          <span class="film-beat-line">Seven formulas,<em>one shelf.</em></span>
+        </p>
+        <p class="film-beat">
+          <span class="film-beat-label">The order</span>
+          <span class="film-beat-line">Cleanse, treat,<em>then seal.</em></span>
+        </p>
+        <p class="film-beat">
+          <span class="film-beat-label">On the label</span>
+          <span class="film-beat-line">Every percentage<em>printed.</em></span>
+        </p>
+        <p class="film-beat">
+          <span class="film-beat-label">Registered</span>
+          <span class="film-beat-line">All seven,<em>BPOM listed.</em></span>
+        </p>
+        <div class="film-rule" aria-hidden="true"></div>
+      </div>
     </div>
   </section>
 
@@ -803,39 +955,51 @@
     </div>
   </div>
 
-  <!-- 3. The range. Four tiles, four cells, no holes. No prices on page. -->
+  <!-- 3. The range. Five variants, five strips, no prices. -->
   <section class="band wrap" id="range">
     <div class="head reveal">
-      <h2 class="display">Four ways to <em>start</em></h2>
+      <h2 class="display">Five ways to <em>start</em></h2>
       <p class="lede">Pick a scent, not a routine. Every variant follows the same three-step order, so anything you choose works with what you already own.</p>
     </div>
-    <div class="range-grid">
-      <article class="tile reveal">
+    <div class="filmstrip" tabindex="0" role="region" aria-label="The range">
+      <article class="strip-item reveal">
         <div class="shot">
           <picture><source srcset="assets/web/wash-flavia.avif" type="image/avif"><source srcset="assets/web/wash-flavia.webp" type="image/webp"><img src="assets/web/wash-flavia.jpg" alt="Flavia Floral body wash bottle" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
-        <div class="meta"><h3>Flavia Floral</h3><span class="kind">Body wash</span></div>
+        <h3>Flavia Floral</h3>
+        <span class="kind">Body wash</span>
         <p>Niacinamide with kojic dipalmitate. Warm, floral, a little sweet.</p>
       </article>
-      <article class="tile reveal" data-delay="1">
+      <article class="strip-item reveal" data-delay="1">
         <div class="shot">
           <picture><source srcset="assets/web/lotion-blush.avif" type="image/avif"><source srcset="assets/web/lotion-blush.webp" type="image/webp"><img src="assets/web/lotion-blush.jpg" alt="Feminine Blush Pink body lotion with gift box" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
-        <div class="meta"><h3>Feminine Blush Pink</h3><span class="kind">Body lotion</span></div>
+        <h3>Feminine Blush Pink</h3>
+        <span class="kind">Body lotion</span>
         <p>5% niacinamide and swiftlet nest in a soft cherry blossom.</p>
       </article>
-      <article class="tile reveal" data-delay="2">
+      <article class="strip-item reveal" data-delay="2">
+        <div class="shot">
+          <picture><source srcset="assets/web/lotion-blaine.avif" type="image/avif"><source srcset="assets/web/lotion-blaine.webp" type="image/webp"><img src="assets/web/lotion-blaine.jpg" alt="Blaine Floral body lotion pump bottle among yellow flowers" width="900" height="1125" loading="lazy" decoding="async"></picture>
+        </div>
+        <h3>Blaine Floral</h3>
+        <span class="kind">Body lotion</span>
+        <p>10% niacinamide, the flagship of the range, with swiftlet nest.</p>
+      </article>
+      <article class="strip-item reveal">
         <div class="shot">
           <picture><source srcset="assets/web/serum-bright-petal.avif" type="image/avif"><source srcset="assets/web/serum-bright-petal.webp" type="image/webp"><img src="assets/web/serum-bright-petal.jpg" alt="Bright Petal body serum with calendula" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
-        <div class="meta"><h3>Bright Petal</h3><span class="kind">Body serum</span></div>
+        <h3>Bright Petal</h3>
+        <span class="kind">Body serum</span>
         <p>Calendula and sea water for skin that feels calm and cool.</p>
       </article>
-      <article class="tile reveal">
+      <article class="strip-item reveal" data-delay="1">
         <div class="shot">
           <picture><source srcset="assets/web/serum-classic-pink.avif" type="image/avif"><source srcset="assets/web/serum-classic-pink.webp" type="image/webp"><img src="assets/web/serum-classic-pink.jpg" alt="Classic Pink body serum with real flower petals" width="900" height="1125" loading="lazy" decoding="async"></picture>
         </div>
-        <div class="meta"><h3>Classic Pink</h3><span class="kind">Body serum</span></div>
+        <h3>Classic Pink</h3>
+        <span class="kind">Body serum</span>
         <p>Lightweight, fast to absorb, scented with sakura petals.</p>
       </article>
     </div>
@@ -1067,12 +1231,152 @@
     }
   });
 
+  // Every scroll- or pointer-driven effect registers through here, so one
+  // preference check governs the whole page and a new effect cannot forget to
+  // honour it. Nothing below this line has to test reduceMotion again.
+  function whenMotion(fn) {
+    if (reduceMotion) return;
+    document.documentElement.classList.add("motion");
+    fn();
+  }
+
+  // ------------------------- Scroll-progress engine -------------------------
+  // One primitive for every scroll-driven effect. A single shared
+  // requestAnimationFrame loop reads the rect of each registered element per
+  // frame, and a per-element IntersectionObserver decides which ones are near
+  // enough to be worth reading. Two consequences worth stating: the page never
+  // registers a scroll listener (GATES-BRAND B3), and a page at rest burns no
+  // frames because the loop is torn down when nothing is live.
+  //
+  //   "pin"   0 when a sticky section reaches the top of the viewport, 1 when
+  //           its bottom reaches the bottom. For sections taller than the
+  //           viewport that hold a sticky stage.
+  //   "pass"  0 as an element enters from the bottom of the viewport, 1 as it
+  //           leaves at the top. For ordinary content.
+  var scrollers = [];
+  var scrollerRaf = 0;
+
+  function scrollerTick() {
+    var vh = window.innerHeight;
+    for (var i = 0; i < scrollers.length; i++) {
+      var s = scrollers[i];
+      if (!s.live) continue;
+      var rect = s.el.getBoundingClientRect();
+      var pinned = s.mode === "pin";
+      // Travel is measured from where progress should read 0. A pinned section
+      // starts when its top reaches the top of the viewport; a passing element
+      // starts when its top reaches the *bottom*, which is a viewport further
+      // along, so the offset is added for "pass" and left alone for "pin".
+      var travelled = pinned ? -rect.top : vh - rect.top;
+      var span = pinned ? rect.height - vh : rect.height + vh;
+      var p;
+      if (span <= 0) {
+        // Degenerate section: shorter than the viewport on a pinned track.
+        p = travelled >= 0 ? 1 : 0;
+      } else {
+        p = travelled <= 0 ? 0 : travelled >= span ? 1 : travelled / span;
+      }
+      s.cb(p, rect);
+    }
+    scrollerRaf = window.requestAnimationFrame(scrollerTick);
+  }
+
+  function scrollerSync() {
+    var any = false;
+    for (var i = 0; i < scrollers.length; i++) {
+      if (scrollers[i].live) { any = true; break; }
+    }
+    if (any && !scrollerRaf) {
+      scrollerRaf = window.requestAnimationFrame(scrollerTick);
+    } else if (!any && scrollerRaf) {
+      window.cancelAnimationFrame(scrollerRaf);
+      scrollerRaf = 0;
+    }
+  }
+
+  function onScrollProgress(el, mode, cb) {
+    var item = { el: el, mode: mode, cb: cb, live: false };
+    scrollers.push(item);
+    new IntersectionObserver(function (entries) {
+      item.live = entries[0].isIntersecting;
+      scrollerSync();
+    }, { rootMargin: "40% 0px 40% 0px" }).observe(el);
+  }
+
+  // Writing a custom property every frame forces a style recalc whether or not
+  // the value actually moved, so values round to a half pixel and unchanged
+  // writes are dropped.
+  function pxWriter(el, name) {
+    var last = null;
+    return function (value) {
+      var v = Math.round(value * 2) / 2;
+      if (v === last) return;
+      last = v;
+      el.style.setProperty(name, v.toFixed(1) + "px");
+    };
+  }
+
+  // Same rounding discipline as pxWriter, but for a unitless number: --film-p
+  // feeds a scaleX() and must not carry a px suffix.
+  function numWriter(el, name) {
+    var last = null;
+    return function (value) {
+      var v = Math.round(value * 1000) / 1000;
+      if (v === last) return;
+      last = v;
+      el.style.setProperty(name, String(v));
+    };
+  }
+
+  // ------------------------- Film narrative -------------------------
+  // Phase C. Four typographic beats keyed to the film's own progress value, so
+  // they land on exactly the same scroll math the frames do. The copy lives in
+  // the markup (see .film-beats in the CSS) and is only ever faded here, which
+  // is why these numbers are the whole of the scripted half.
+  var beatEls = Array.prototype.slice.call(document.querySelectorAll(".film-beat"));
+  // Windows are fractions of the 0..1 track. They are written out rather than
+  // derived so the rhythm can be retimed by hand, and they never overlap, so
+  // exactly one beat is legible at a time.
+  var BEAT_WINDOWS = [
+    [0.06, 0.28],
+    [0.32, 0.54],
+    [0.58, 0.78],
+    [0.82, 0.97]
+  ];
+  var beatLast = [];
+  var filmStage = document.querySelector(".scrub-stage");
+  var writeFilmP = filmStage ? numWriter(filmStage, "--film-p") : null;
+
+  // Trapezoid envelope: rise, hold, fall. 0 outside the window, so a beat cannot
+  // be left half-visible at the ends of the track.
+  function beatAlpha(p, at, to) {
+    if (p <= at || p >= to) return 0;
+    var fade = (to - at) * 0.22;
+    if (p < at + fade) return (p - at) / fade;
+    if (p > to - fade) return (to - p) / fade;
+    return 1;
+  }
+
+  function filmBeats(p) {
+    for (var i = 0; i < beatEls.length; i++) {
+      var win = BEAT_WINDOWS[i];
+      var a = win ? beatAlpha(p, win[0], win[1]) : 0;
+      // Rounded to 0.02 steps: the long holds are where the redundant writes
+      // would otherwise pile up.
+      a = Math.round(a * 50) / 50;
+      if (beatLast[i] === a) continue;
+      beatLast[i] = a;
+      beatEls[i].style.opacity = String(a);
+      beatEls[i].style.transform = "translate3d(0," + ((1 - a) * 10).toFixed(1) + "px,0)";
+    }
+  }
+
   // ------------------------- Opening film -------------------------
-  // Scroll drives the film, with no scroll listener anywhere: an observer
-  // gates a requestAnimationFrame loop, which reads the section rect each
-  // frame. Desktop seeks the mp4; small or coarse-pointer viewports, and
-  // anyone asking to save data, draw pre-rendered sprite sheets onto a canvas
-  // instead, because seeking a video element on a phone visibly stutters.
+  // Scroll drives the film through the shared engine above, so it is the
+  // engine's first consumer rather than a private implementation. Desktop
+  // seeks the mp4; small or coarse-pointer viewports, and anyone asking to
+  // save data, draw pre-rendered sprite sheets onto a canvas instead, because
+  // seeking a video element on a phone visibly stutters.
   // Reduced motion and no-JS both collapse the pin in CSS, and the poster
   // carries the section on its own.
   var film = document.querySelector(".scrub");
@@ -1085,7 +1389,7 @@
   var FILM_SHEETS = 8;
   var filmSheets = [];
   var filmStarted = false;
-  var filmRaf = 0;
+  var filmP = 0;
   var filmSprites = window.matchMedia("(max-width: 1080px), (pointer: coarse)").matches ||
     !!(navigator.connection && navigator.connection.saveData);
   // Sprite sheets ship as AVIF with a WebP sibling. The format is held in one
@@ -1105,14 +1409,6 @@
       w: sheet.naturalWidth / FILM_COLS,
       h: sheet.naturalHeight / FILM_ROWS
     };
-  }
-
-  function filmProgress() {
-    var rect = film.getBoundingClientRect();
-    var travel = rect.height - window.innerHeight;
-    if (travel <= 0) return 1;
-    var passed = -rect.top;
-    return passed <= 0 ? 0 : passed >= travel ? 1 : passed / travel;
   }
 
   function filmDraw(idx) {
@@ -1142,52 +1438,143 @@
     }
   }
 
-  function filmTick() {
-    filmApply(filmProgress());
-    filmRaf = window.requestAnimationFrame(filmTick);
-  }
-
-  function filmLoad(n) {
+  // The engine hands progress to the callback each tick. Sheets arrive
+  // asynchronously between ticks, so the latest value is kept here for the
+  // onload handlers to re-seek against.
+  function filmLoad(n, done) {
     var img = new Image();
-    img.onload = function () { filmApply(filmProgress()); };
+    img.onload = function () { filmApply(filmP); if (done) done(); };
     img.onerror = function () {
       if (filmFmt === "avif") {
         filmFmt = "webp";
-        filmLoad(n);
+        filmLoad(n, done);
         return;
       }
       filmSheets[n] = null;
+      if (done) done();
     };
     img.src = filmSrc(n, filmFmt);
     filmSheets[n] = img;
+  }
+
+  // ------------------------- Progressive sprite loading -------------------------
+  // Phase G. The sprite path used to request all eight sheets at once. Each is
+  // 2880x1080, so that is 24.9 megapixels of image decode, and Lighthouse put
+  // it at ~1.6s of main-thread time on a throttled phone against 0.16s on
+  // desktop, where the mp4 branch runs instead. It was the single largest cost
+  // on the page and the whole reason mobile scored 76.
+  //
+  // Sheets now load one at a time, in the order the reader will actually reach
+  // them, starting from the one holding the current frame. One sheet covers 24
+  // frames, or an eighth of the pin, so the opening is correct as soon as the
+  // first lands, and the rest arrive during the scroll rather than blocking it.
+  // If the reader outruns the queue, the sheet they now need jumps the line.
+  // A frame whose sheet has not landed holds the previous frame instead of
+  // going blank, and the onload re-seek corrects it.
+  var filmQueued = [];
+  var filmPending = 0;
+
+  function filmSheetFor(p) {
+    var idx = Math.floor(p * FILM_FRAMES / FILM_CELLS);
+    return Math.max(0, Math.min(FILM_SHEETS - 1, idx));
+  }
+
+  function filmPump() {
+    if (filmPending > 0 || !filmQueued.length) return;
+    var n = filmQueued.shift();
+    filmPending++;
+    filmLoad(n, function () {
+      filmPending--;
+      filmPump();
+    });
+  }
+
+  function filmIdle() {
+    // The timeout is what keeps the queue moving: requestIdleCallback will not
+    // fire while the main thread is busy, which is exactly when it is needed.
+    if (window.requestIdleCallback) window.requestIdleCallback(filmPump, { timeout: 400 });
+    else window.setTimeout(filmPump, 16);
+  }
+
+  function filmPromote(n) {
+    var i = filmQueued.indexOf(n);
+    if (i > 0) {
+      filmQueued.splice(i, 1);
+      filmQueued.unshift(n);
+    }
   }
 
   function filmStart() {
     if (filmStarted) return;
     filmStarted = true;
     if (filmSprites) {
-      for (var n = 0; n < FILM_SHEETS; n++) filmLoad(n);
+      var first = filmSheetFor(filmP);
+      for (var k = 0; k < FILM_SHEETS; k++) filmQueued.push((first + k) % FILM_SHEETS);
+      filmIdle();
     } else {
       filmVideo.preload = "auto";
       filmVideo.load();
     }
   }
 
-  if (film && filmVideo && filmCanvas && !reduceMotion) {
-    if (filmSprites) filmCanvas.hidden = false;
-    new IntersectionObserver(function (entries) {
-      var on = entries[0].isIntersecting;
-      if (on) filmStart();
-      if (filmRaf) {
-        window.cancelAnimationFrame(filmRaf);
-        filmRaf = 0;
-      }
-      if (on) {
-        filmApply(filmProgress());
-        filmRaf = window.requestAnimationFrame(filmTick);
-      }
-    }, { rootMargin: "40% 0px 40% 0px" }).observe(film);
+  if (film && filmVideo && filmCanvas) {
+    whenMotion(function () {
+      if (filmSprites) filmCanvas.hidden = false;
+      // filmStart is idempotent, so the engine's first tick both begins
+      // loading the media and seeks it, replacing the old bespoke observer.
+      onScrollProgress(film, "pin", function (p) {
+        filmP = p;
+        if (!filmStarted) filmStart();
+        else if (filmSprites) filmPromote(filmSheetFor(p));
+        filmApply(p);
+        filmBeats(p);
+        if (writeFilmP) writeFilmP(p);
+      });
+    });
   }
+
+  // ------------------------- Pointer layer -------------------------
+  // pointermove is not a scroll listener, so this sits inside B3. Every effect
+  // is transform-only, and the whole layer is skipped on coarse pointers,
+  // where a touch drag would otherwise drag the buttons along with the finger.
+  whenMotion(function () {
+    var heroFigure = document.querySelector(".hero-figure");
+    if (heroFigure) {
+      var heroImg = heroFigure.querySelector(".frame img");
+      if (heroImg) {
+        var writePy = pxWriter(heroImg, "--py");
+        // The image drifts against the scroll, and slowest through the middle
+        // of the section where the reader's eye actually rests.
+        onScrollProgress(heroFigure, "pass", function (p) {
+          writePy((p - 0.5) * 36);
+        });
+      }
+    }
+
+    if (window.matchMedia("(pointer: fine)").matches) {
+      var MAGNET = 7; // px of travel at the far corner of the button
+      var magnet = null;
+      document.addEventListener("pointermove", function (e) {
+        var hit = e.target && e.target.closest ? e.target.closest(".btn") : null;
+        if (hit !== magnet) {
+          if (magnet) {
+            magnet.style.setProperty("--mx", "0px");
+            magnet.style.setProperty("--my", "0px");
+          }
+          magnet = hit;
+        }
+        if (!magnet) return;
+        // Read before writing. The rect is measured per event rather than
+        // cached on hover, because the buttons move with the page and a cached
+        // box would drift under the cursor.
+        var r = magnet.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        var dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        magnet.style.setProperty("--mx", (dx * MAGNET).toFixed(1) + "px");
+        magnet.style.setProperty("--my", (dy * MAGNET).toFixed(1) + "px");
+      }, { passive: true });
+    }
+  });
 
   // Outbound click tracking (PRD E4). Keys stay byte-identical to the UTM
   // taxonomy so GA4 history continues across the redesign.

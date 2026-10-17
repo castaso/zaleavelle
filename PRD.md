@@ -20,7 +20,7 @@ zaleavelle is an Indonesian DTC body care brand served by a single-file static l
 |---|------|--------|--------|
 | G1 | Increase landing-to-shop clicks | Click-through rate from CASTADOO CTAs (`data-cta="odoo"`) to `beli.zaleavelle.com/shop` | ≥ 8% of `#shop` banner views |
 | G2 | Strengthen brand recall | Time on page + return visits (GA4) | ≥ 90s avg session, ≥ 15% return rate within 30 days |
-| G3 | Improve SEO + mobile performance | Lighthouse Performance score (mobile), LCP, CLS | ≥ 90 score, LCP < 2.5s, CLS < 0.1 |
+| G3 | Improve SEO + mobile performance | Lighthouse Performance score (mobile), LCP, CLS | ≥ 90 score, LCP < 2.5s, CLS < 0.1 — **met except LCP, which misses by 40ms. Measured Phase G: 93 mobile / 100 desktop, CLS 0.000, LCP 2.54s mobile / 0.61s desktop** |
 | G4 | Page matches the brand system | `python tools/check.py` | 41 of 41 checks pass |
 
 ---
@@ -167,7 +167,9 @@ Replaces the v2.6 deep-rose system. Every pair below is asserted by `tools/check
 
 **Shape rule:** no tilt, no offset shadows, no rotated stickers. The v2.6 "tilt plus hard offset shadow" system is retired.
 
-**Design dials:** `DESIGN_VARIANCE 7` / `MOTION_INTENSITY 5` / `VISUAL_DENSITY 3`, down from 9/8/3 in v2.6.
+**Design dials:** `DESIGN_VARIANCE 7` / `MOTION_INTENSITY 8` / `VISUAL_DENSITY 3`.
+
+`MOTION_INTENSITY` moved **5 → 8 in Phase G**, on the owner's instruction to push for an Awwwards-calibre revamp. This is an amendment, not a silent narrowing: variance and density are unchanged, and the increase is carried entirely by the opening film, which now carries four typographic beats and a progress rule on the same scroll value, plus hero parallax and magnetic CTAs. The amendment was accepted only after the cost it implies was measured rather than assumed — see 9.2, where the motion budget and the payload it spends were fixed first (Phase A) and the resulting CPU cost was then measured and fixed (Phase G). `MOTION_INTENSITY 8` on a page with no scroll listeners, no third-party JS and a 2.25 MB mobile payload is only honest because both of those were bounded first.
 
 ---
 
@@ -196,16 +198,55 @@ the page actually references rather than from everything sitting in `assets/`.
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| HTML + CSS + JS | < 500 KB | 57 KB, zero third-party JS |
+| HTML + CSS + JS | < 500 KB | 71 KB, zero third-party JS |
 | Fonts | — | 88 KB, 3 woff2, preloaded |
-| Images, desktop | — | 322 KB (poster 58 + 7 photographs 264) |
+| Images, desktop | — | 338 KB (poster 58 + 8 photographs 280) |
 | Film, desktop | — | 988 KB mp4, 960x540 |
-| **Desktop total** | **< 2.0 MB** | **1457 KB** |
-| Images, mobile | — | 322 KB (poster 58 + 7 photographs 264) |
+| **Desktop total** | **< 2.0 MB** | **1492 KB** |
+| Images, mobile | — | 338 KB (poster 58 + 8 photographs 280) |
 | Film, mobile | — | 1781 KB across 8 AVIF sprite sheets |
-| **Mobile total** | **< 2.5 MB** | **2250 KB** |
-| LCP | < 2.5s | Poster is 58 KB AVIF and preloaded; not field-measured in a lab |
-| CLS | < 0.1 | Every image carries explicit `width`/`height` |
+| **Mobile total** | **< 2.5 MB** | **2284 KB** |
+| CLS | < 0.1 | **0.000 measured** |
+| LCP | < 2.5s | **2.54s measured, mobile. 0.61s desktop** |
+| Lighthouse performance | ≥ 90 | **93 mobile, 100 desktop** |
+
+**Field Lighthouse, Phase G.** This row said "Not field-measured" for every
+version of the page until now. Lighthouse 13.5.0, served over a local HTTP
+server, mobile emulation and the desktop preset:
+
+| run | perf | a11y | best-practices | SEO | LCP | TBT | CLS | Speed Index |
+|---|---|---|---|---|---|---|---|---|
+| mobile before Phase G | 76 | 96 | 100 | 100 | 3.18s | 679ms | 0.000 | 2.4s |
+| **mobile after** | **93** | 96 | 100 | 100 | **2.54s** | **226ms** | 0.000 | **1.7s** |
+| desktop before | 100 | 96 | 100 | 100 | 0.68s | 0ms | 0.000 | 0.5s |
+| **desktop after** | **100** | 96 | 100 | 100 | **0.61s** | 0ms | 0.000 | 0.6s |
+
+**G3 is met except LCP, which misses by 40ms.** The score target is cleared with
+room (93 against 90) and CLS is exactly zero, which is the `width`/`height` guard
+in gate B15 doing its job. LCP at 2.54s against a "< 2.5s" target is a miss and
+is recorded as one. Its breakdown says the remainder is not the page's: time to
+first byte is the largest term at 411ms under emulated slow-4G, resource load is
+55ms, and discovery is already optimal (`fetchpriority=high` applied, request
+discoverable in the initial document, not lazy-loaded). The LCP element is the
+film poster at 412x232, already preloaded as AVIF at 58 KB.
+
+**What Phase G actually fixed.** Mobile scored 76 because the sprite path
+requested all eight sheets at once. Each sheet is 2880x1080, so that is 24.9
+megapixels of image decode, and Lighthouse attributed ~1.6s of main-thread time
+to it against 0.16s on desktop, where the mp4 branch runs instead. The loader now
+fetches sheets one at a time in the order the reader will reach them. Main-thread
+**total** barely moved (2976ms → 2840ms), because the decode work is
+irreducible; total **blocking** time fell 679ms → 226ms, because the work is no
+longer contending with input. That is the whole finding: batching eight decodes
+into one burst was the defect, not the decoding.
+
+**One number in the report is an artefact and is not counted.** Lighthouse's
+`cache-insight` reported 2171 KiB of cacheable savings, all of it the sprite
+sheets. That is the test server, which sends no cache headers, not the page. On a
+host that sets long-lived `Cache-Control` for `assets/web/**` it disappears.
+The one deployment requirement this phase does surface is that the real host must
+serve the sprite sheets with a long max-age, because they are 74% of the mobile
+payload and are immutable per build.
 
 **Corrected in Phase A.** The previous line read "607 KB of WebP across 8 files"
 and that figure was wrong in a way that mattered: it counted the eight
