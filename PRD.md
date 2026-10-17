@@ -169,7 +169,8 @@ Replaces the v2.6 deep-rose system. Every pair below is asserted by `tools/check
 
 **Design dials:** `DESIGN_VARIANCE 7` / `MOTION_INTENSITY 8` / `VISUAL_DENSITY 3`.
 
-`MOTION_INTENSITY` moved **5 → 8 in Phase G**, on the owner's instruction to push for an Awwwards-calibre revamp. This is an amendment, not a silent narrowing: variance and density are unchanged, and the increase is carried entirely by the opening film, which now carries four typographic beats and a progress rule on the same scroll value, plus hero parallax and magnetic CTAs. The amendment was accepted only after the cost it implies was measured rather than assumed — see 9.2, where the motion budget and the payload it spends were fixed first (Phase A) and the resulting CPU cost was then measured and fixed (Phase G). `MOTION_INTENSITY 8` on a page with no scroll listeners, no third-party JS and a 2.25 MB mobile payload is only honest because both of those were bounded first.
+`MOTION_INTENSITY` moved **5 → 8 in Phase G**, on the owner's instruction to push for an Awwwards-calibre revamp. This is an amendment, not a silent narrowing: variance and density are unchanged, and the increase is carried entirely by the opening film, which now carries four typographic beats and a progress rule on the same scroll value, plus hero parallax and magnetic CTAs. The amendment was accepted only after the cost it implies was measured rather than assumed — see 9.2, where the motion budget and the payload it spends were fixed first (Phase A) and the resulting CPU cost was then measured and fixed (Phase G). `MOTION_INTENSITY 8` on a page with no scroll listeners, no third-party JS and a 2.32 MB
+mobile payload is only honest because both of those were bounded first.
 
 ---
 
@@ -198,14 +199,14 @@ the page actually references rather than from everything sitting in `assets/`.
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| HTML + CSS + JS | < 500 KB | 71 KB, zero third-party JS |
+| HTML + CSS + JS | < 500 KB | 76 KB, zero third-party JS |
 | Fonts | — | 88 KB, 3 woff2, preloaded |
-| Images, desktop | — | 338 KB (poster 58 + 8 photographs 280) |
+| Images, desktop | — | 376 KB (poster 58 + 9 photographs 318) |
 | Film, desktop | — | 988 KB mp4, 960x540 |
-| **Desktop total** | **< 2.0 MB** | **1492 KB** |
-| Images, mobile | — | 338 KB (poster 58 + 8 photographs 280) |
+| **Desktop total** | **< 2.0 MB** | **1529 KB** |
+| Images, mobile | — | 376 KB (poster 58 + 9 photographs 318) |
 | Film, mobile | — | 1781 KB across 8 AVIF sprite sheets |
-| **Mobile total** | **< 2.5 MB** | **2284 KB** |
+| **Mobile total** | **< 2.5 MB** | **2322 KB** |
 | CLS | < 0.1 | **0.000 measured** |
 | LCP | < 2.5s | **2.54s measured, mobile. 0.61s desktop** |
 | Lighthouse performance | ≥ 90 | **93 mobile, 100 desktop** |
@@ -263,6 +264,15 @@ was 4.86 MB. Both numbers are now asserted by gate B8b rather than described.
 | Film poster | WebP 78 KB | AVIF 58 KB |
 | Mobile total | ~5.5 MB | 2250 KB |
 | Desktop total | ~3.0 MB | 1457 KB |
+
+The two total rows above are left as they measured during Phase A, because that
+is what this table is: a record of that phase. The live figure has drifted since,
+and it should be read from 9.2 rather than from here. The drift is almost entirely
+Phase D, which added a fifth tile and re-cropped `serum-bright-petal`; Phase F's
+sixth tile adds 37 KB on top. Re-measured the same way Phase A measured - the
+files the page actually references, on the AVIF rung, not everything in
+`assets/` - the sprite block still comes out at exactly 1781 KB, which is what
+confirms the method rather than the arithmetic.
 
 AVIF was chosen on measurement, not fashion. On this footage it encoded faster
 than WebP as well as smaller, because a graded, soft, bokeh-heavy clip is exactly

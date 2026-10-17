@@ -20,7 +20,7 @@ one of the three that no engine lacks.
 import glob
 import os
 
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "assets", "web")
@@ -31,8 +31,8 @@ FB = sorted(glob.glob(os.path.join(ROOT, "assets/BODY LOTION/FEMININE BLUSH/*.pn
 # (display type, benefit icons, a Main Ingredients strip, social row, BPOM
 # stamp). The left 44% is a standalone pump bottle on warm cream with yellow
 # flowers and no baked text at all, which puts it on the champagne/nude tokens.
-# This is the only fifth-variant shot recoverable from the existing files;
-# Emerald Sweet and Fresh Tickled exist solely as off-palette blue and pink
+# This is the only fifth-variant shot recoverable from the existing files at the
+# time of writing; Emerald Sweet (Phase F) and Fresh Tickled exist solely as
 # marketing frames. Verified at 0.47 (a dark object intrudes on the right edge)
 # and at 0.42 (needlessly tight), so 0.44.
 BLAINE_PRODUCT = os.path.join(ROOT, "assets/BODY LOTION/BLAINE FLORAL/Generated image 1 (3).png")
@@ -48,6 +48,18 @@ JOBS = [
     ("hero-collection", COLLECTION, (0.06, 0.00, 0.94, 1.00), (1240, 930), 74),
     ("wash-flavia", os.path.join(ROOT, "assets/BODY WASH/FLAVIA FLORAL/29.jpg"),
      (0.28, 0.10, 0.62, 0.95), (900, 1125), 82),
+    # Phase F: sixth variant, and the one the FAQ already recommends for
+    # sensitive skin while the range pictures it nowhere. Recovered from a
+    # marketing composite (25.jpg). Measured, not eyeballed: the baked
+    # Indonesian benefit copy reaches x=316 and the bottle's own left edge sits
+    # at x=302, so the only text-free window that still holds the whole bottle
+    # starts at x=291 -- an 11px margin, which is why the bottle sits close to
+    # the left edge. x stops at 828 to clear the right-hand callout; y stops at
+    # 1235 to clear the mirrored "260 mL | 8.8 FL OZ" reflection on the plinth.
+    # The ground is a mid green (#B2D0AF, sat 0.14) where every existing tile
+    # sits at sat 0.08-0.14 but lighter, so it is graded onto the set.
+    ("wash-emerald-sweet", os.path.join(ROOT, "assets/BODY WASH/EMERALD SWEET GREEN/25.jpg"),
+     (0.2694, 0.3704, 0.7667, 0.9148), (900, 1125), 82, (0.72, 1.09)),
     ("lotion-blush", FB, (0.28, 0.00, 0.95, 0.95), (900, 1125), 82),
     ("serum-bright-petal", os.path.join(ROOT, "assets/BODY SERUM/BRIGHT PETAL/18.jpg"),
      # Re-cropped in Phase D. The original (0.20, 0.16, 0.96, 0.90) failed the
@@ -72,8 +84,13 @@ JOBS = [
 ]
 
 
-def crop_to(im, box, size):
-    """Centre-crop `im` to the `box` fractions, then cover-fit onto `size`."""
+def crop_to(im, box, size, enhance=None):
+    """Centre-crop `im` to the `box` fractions, then cover-fit onto `size`.
+
+    `enhance` is an optional (saturation, brightness) pair applied after the
+    cover-fit, for frames whose ground is measurably off-palette next to the
+    existing tiles. Only used where measurement justified it; see findings.md.
+    """
     w, h = im.size
     im = im.crop((int(box[0] * w), int(box[1] * h), int(box[2] * w), int(box[3] * h)))
     tw, th = size
@@ -82,7 +99,12 @@ def crop_to(im, box, size):
                    Image.LANCZOS)
     left = (im.width - tw) // 2
     top = (im.height - th) // 2
-    return im.crop((left, top, left + tw, top + th))
+    im = im.crop((left, top, left + tw, top + th))
+    if enhance:
+        sat, bright = enhance
+        im = ImageEnhance.Color(im).enhance(sat)
+        im = ImageEnhance.Brightness(im).enhance(bright)
+    return im
 
 
 # The hero is the LCP element, so it gets a tighter byte budget than the rest.
@@ -93,8 +115,10 @@ AVIF_Q = 50
 def main():
     os.makedirs(OUT, exist_ok=True)
     total = {"avif": 0, "webp": 0, "jpg": 0}
-    for name, src, box, size, q in JOBS:
-        im = crop_to(Image.open(src).convert("RGB"), box, size)
+    for job in JOBS:
+        name, src, box, size, q = job[:5]
+        enhance = job[5] if len(job) > 5 else None
+        im = crop_to(Image.open(src).convert("RGB"), box, size, enhance)
         for ext, fmt, kwargs in (
             ("avif", "AVIF", {"quality": AVIF_Q, "speed": 6}),
             ("webp", "WEBP", {"quality": q, "method": 6}),

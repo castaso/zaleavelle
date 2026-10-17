@@ -625,7 +625,7 @@
      2.05rem because 39.2px pushed "Feminine Blush Pink" onto a second line in a
      296px column, which left that one item taller than its four neighbours and
      ragged along the bottom of the strip. The two-line min-height keeps the
-     kind, the note and the baseline aligned across all five either way. */
+     kind, the note and the baseline aligned across all six either way. */
   .strip-item h3 {
     font-family: var(--font-display); font-weight: 400;
     font-size: clamp(1.7rem, 2.6vw, 2.05rem);
@@ -980,10 +980,10 @@
     </div>
   </div>
 
-  <!-- 3. The range. Five variants, five strips, no prices. -->
+  <!-- 3. The range. Six variants shown of seven in the catalogue, no prices. -->
   <section class="band wrap" id="range">
     <div class="head reveal">
-      <h2 class="display">Five ways to <em>start</em></h2>
+      <h2 class="display">Six ways to <em>start</em></h2>
       <p class="lede">Pick a scent, not a routine. Every variant follows the same three-step order, so anything you choose works with what you already own.</p>
     </div>
     <div class="filmstrip" tabindex="0" role="region" aria-label="The range">
@@ -1026,6 +1026,14 @@
         <h3>Classic Pink</h3>
         <span class="kind">Body serum</span>
         <p>Lightweight, fast to absorb, scented with sakura petals.</p>
+      </article>
+      <article class="strip-item reveal" data-delay="2">
+        <div class="shot">
+          <picture><source srcset="assets/web/wash-emerald-sweet.avif" type="image/avif"><source srcset="assets/web/wash-emerald-sweet.webp" type="image/webp"><img src="assets/web/wash-emerald-sweet.jpg" alt="Emerald Sweet green body wash bottle" width="900" height="1125" loading="lazy" decoding="async"></picture>
+        </div>
+        <h3>Emerald Sweet</h3>
+        <span class="kind">Body wash</span>
+        <p>Vita 8 Complex, no intensive brightening. The gentlest one we make.</p>
       </article>
     </div>
   </section>

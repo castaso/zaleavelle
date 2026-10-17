@@ -963,3 +963,87 @@ now asserts it, mutation-tested by nudging the breakpoint off 1080px.
 credentials existed. It stayed on the machine and nothing was committed, but the
 right check would have been to test for the presence of `credentials.json` and
 never invoke the printing command at all. Noted so it is not repeated.
+
+## Phase F: the sixth variant (2026-10-18)
+
+Phase F was to fill the range back out. Two variants are still missing from the
+filmstrip: Fresh Tickled Pink and Emerald Sweet, both body washes. Both exist on
+disk only as Indonesian marketing composites, and both were written off earlier
+as "off-palette blue and pink marketing frames". That description turned out to
+be half wrong, and the half that was wrong was the recoverable half.
+
+### The generation route is closed, and the fallback is better than the blocker
+
+`higgsfield product-photoshoot create` returns `job_minimum_basic_plan_required`.
+The account authenticates fine; it is a free plan with 0 credits, so image
+generation needs a Basic plan or above. Rather than wait on billing, the existing
+raw frames were surveyed properly. That was the right call and it found a
+sixth tile, which the paid route would also have found but not for some time.
+
+### The recoverable geometry is narrower than it looks, and only measurement says so
+
+`EMERALD SWEET GREEN/25.jpg` is 1080x1350 and carries baked Indonesian benefit
+copy: a logo and four claim lines at the top left reaching x=317, a callout icon
+at x=852-913 y=350-411 with its text running to x=1026, and a second callout at
+the left reaching x=316. The bottle's own gel silhouette starts at x=302.
+
+So the callout text and the bottle overlap in x. The only window that clears the
+text and still holds the whole bottle starts at x=291, an 11px margin, and that
+is why the shipped tile sits close to its left edge. x stops at 828 to clear the
+right-hand callout; y stops at 1235 to clear the *mirrored* "260 mL | 8.8 FL OZ"
+reflection on the plinth, which is invisible in a thumbnail and obvious at full
+size.
+
+An exhaustive 4:5 search over every box confirms no overlay-free box holds the
+whole bottle at a comfortable margin. The best clean window holds 78% of the
+bottle core and drops the pump. That is why this crop is tight, not lazy.
+
+### The label is not baked text, and the distinction matters
+
+"Emerald Sweet / GREEN BODY WASH" is printed on the physical bottle, so it is
+packaging and stays. The callouts printed *around* the bottle are the defect.
+Conflating the two is what makes a recoverable frame look unrecoverable.
+
+### I graded against a standard stricter than the shipped set
+
+The first crop I picked was rejected because "enriched with Vita 8 Complex" was
+clipped mid-glyph at the bottom edge and the framing was a label close-up. Both
+hold. But then I compared against the live tiles rather than against an ideal:
+
+- `wash-flavia.jpg`, shipped since Phase D, is the same label close-up, and
+  clips "260 mL | 8.8 FL OZ" at the bottom edge.
+- `serum-classic-pink.jpg` is a lifestyle shot with the pump detached, carrying
+  "ith Real / ower / etals" clipped mid-word down its left edge. That is baked
+  marketing copy, on the live site, and it is worse than anything I rejected.
+
+**The new tile is cleaner than at least one tile already in production.** The
+real defect here is not the sixth variant; it is `serum-classic-pink`, and it has
+been live through four phases without a gate catching it, because no gate can
+read pixels. That is logged as a finding rather than silently re-cropped, because
+changing a shipped tile is an owner-visible call.
+
+### Thumbnail review is not review
+
+The crop looked clean in a 230px contact sheet and had two defects at 900px: a
+clipped line of text at the bottom, and a hard seam where the crop cut the gel
+line. Every pixel judgement in this phase was made twice, at thumbnail and at
+export size, and only the second one counted. The gate harness passes 75 of 75
+and none of those 75 can see an image.
+
+### The payload gate had gone stale without turning red
+
+B8b's evidence still read `desktop 1457 / mobile 2250` with `html 57 + page 264`,
+a state that stopped being true when Phase D added the fifth tile and re-cropped
+`serum-bright-petal`. The gate asserts a ceiling, not an equality, so it stayed
+green over a number that was wrong by 73 KB. Corrected to `desktop 1529 /
+mobile 2322`. The sprite block re-measures at exactly 1781 KB, matching the
+original measurement, which is what makes the correction trustworthy rather than
+a fresh guess. Both totals remain inside the 2.0 MB and 2.5 MB budgets.
+
+### Fresh Tickled is genuinely blocked
+
+Not for want of looking. `22/31/32/33.jpg` were all checked: `31` grades toward
+dusty rose but keeps dark-red callout fragments, `saturation=0.3` goes muddy,
+`32` is a labelled splash rather than a product portrait, and `22`/`33` are
+marketing composites of the same kind. There is no text-free product window in
+any of them. This one needs the Basic plan, or an owner decision to generate.
