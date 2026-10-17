@@ -877,3 +877,89 @@ have been.
   third-party requests on mobile. Left alone deliberately: replacing them with
   hand-drawn SVG would mean hand-rolling icons, which the design skill bans, and
   they are 19px and lazy. Noted rather than changed.
+
+## Phase F is blocked, and the two carried items are not
+
+### Phase F: blocked on a paid plan, not on credentials
+
+I said I would verify credentials before spending anything, so I did.
+
+```
+higgsfield --version            1.1.23
+higgsfield auth token           <present>
+~/.config/higgsfield/credentials.json   263 bytes
+higgsfield workspace list       bc10868d-...  Private  free  0 credits
+higgsfield product-photoshoot create ...
+  Error: {"error_type":"job_minimum_basic_plan_required"}
+```
+
+Auth is fine. The account is a **free plan with 0 credits**, and the photoshoot
+backend requires Basic or above. That is an external billing gate, so Phase F
+stops here.
+
+What was deliberately **not** done to route around it:
+
+- The range stays **5 of 7**. Inventing two product images or promoting the
+  off-palette blue and pink marketing frames would put the page back over the
+  wall that Phase A measured them against.
+- No placeholder, no AI stand-in presented as photography of the product.
+- The one workspace setting I changed to run the test was reverted, so the CLI
+  is exactly as I found it. Restoring it later is one command,
+  `higgsfield workspace set bc10868d-0036-42e5-8749-7e75518ccd94`.
+
+The generation is scripted down to the point where it can run: two `product_shot`
+jobs at `4:5`, warm alabaster ground, sage and petal-pink botanicals, and an
+explicit "absolutely no text, no logo, no lettering, no typography anywhere in
+the frame". The no-text clause is not decoration. It is the Phase D finding, and
+an AI-rendered bottle label would reintroduce exactly the defect that was just
+fixed in `serum-bright-petal.jpg`. Both bottles are meant to be **unlabelled**,
+with the HTML `h3` carrying the variant name.
+
+### filmPromote: proven, and the prediction was wrong
+
+Phase G shipped the outrun-reorder path unexercised and said so. It is now
+exercised.
+
+The probe jumps to 90% of the pin on `DOMContentLoaded`, before the queue can
+finish. Sheet requests came back in this order:
+
+```
+0, 1, 2, 3, 4, 6, 5, 7
+```
+
+That `6` before `5` is the whole result. Without promotion the queue is strictly
+sequential and `filmPump` shifts in order, so an inversion is only possible if
+`filmPromote` moved something. The landed position was `--film-p: 0.859`, and
+`floor(0.859 x 192 / 24) = 6`, so sheet 6 was precisely the sheet the reader
+needed. It jumped a queued sheet to get there. All 8 still fetched, none dropped,
+`#film` reached `scrub playing`, zero errors.
+
+The prediction I wrote for this test expected `sheet-7` first, and it was wrong
+about which frame 90% actually lands on: the scroll settles slightly short of the
+requested offset, 0.859 rather than 0.900, and that crosses a sheet boundary.
+The prediction was the weak part, not the implementation. Reading the inversion
+and the landed position together is the actual evidence.
+
+### A scriptless phone now has navigation
+
+Below 1080px the drawer is the only navigation and it is opened by script, so
+without JS a phone visitor had every word of the page and no way to move between
+sections. B18 fixed the content; this fixed the navigation.
+
+The noscript override makes the drawer a plain inline list and hides the toggle.
+It also drops the sticky behaviour, which is the part worth thinking about: the
+drawer is six links plus a CTA, so keeping it sticky would have put a roughly
+400px header over a phone screen permanently. A header that scrolls away is the
+honest no-JS behaviour. The `[hidden]` override needs `!important` because the
+main sheet gives that attribute a `display: none` that it has to beat.
+
+Verified by screenshot at 390x844 with every script stripped: wordmark, all six
+links with rules, and the Shop now CTA, all rendering above the film. Gate B18b
+now asserts it, mutation-tested by nudging the breakpoint off 1080px.
+
+### On printing a credential
+
+`higgsfield auth token` prints the token to stdout, and I ran it to check whether
+credentials existed. It stayed on the machine and nothing was committed, but the
+right check would have been to test for the presence of `credentials.json` and
+never invoke the printing command at all. Noted so it is not repeated.

@@ -306,6 +306,21 @@ check("B18", "noscript restores reveal visibility",
       if noscript and ".reveal" in noscript.group(1)
       else "MISSING: scriptless visitors see an empty page")
 
+# B18 covers the content. This covers the navigation: below 1080px the drawer is
+# the only nav and it is opened by script, so without an override a scriptless
+# phone visitor had every word of the page and no way to move between sections.
+if noscript:
+    ns = noscript.group(1)
+    mobile_nav = re.search(r"@media\s*\(max-width:\s*1080px\)\s*\{(.*?)\}\s*\}", ns, re.S)
+    nav_block = mobile_nav.group(1) if mobile_nav else ""
+    check("B18b", "noscript restores mobile navigation",
+          bool(nav_block) and ".drawer" in nav_block and "position: static" in nav_block
+          and "nav-toggle" in nav_block,
+          "drawer becomes an inline list and the toggle is hidden"
+          if ".drawer" in nav_block else "MISSING: scriptless phone has no navigation")
+else:
+    check("B18b", "noscript restores mobile navigation", False, "no noscript block")
+
 # ------------------------------------------------- craft (B19, B20, B21)
 # The stylesheet on its own. MARKUP deliberately strips <style> so the image
 # scan cannot match prose in a comment, which makes it the wrong input for gates

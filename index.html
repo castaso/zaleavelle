@@ -844,6 +844,31 @@
        gap survived so long. Progressive enhancement means the content is the
        default state and the animation is the enhancement, not the reverse. */
     .reveal { opacity: 1; transform: none; }
+    /* Phase G. Below 1080px the drawer is the only navigation, and it is
+       opened by script. Without script it stayed hidden and a phone visitor
+       had every word of the page and no way to move between sections. Here it
+       becomes a plain inline list and the sticky behaviour is dropped with it,
+       because a 400px sticky header covering a phone screen is worse than a
+       header that simply scrolls away. The [hidden] override needs !important
+       because the main sheet gives it a display of none that this must beat. */
+    @media (max-width: 1080px) {
+      .nav { position: static !important; }
+      .nav::before { display: none !important; }
+      .nav-toggle { display: none !important; }
+      .drawer, .drawer[hidden] {
+        display: flex !important;
+        position: static !important;
+        inset: auto !important;
+        transform: none !important;
+        z-index: auto !important;
+        overflow: visible !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        padding: 0 2.25rem 1.5rem !important;
+      }
+      .drawer li { list-style: none; }
+      .drawer .btn { width: 100%; margin-top: 1.25rem; }
+    }
   </style>
 </noscript>
 </head>

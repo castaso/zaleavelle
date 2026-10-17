@@ -143,6 +143,18 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-13.
   EXPECT: both beat pairs at or above 4.5:1
   EVIDENCE: line `#F2EEE6` on `#474747` = 8.03:1, label `#D8C9C1` on `#474747` = 5.77:1. `#474747` is 72% black over pure white, the brightest background the scrim can produce over any pixel of footage. **The scrim started at 66%, where `#D8C9C1` measured 4.49:1 and failed.** The label is 0.68rem, so it needs the full 4.5 and no large-text allowance; the scrim moved to 72% rather than the label moving to a new colour, because `#D8C9C1` is already the footer meta tone and inventing a near-duplicate for one label would be colour drift
 
+- [x] B18b: The noscript block restores mobile navigation
+  CHECK: `python tools/check.py`, plus a rendered no-JS capture at 390x844
+  EXPECT: a max-width:1080px override in `<noscript>` that unhides the drawer, makes it static and hides the toggle
+  EVIDENCE: override present, mutation-tested by moving it off the 1080px breakpoint. Below 1080px the drawer is the **only** navigation and it is opened by script, so without this a scriptless phone visitor had every word of the page and no way to move between sections. The override turns the drawer into a plain inline list and drops the sticky behaviour with it, because a 400px sticky header over a phone screen is worse than a header that scrolls away. Confirmed by screenshot at 390x844 with every script stripped: wordmark, all six links with rules, and the Shop now CTA all render above the film. The `[hidden]` override needs `!important` because the main sheet gives that attribute a `display: none` it must beat
+
+## Film loading, verified
+
+- [x] `filmPromote` reorders the queue when the reader outruns it
+  CHECK: REA browser scenario at 390x844 against a probe that jumps to 90% of the pin on `DOMContentLoaded`
+  EXPECT: the sheet holding the landed-on frame is fetched ahead of any earlier sheet that is still queued
+  EVIDENCE: sheet request order came back **0, 1, 2, 3, 4, 6, 5, 7** — a genuine inversion, and without promotion the queue is strictly sequential so `6` before `5` can only come from `filmPromote`. The landed position was `--film-p: 0.859`, and `floor(0.859 x 192 / 24) = 6`, so sheet 6 was exactly the right sheet to promote. All 8 sheets still requested, none dropped, `#film` at `scrub playing`, zero page errors. **This closes a gap Phase G left open**, where all 8 sheets landed inside the initial 3s wait and the outrun path never executed. The first prediction written for this test expected `sheet-7` first and was simply wrong about which frame 90% lands on
+
 ## The filmstrip
 
 - [x] The range is a native horizontal scroller, not a scroll-jacked one
@@ -224,8 +236,8 @@ non-zero if anything fails. Evidence below is the final run of 2026-10-13.
 
 - [x] R1: The full harness passes
   CHECK: `python tools/check.py`
-  EXPECT: `74 of 74 checks passed`
-  EVIDENCE: 74 of 74 checks passed (42 after Phase A, 52 after B, 55 after C, 58 after D, 71 after E, 74 after G)
+  EXPECT: `75 of 75 checks passed`
+  EVIDENCE: 75 of 75 checks passed (42 after Phase A, 52 after B, 55 after C, 58 after D, 71 after E, 74 after G, 75 after the Phase G carry-over)
 
 - [x] R5: The opening film scrubs with the page
   CHECK: headless Chromium over raw CDP (no installs: node's global WebSocket), `Page.navigate` then `window.scrollTo` at fixed offsets, reading live element state and capturing a screenshot per stop

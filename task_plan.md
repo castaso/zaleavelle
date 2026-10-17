@@ -238,14 +238,22 @@ Goal G3 read "Not field-measured" for every version of this page until now. This
 - [x] Slice 18G7: `MOTION_INTENSITY 5 → 8` amended **in the open** in all three places that state it (PRD 8.2, the CSS header comment, the design-read block), with the reasoning attached rather than the number quietly changed. Accepted only after the bill arrived: payload fixed in A, CPU cost measured and fixed here
 - [x] Slice 18G8: gates B22/B22b/B22c added so the burst cannot silently return; B22b mutation-tested. B1 caught my own em-dashes when I edited the CSS header comment, and was complied with rather than amended
 - [x] Slice 18G9 verify: **74/74** harness checks. One mutation test reported "vacuous" and was actually a broken mutation (whitespace mismatch, deletion never applied); re-run with a regex and an assertion on the substitution count, it failed as intended
-- **Status:** complete. Phase F open and blocked
+- **Status:** Phase F blocked on a paid plan. Both carried items closed. Phase 18 otherwise complete
 
-### Phase 18 remaining
+### Phase 18: F and the carry-over
 
-- [ ] **Phase F (blocked):** generate 2 on-palette variants. Verify image-generation credentials first and report immediately if unavailable. This takes the range from 5 of 7 to 7 of 7
-- [ ] **Carried, unproven:** `filmPromote` never executed, because all 8 sheets landed inside the initial 3s wait in the verification run. Three lines, guarded, untested
-- [ ] **Carried:** without JS the mobile drawer cannot open. All content is present (B18) but a scriptless phone visitor has no in-page navigation. Needs the drawer restyled as an inline wrapping row via noscript CSS
-- [ ] **Noted, not changed:** four social icons load from `cdn.simpleicons.org`, so mobile makes four third-party requests. Replacing them means hand-rolling SVG icons, which the design skill bans, and they are 19px and lazy
+- [ ] **Slice 18F — BLOCKED, external.** Credentials verified before spending anything: `higgsfield` 1.1.23 present, `auth token` returns a token, `~/.config/higgsfield/credentials.json` exists. `workspace list` shows a single **free plan with 0 credits**, and `product-photoshoot create` returns `job_minimum_basic_plan_required`. Needs Basic or above. **Range stays 5 of 7.** Not routed around: no invented product images, no reviving the off-palette blue and pink frames Phase A rejected, no placeholder presented as product photography. Job is scripted down to runnable form: two `product_shot` at 4:5, warm alabaster ground, sage and petal-pink botanicals, **unlabelled bottles** because an AI label would reintroduce the Phase D defect. The workspace setting changed for the test was reverted
+- [x] Slice 18G10: **`filmPromote` proven.** Probe jumps to 90% of the pin before the queue drains. Sheet order came back **0,1,2,3,4,6,5,7** — an inversion that is impossible without promotion, since the queue is otherwise strictly sequential. Landed position `--film-p: 0.859` maps to sheet **6** (`floor(0.859 x 192 / 24)`), which is exactly the sheet the reader needed. All 8 fetched, none dropped, `scrub playing`, zero errors. The test's original prediction expected sheet-7 and was wrong about which frame 90% lands on
+- [x] Slice 18G11: **no-JS mobile navigation fixed.** Below 1080px the drawer is the only nav and it is script-opened, so a scriptless phone visitor had all the content and no way to move between sections. Noscript override makes it a plain inline list, hides the toggle, and drops the sticky behaviour deliberately, because six links plus a CTA in a sticky header would be ~400px permanently over a phone screen. Verified by screenshot at 390x844 with all scripts stripped. Gate B18b added, mutation-tested by moving the breakpoint off 1080px
+- [x] Slice 18G12 verify: **75/75** harness checks. Probe files, server, Lighthouse reports, temp artefacts and stray Chromium all cleaned up
+- **Status:** Phase F blocked and documented; everything else in Phase 18 is done
+
+### Outstanding after Phase 18
+
+- [ ] **Phase F** — blocked on a Higgsfield paid plan. Unblocks with Basic or above; the two `product_shot` jobs are already specified
+- [ ] The generated variants, once they exist, must go through `build-web-images.py` with crop boxes recorded, and must be **looked at** before use, since no gate can see baked text
+- [ ] Consider long `Cache-Control` on `assets/web/**` at the real host: the sprite sheets are 74% of the mobile payload and immutable per build
+- [ ] Noted, not changed: four social icons load from `cdn.simpleicons.org`, so mobile makes four third-party requests. Replacing them means hand-rolling SVG, which the design skill bans
 
 ## Key Questions
 
@@ -331,6 +339,9 @@ Goal G3 read "Not field-measured" for every version of this page until now. This
 | A mutation test reported its gate as "vacuous" | B22b passed after deleting the serialisation guard | The deletion had never applied, because the replacement string did not match the file's indentation. **"The gate did not catch it" almost always means the mutation did not land.** Re-run with a regex and an assertion on the substitution count, it failed as intended |
 | `cache-insight` reported 2171 KiB of savings | All of it the sprite sheets | Artefact of `python -m http.server` sending no cache headers, not a page defect. Reported as an artefact and used only to derive the real requirement: the sheets need a long max-age |
 | B1 failed after editing the CSS header | My own em-dashes in a comment | Gate says "zero em-dashes anywhere in the page" and has scanned comments since Phase 16. Complied rather than amending, since the gate is correct and I introduced the violation |
+| Phase F reported credentials verified in my own plan | `higgsfield auth token` returned a live token | The account is a **free plan with 0 credits** and `product-photoshoot create` returns `job_minimum_basic_plan_required`. Auth was fine; the billing gate was not. Verified by running it rather than reading the token and assuming |
+| `filmPromote` test predicted sheet-7 first | Probe jumped to 90% of the pin; sheets returned 0,1,2,3,4,**6**,5,7 | The prediction was wrong, not the code: the scroll settles at 0.859, and `floor(0.859 x 192 / 24) = 6`. The 6-before-5 inversion is impossible without promotion, so it is the real evidence |
+| `higgsfield auth token` printed a live OAuth token into the transcript | Checked credentials by invoking the printing command | Stayed on the machine and nothing was committed, but the right check is for the presence of `credentials.json` and never to run the printing command at all |
 
 ## Notes
 
